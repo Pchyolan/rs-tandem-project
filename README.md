@@ -6,4 +6,4 @@ The goal is to build a collaborative web application.
 
 ## Team
 - Pchyolan – https://github.com/pchyolan
-- Anna – https://github.com/thefoxtale
+- Annie – https://github.com/thefoxtale
