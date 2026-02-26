@@ -1,0 +1,37 @@
+name: Assign RT Number
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add-rt-number:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      repository-projects: read
+    steps:
+      - name: Assign RT number
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          PROJECT_NUMBER: 1
+        run: |
+          # Получаем ID проекта (v2)
+          PROJECT_ID=$(gh project list --owner "$REPO" --format json | jq -r '.projects[] | select(.number == '$PROJECT_NUMBER') | .id')
+          
+          # Получаем ID нового Issue
+          ITEM_ID=$(gh project item-add "$PROJECT_ID" --owner "$REPO" --issue "$ISSUE_NUMBER" --format json | jq -r '.id')
+          
+          # Находим ID поля "RT Number" в проекте
+          FIELD_ID=$(gh project field-list "$PROJECT_ID" --owner "$REPO" --format json | jq -r '.fields[] | select(.name == "RT Number") | .id')
+          
+          # Считаем, сколько уже есть задач с заполненным полем
+          RT_COUNT=$(gh project item-list "$PROJECT_ID" --owner "$REPO" --format json --limit 100 | jq '[.items[] | select(.fieldValues | any(.field.name == "RT Number" and .value != null))] | length')
+          
+          # Генерируем новый номер
+          NEW_NUMBER=$((RT_COUNT + 1))
+          RT_VALUE="RT-$(printf "%03d" $NEW_NUMBER)"
+          
+          # Обновляем поле у новой задачи
+          gh project item-edit --id "$ITEM_ID" --field-id "$FIELD_ID" --project-id "$PROJECT_ID" --text "$RT_VALUE"
