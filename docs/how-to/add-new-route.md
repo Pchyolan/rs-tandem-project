@@ -20,7 +20,7 @@ export function homePage(): Page {
   const updateTexts = () => {
     const lang = language$.value;
     const dictionary = (key: TranslationKey) => translations[lang][key];
-    textComponent.element.textContent = dictionary('mainTempText');
+    textComponent.element.textContent = dictionary('tempText');
   };
 
   return {
@@ -119,25 +119,25 @@ export { notFoundPage } from './not-found-page';
 ```typescript
 import type { Language } from '../types/language';
 
-export type MainTranslationKey = 'mainTempText';
+export type HomePageTranslationKey = 'tempText';
 
 export const mainTranslations: Record<
   Language,
-  Record<MainTranslationKey, string>
+  Record<HomePageTranslationKey, string>
 > = {
   en: {
-    mainTempText: 'TODO...',
+    tempText: 'TODO...',
   },
   ru: {
-    mainTempText: 'Когда-нибудь тут будет посадочная страница...',
+    tempText: 'Когда-нибудь тут будет посадочная страница...',
   },
 };
 ```
 
 Здесь:
 
-- MainTranslationKey содержит все ключи, которые используеются в фале словаря
-- mainTranslations содержит переводы на en и ru языки в соответствующих объектах, по ключам из MainTranslationKey
+- HomePageTranslationKey содержит все ключи, которые используеются в фале словаря
+- mainTranslations содержит переводы на en и ru языки в соответствующих объектах, по ключам из HomePageTranslationKey
 
 Затем нужно добавить свой файл в `src/i18n/index.ts`. После этого он станет доступен для использования в приложении.
 

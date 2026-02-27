@@ -7,15 +7,18 @@ type HeaderCallbacks = {
   onSignIn: () => void;
   onTestApi: () => void;
   onWidgetClick: () => void;
+  onMemoryClick: () => void;
 };
 
 export class Header extends BaseComponent<'header'> {
   private readonly logo: BaseComponent<'span'>;
 
-  private homeBtn: BaseComponent<'button'>;
+  private readonly homeBtn: BaseComponent<'button'>;
   private readonly signInBtn: BaseComponent<'button'>;
   private readonly testApiBtn: BaseComponent<'button'>;
+
   private readonly widgetEngineBtn: BaseComponent<'button'>;
+  private readonly memoryGameBtn: BaseComponent<'button'>;
 
   private readonly langRuBtn: BaseComponent<'button'>;
   private readonly langEnBtn: BaseComponent<'button'>;
@@ -46,6 +49,9 @@ export class Header extends BaseComponent<'header'> {
     this.widgetEngineBtn = new BaseComponent({ tag: 'button', text: 'Widget Engine' });
     this.widgetEngineBtn.addEventListener('click', this.callbacks.onWidgetClick);
 
+    this.memoryGameBtn = new BaseComponent({ tag: 'button', text: 'Memory Game' });
+    this.memoryGameBtn.addEventListener('click', this.callbacks.onMemoryClick);
+
     const langButtons = new BaseComponent({
       tag: 'div',
       className: ['lang-buttons'],
@@ -58,7 +64,14 @@ export class Header extends BaseComponent<'header'> {
     this.langEnBtn.addEventListener('click', () => language$.set('en'));
 
     langButtons.append(this.langRuBtn, this.langEnBtn);
-    navButtons.append(this.homeBtn, this.signInBtn, this.testApiBtn, this.widgetEngineBtn, langButtons);
+    navButtons.append(
+      this.homeBtn,
+      this.signInBtn,
+      this.testApiBtn,
+      this.widgetEngineBtn,
+      this.memoryGameBtn,
+      langButtons
+    );
     this.append(this.logo, navButtons);
 
     this.unsubscribe = language$.subscribe(() => this.updateHeader());

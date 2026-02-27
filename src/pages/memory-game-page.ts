@@ -2,7 +2,7 @@ import { BaseComponent, type Page } from '../core';
 import { language$ } from '../store/language-store.ts';
 import { translations, type TranslationKey } from '../i18n';
 
-export function homePage(): Page {
+export function memoryGamePage(): Page {
   let container: BaseComponent<'div'>;
   let textComponent: BaseComponent<'p'>;
   let unsubscribe: () => void;
@@ -10,13 +10,13 @@ export function homePage(): Page {
   const updateTexts = () => {
     const lang = language$.value;
     const dictionary = (key: TranslationKey) => translations[lang][key];
-    textComponent.element.textContent = dictionary('tempText');
+    textComponent.element.textContent = dictionary('myText');
   };
 
   return {
     render() {
-      container = new BaseComponent({ tag: 'div', className: ['home-page'] });
-      textComponent = new BaseComponent({ tag: 'p', className: ['home-text'] });
+      container = new BaseComponent({ tag: 'div', className: ['memory-game-page'] });
+      textComponent = new BaseComponent({ tag: 'p', className: ['memory-game-text'] });
 
       container.append(textComponent);
 
