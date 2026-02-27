@@ -86,7 +86,7 @@ export class Header extends BaseComponent<'header'> {
     }
   }
 
-  public remove(): void {
+  public override remove(): void {
     this.unsubscribe();
     super.remove();
   }
