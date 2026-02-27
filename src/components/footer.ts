@@ -7,7 +7,7 @@ export class Footer extends BaseComponent<'footer'> {
     const year = new Date().getFullYear();
     const text = new BaseComponent({
       tag: 'span',
-      text: `© ${year} DevBand`,
+      text: `© ${year} JustBuildIt Team`,
     });
     this.append(text);
   }
