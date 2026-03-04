@@ -1,2 +1,2 @@
-export { ROUTES } from './routes';
-export { WIDGET_TYPES } from './widget-types';
+export { routes } from './routes';
+export { widgetTypes } from './widget-types';

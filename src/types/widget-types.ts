@@ -1,6 +1,6 @@
-import { WIDGET_TYPES } from '@/constants';
+import { widgetTypes } from '@/constants';
 
-export type WidgetType = (typeof WIDGET_TYPES)[keyof typeof WIDGET_TYPES];
+export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
 
 // Базовый интерфейс виджета
 export type BaseWidget = {
@@ -13,21 +13,21 @@ export type BaseWidget = {
 
 // Это будет итоговая версия, когда всё будет готово
 // export type Widget =
-//   | (BaseWidget & { typeof WIDGET_TYPES.QUIZ; payload: QuizPayload })
-//   | (BaseWidget & { typeof WIDGET_TYPES.TRUE_FALSE; payload: TrueFalsePayload })
-//   | (BaseWidget & { typeof WIDGET_TYPES.CODE_COMPLETION; payload: CodeCompletionPayload })
-//   | (BaseWidget & { typeof WIDGET_TYPES.CODE_ORDERING; payload: CodeOrderingPayload })
-//   | (BaseWidget & { typeof WIDGET_TYPES.ASYNC_SORTER; payload: AsyncSorterPayload })
-//   | (BaseWidget & { typeof WIDGET_TYPES.MEMORY_GAME; payload: MemoryGamePayload })
-//   | (BaseWidget & { typeof WIDGET_TYPES.STACK_BUILDER; payload: StackBuilderPayload });
+//   | (BaseWidget & { typeof widgetTypes.quiz; payload: QuizPayload })
+//   | (BaseWidget & { typeof widgetTypes.trueFalse; payload: TrueFalsePayload })
+//   | (BaseWidget & { typeof widgetTypes.codeCompletion; payload: CodeCompletionPayload })
+//   | (BaseWidget & { typeof widgetTypes.codeOrdering; payload: CodeOrderingPayload })
+//   | (BaseWidget & { typeof widgetTypes.asyncSorter; payload: AsyncSorterPayload })
+//   | (BaseWidget & { typeof widgetTypes.memoryGame; payload: MemoryGamePayload })
+//   | (BaseWidget & { typeof widgetTypes.stackBuilder; payload: StackBuilderPayload });
 
 // Временный вариант: все payload имеют тип unknown
 // При реализации конкретного виджета необходимо заменить unknown на соответствующий тип и добавить сюда импорт
 export type Widget =
-  | (BaseWidget & { type: typeof WIDGET_TYPES.QUIZ; payload: unknown })
-  | (BaseWidget & { type: typeof WIDGET_TYPES.TRUE_FALSE; payload: unknown })
-  | (BaseWidget & { type: typeof WIDGET_TYPES.CODE_COMPLETION; payload: unknown })
-  | (BaseWidget & { type: typeof WIDGET_TYPES.CODE_ORDERING; payload: unknown })
-  | (BaseWidget & { type: typeof WIDGET_TYPES.ASYNC_SORTER; payload: unknown })
-  | (BaseWidget & { type: typeof WIDGET_TYPES.MEMORY_GAME; payload: unknown })
-  | (BaseWidget & { type: typeof WIDGET_TYPES.STACK_BUILDER; payload: unknown });
+  | (BaseWidget & { type: typeof widgetTypes.quiz; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.trueFalse; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.codeCompletion; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.codeOrdering; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.asyncSorter; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.memoryGame; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.stackBuilder; payload: unknown });

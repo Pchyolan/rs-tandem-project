@@ -1,9 +1,9 @@
-export const WIDGET_TYPES = {
-  QUIZ: 'quiz',
-  TRUE_FALSE: 'true-false',
-  CODE_COMPLETION: 'code-completion',
-  CODE_ORDERING: 'code-ordering',
-  ASYNC_SORTER: 'async-sorter',
-  MEMORY_GAME: 'memory-game',
-  STACK_BUILDER: 'stack-builder',
+export const widgetTypes = {
+  quiz: 'quiz',
+  trueFalse: 'true-false',
+  codeCompletion: 'code-completion',
+  codeOrdering: 'code-ordering',
+  asyncSorter: 'async-sorter',
+  memoryGame: 'memory-game',
+  stackBuilder: 'stack-builder',
 } as const;
