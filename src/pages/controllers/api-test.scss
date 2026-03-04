@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use '@/styles/variables' as *;
 
 .api-test-container {
   display: flex;

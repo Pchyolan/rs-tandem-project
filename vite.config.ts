@@ -19,11 +19,4 @@ export default defineConfig({
     environment: 'jsdom',
     css: true,
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "/src/styles/global" as *;`,
-      },
-    },
-  },
 });
