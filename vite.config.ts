@@ -2,21 +2,28 @@ import { defineConfig } from 'vitest/config';
 import eslint from 'vite-plugin-eslint2';
 
 export default defineConfig({
-    plugins: [
-        eslint({ overrideConfigFile: './eslint.config.js' })
-    ],
-    resolve: {
-        alias: {
-            '@': new URL('src', import.meta.url).pathname,
-        },
+  plugins: [
+    eslint({ overrideConfigFile: './eslint.config.js' })
+  ],
+  resolve: {
+    alias: {
+      '@': new URL('src', import.meta.url).pathname,
     },
-    server: {
-        port: 3000,
-        open: true,
+  },
+  server: {
+    port: 3000,
+    open: true,
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    css: true,
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "/src/styles/global" as *;`,
+      },
     },
-    test: {
-        globals: true,
-        environment: 'jsdom',
-        css: true,
-    },
+  },
 });
