@@ -1,5 +1,5 @@
-import { BaseComponent } from '../core';
-import type { Page } from '../core';
+import { BaseComponent } from '@/core';
+import type { Page } from '@/core';
 
 export function loginPage(): Page {
   let component: BaseComponent;

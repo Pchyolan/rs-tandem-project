@@ -1,8 +1,8 @@
-import type { Language } from '../types/language';
+import type { LanguageType } from '@/types';
 
 export type HomePageTranslationKey = 'tempText';
 
-export const homePageTranslations: Record<Language, Record<HomePageTranslationKey, string>> = {
+export const homePageTranslations: Record<LanguageType, Record<HomePageTranslationKey, string>> = {
   en: {
     tempText: 'TODO...',
   },

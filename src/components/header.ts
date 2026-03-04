@@ -1,6 +1,6 @@
-import { BaseComponent } from '../core';
+import { BaseComponent } from '@/core';
 import { language$ } from '../store/language-store.ts';
-import { translations, type TranslationKey } from '../i18n';
+import { translations, type TranslationKey } from '@/i18n';
 
 type HeaderCallbacks = {
   onHome: () => void;

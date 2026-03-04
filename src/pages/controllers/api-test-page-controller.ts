@@ -1,7 +1,6 @@
-import { BaseComponent } from '../../core';
-
-import { user$ } from '../../store/auth-store';
-import { authService } from '../../services/auth-service';
+import { BaseComponent } from '@/core';
+import { user$ } from '@/store/auth-store';
+import { authService } from '@/services/auth-service.ts';
 import type { AuthError } from '@supabase/supabase-js';
 
 import '../../styles/api-test.scss';

@@ -1,4 +1,4 @@
-import { Observable } from '../core';
+import { Observable } from '@/core';
 import type { User } from '@supabase/supabase-js';
 import { authService } from '../services/auth-service';
 

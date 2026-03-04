@@ -1,9 +1,9 @@
-import { BaseComponent, Router } from '../core';
+import { BaseComponent, Router } from '@/core';
 import { Header } from './header.ts';
 import { Footer } from './footer.ts';
 
-import { homePage, loginPage, apiTestPage, notFoundPage, widgetEnginePage, memoryGamePage } from '../pages';
-import { Routes } from '../constants/routes';
+import { homePage, loginPage, apiTestPage, notFoundPage, widgetEnginePage, memoryGamePage } from '@/pages';
+import { ROUTES } from '@/constants';
 
 import '../styles/app.scss';
 
@@ -17,11 +17,11 @@ export class App extends BaseComponent<'div'> {
     super({ tag: 'div', className: ['app-container'] });
 
     this.header = new Header({
-      onHome: () => this.router.navigate(Routes.HOME),
-      onSignIn: () => this.router.navigate(Routes.LOGIN),
-      onTestApi: () => this.router.navigate(Routes.API_TEST),
-      onWidgetClick: () => this.router.navigate(Routes.WIDGET_ENGINE),
-      onMemoryClick: () => this.router.navigate(Routes.MEMORY_GAME),
+      onHome: () => this.router.navigate(ROUTES.HOME),
+      onSignIn: () => this.router.navigate(ROUTES.LOGIN),
+      onTestApi: () => this.router.navigate(ROUTES.API_TEST),
+      onWidgetClick: () => this.router.navigate(ROUTES.WIDGET_ENGINE),
+      onMemoryClick: () => this.router.navigate(ROUTES.MEMORY_GAME),
     });
 
     this.mainContainer = new BaseComponent({
@@ -38,11 +38,11 @@ export class App extends BaseComponent<'div'> {
   }
 
   private setupRoutes(): void {
-    this.router.addRoute(Routes.HOME, homePage);
-    this.router.addRoute(Routes.LOGIN, loginPage);
-    this.router.addRoute(Routes.API_TEST, apiTestPage);
-    this.router.addRoute(Routes.WIDGET_ENGINE, widgetEnginePage);
-    this.router.addRoute(Routes.MEMORY_GAME, memoryGamePage);
+    this.router.addRoute(ROUTES.HOME, homePage);
+    this.router.addRoute(ROUTES.LOGIN, loginPage);
+    this.router.addRoute(ROUTES.API_TEST, apiTestPage);
+    this.router.addRoute(ROUTES.WIDGET_ENGINE, widgetEnginePage);
+    this.router.addRoute(ROUTES.MEMORY_GAME, memoryGamePage);
     this.router.setNotFound(notFoundPage);
     this.router.start();
   }

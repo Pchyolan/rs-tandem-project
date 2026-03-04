@@ -1,6 +1,6 @@
-import { BaseComponent, type Page } from '../core';
-import { language$ } from '../store/language-store.ts';
-import { translations, type TranslationKey } from '../i18n';
+import { BaseComponent, type Page } from '@/core';
+import { language$ } from '../store/language-store';
+import { translations, type TranslationKey } from '@/i18n';
 
 export function homePage(): Page {
   let container: BaseComponent<'div'>;

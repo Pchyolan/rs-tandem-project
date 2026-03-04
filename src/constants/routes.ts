@@ -1,4 +1,4 @@
-export const Routes = {
+export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   API_TEST: '/api-test',
