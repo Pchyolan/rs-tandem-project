@@ -151,9 +151,9 @@ export const mainTranslations: Record<
 
 ```typescript
 private setupRoutes(): void {
-  this.router.addRoute(Routes.HOME, homePage);
-  this.router.addRoute(Routes.LOGIN, loginPage);
-  this.router.addRoute(Routes.API_TEST, apiTestPage);
+  this.router.addRoute(routes.home, homePage);
+  this.router.addRoute(routes.login, loginPage);
+  this.router.addRoute(routes.api_test, apiTestPage);
   this.router.setNotFound(notFoundPage);
   this.router.start();
 }
@@ -183,9 +183,9 @@ this.testApiBtn.element.textContent = dictionary('testApi');
 
 ```typescript
 this.header = new Header({
-  onHome: () => this.router.navigate(Routes.HOME),
-  onSignIn: () => this.router.navigate(Routes.LOGIN),
-  onTestApi: () => this.router.navigate(Routes.API_TEST),
+    onHome: () => this.router.navigate(routes.home),
+    onSignIn: () => this.router.navigate(routes.login),
+    onTestApi: () => this.router.navigate(routes.api_test),
 });
 ```
 - добавить новую кнопку в блок navButtons в файле `src/components/header.ts`
@@ -196,5 +196,5 @@ this.header = new Header({
 
 Всё, после этих шагов можно проверять что путь работает:
 
-- либо нажать кнопку и посмотнеть, что она ведёт куда надо
+- либо нажать кнопку и посмотреть, что она ведёт куда надо
 - либо ввести путь в адресную строку вручную, и посмотреть что выведется Ваша страница. Например, `http://localhost:5173/#/api-test`

@@ -1,4 +1,4 @@
-import { BaseComponent } from '../core';
+import { BaseComponent } from '@/core';
 
 export class Footer extends BaseComponent<'footer'> {
   constructor() {

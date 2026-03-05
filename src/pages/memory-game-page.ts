@@ -1,6 +1,6 @@
-import { BaseComponent, type Page } from '../core';
+import { BaseComponent, type Page } from '@/core';
 import { language$ } from '../store/language-store.ts';
-import { translations, type TranslationKey } from '../i18n';
+import { translations, type TranslationKey } from '@/i18n';
 
 export function memoryGamePage(): Page {
   let container: BaseComponent<'div'>;

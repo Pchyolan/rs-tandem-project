@@ -1,7 +1,7 @@
-export const Routes = {
-  HOME: '/',
-  LOGIN: '/login',
-  API_TEST: '/api-test',
-  WIDGET_ENGINE: '/widget-engine',
-  MEMORY_GAME: '/memory-game',
+export const routes = {
+  home: '/',
+  login: '/login',
+  api_test: '/api-test',
+  widget_engine: '/widget-engine',
+  memory_game: '/memory-game',
 } as const;

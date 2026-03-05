@@ -1,11 +1,11 @@
-import { BaseComponent, Router } from '../core';
+import { BaseComponent, Router } from '@/core';
 import { Header } from './header.ts';
 import { Footer } from './footer.ts';
 
-import { homePage, loginPage, apiTestPage, notFoundPage, widgetEnginePage, memoryGamePage } from '../pages';
-import { Routes } from '../constants/routes';
+import { homePage, loginPage, apiTestPage, notFoundPage, widgetEnginePage, memoryGamePage } from '@/pages';
+import { routes } from '@/constants';
 
-import '../styles/app.scss';
+import './app.scss';
 
 export class App extends BaseComponent<'div'> {
   private readonly header: Header;
@@ -17,11 +17,11 @@ export class App extends BaseComponent<'div'> {
     super({ tag: 'div', className: ['app-container'] });
 
     this.header = new Header({
-      onHome: () => this.router.navigate(Routes.HOME),
-      onSignIn: () => this.router.navigate(Routes.LOGIN),
-      onTestApi: () => this.router.navigate(Routes.API_TEST),
-      onWidgetClick: () => this.router.navigate(Routes.WIDGET_ENGINE),
-      onMemoryClick: () => this.router.navigate(Routes.MEMORY_GAME),
+      onHome: () => this.router.navigate(routes.home),
+      onSignIn: () => this.router.navigate(routes.login),
+      onTestApi: () => this.router.navigate(routes.api_test),
+      onWidgetClick: () => this.router.navigate(routes.widget_engine),
+      onMemoryClick: () => this.router.navigate(routes.memory_game),
     });
 
     this.mainContainer = new BaseComponent({
@@ -38,11 +38,11 @@ export class App extends BaseComponent<'div'> {
   }
 
   private setupRoutes(): void {
-    this.router.addRoute(Routes.HOME, homePage);
-    this.router.addRoute(Routes.LOGIN, loginPage);
-    this.router.addRoute(Routes.API_TEST, apiTestPage);
-    this.router.addRoute(Routes.WIDGET_ENGINE, widgetEnginePage);
-    this.router.addRoute(Routes.MEMORY_GAME, memoryGamePage);
+    this.router.addRoute(routes.home, homePage);
+    this.router.addRoute(routes.login, loginPage);
+    this.router.addRoute(routes.api_test, apiTestPage);
+    this.router.addRoute(routes.widget_engine, widgetEnginePage);
+    this.router.addRoute(routes.memory_game, memoryGamePage);
     this.router.setNotFound(notFoundPage);
     this.router.start();
   }

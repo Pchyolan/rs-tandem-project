@@ -1,8 +1,8 @@
-import type { Language } from '../types/language';
+import type { LanguageType } from '@/types';
 
 export type MemoryGameTranslationKey = 'myText';
 
-export const memoryGamePageTranslations: Record<Language, Record<MemoryGameTranslationKey, string>> = {
+export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameTranslationKey, string>> = {
   en: {
     myText: 'Memory Game',
   },

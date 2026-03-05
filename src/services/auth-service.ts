@@ -1,4 +1,4 @@
-import { SupabaseClient } from '../core';
+import { SupabaseClient } from '@/core';
 import type { User, Session, AuthError } from '@supabase/supabase-js';
 
 type AuthResult<T> = { data: T | null; error: AuthError | null };

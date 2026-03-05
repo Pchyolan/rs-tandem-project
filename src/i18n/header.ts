@@ -1,8 +1,8 @@
-import type { Language } from '../types/language';
+import type { LanguageType } from '@/types';
 
 export type HeaderTranslationKey = 'appName' | 'signIn' | 'testApi' | 'home' | 'logout';
 
-export const headerTranslations: Record<Language, Record<HeaderTranslationKey, string>> = {
+export const headerTranslations: Record<LanguageType, Record<HeaderTranslationKey, string>> = {
   en: {
     appName: 'Widget Trainer',
     signIn: 'Sign In',

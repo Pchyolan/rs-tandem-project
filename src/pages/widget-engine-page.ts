@@ -1,4 +1,4 @@
-import { BaseComponent, type Page } from '../core';
+import { BaseComponent, type Page } from '@/core';
 
 // Это можно будет вынести во внешний файл типа utils
 function createHeading(text: string): HTMLHeadingElement {
