@@ -42,9 +42,6 @@
 
 .app-main {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $spacing-xl;
   color: color.adjust($color-text, $lightness: 40%);
   flex: 1;
   background-color: $color-background;
