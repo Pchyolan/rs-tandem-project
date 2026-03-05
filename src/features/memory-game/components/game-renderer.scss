@@ -1,0 +1,105 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.memory-game__container {
+  @include flex-column;
+
+  width: 100%;
+  height: 100%;
+}
+
+.memory-game__panels-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.memory-game__left-panel {
+  @include flex-column;
+
+  padding: $spacing-sm;
+  width: 40%;
+  height: 100%;
+  gap: 16px;
+  border-right: 1px solid black;
+}
+
+.memory-game__right-panel {
+  @include flex-column;
+
+  padding: $spacing-sm;
+  width: 60%;
+  height: 100%;
+  gap: 16px;
+}
+
+pre.memory-game__code {
+  flex: 1;
+  border-radius: 16px;
+  font-size: 14px;
+}
+
+.memory-game__graph-container {
+  flex: 1;
+  min-height: 0;
+  color: #d4d4d4;
+  background: #1e1e1e;
+  overflow: auto;
+  border-radius: 16px;
+  font-size: 20px;
+}
+
+.memory-game__bottom-panel {
+  @include flex-right;
+
+  padding: $spacing-sm;
+  width: 100%;
+  height: 60px;
+  gap: 16px;
+  flex-shrink: 0;
+  border-top: 1px solid black;
+}
+
+.memory-game__text {
+  font-size: $font-size-base;
+  color: $color-text;
+}
+
+.memory-game__hint-container {
+  @include flex-center;
+
+  padding: 8px;
+  border: 1px solid gray;
+  gap: 16px;
+  background-color: lightgray;
+  border-radius: 16px;
+}
+
+.memory-game__hint-text {
+  font-size: 12px;
+  color: dimgray;
+}
+
+.memory-game__controls-container {
+  @include flex-center;
+
+  padding: 8px;
+  width: fit-content;
+  border: 1px solid gray;
+  align-self: center;
+  gap: 16px;
+  border-radius: 16px;
+}
+
+.memory-game__icon {
+  width: 40px;
+  height: 40px;
+}
+
+.memory-game__button {
+  font-size: $font-size-base;
+  padding: 8px;
+  border-radius: 16px;
+}

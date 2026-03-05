@@ -1,0 +1,45 @@
+.graph-object {
+  cursor: pointer;
+  transition: filter 0.2s;
+
+  .object-rect {
+    fill: #add8e6;
+    stroke: #4682b4;
+    stroke-width: 2;
+  }
+
+  &.root .object-rect {
+    fill: #b3d9ff;
+    stroke: #06c;
+  }
+
+  &.marked .object-rect {
+    fill: #ffb3b3;
+    stroke: #c00;
+  }
+
+  &:hover .object-rect {
+    filter: brightness(0.95);
+  }
+}
+
+.graph-object__label-root {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.graph-object__label-second {
+  font-weight: bold;
+}
+
+.graph-link {
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  marker-end: url('#arrowhead');
+  fill: none;
+}
+
+.root-link {
+  stroke-dasharray: 5, 5;
+}
