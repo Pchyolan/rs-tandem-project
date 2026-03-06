@@ -57,6 +57,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
 
       this.clear();
       this.append(this.renderer);
+      this.renderer.highlightCode();
 
       this.subscribeToMarkedGarbage();
     } catch (error) {

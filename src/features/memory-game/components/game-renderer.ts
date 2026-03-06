@@ -80,7 +80,7 @@ export class MemoryGameRenderer extends BaseComponent {
     });
 
     codeContainer.append(codeElement);
-    Prism.highlightElement(codeElement.element);
+
     return codeContainer;
   }
 
@@ -203,6 +203,13 @@ export class MemoryGameRenderer extends BaseComponent {
     }
 
     this.graphRenderer?.updateMarkedObjects(markedSet);
+  }
+
+  public highlightCode() {
+    const codeElement = this.element.querySelector('code.language-javascript');
+    if (codeElement) {
+      Prism.highlightElement(codeElement);
+    }
   }
 
   public override remove(): void {
