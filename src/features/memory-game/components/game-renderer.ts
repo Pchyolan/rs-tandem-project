@@ -63,20 +63,7 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__left-panel'],
     });
 
-    leftPanel.append(
-      new BaseComponent<'h2'>({
-        tag: 'h2',
-        text: 'Task №1',
-        className: ['memory-game__title'],
-      }),
-      new BaseComponent<'p'>({
-        tag: 'p',
-        text: 'Below you see JavaScript code that has just been executed. The last executed line is highlighted. Your task is to analyze the code and click on objects in the memory graph that become unreachable (garbage) after this code runs.',
-        className: ['memory-game__text'],
-      }),
-      this.renderCodeSnippet(),
-      this.renderHint()
-    );
+    leftPanel.append(this.renderHint(), this.renderCodeSnippet());
 
     return leftPanel;
   }
@@ -109,22 +96,35 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__hint-container'],
     });
 
-    hintBlock.append(
-      new BaseComponent<'img'>({
-        tag: 'img',
-        className: ['memory-game__icon'],
-        attrs: {
-          src: infoLogo,
-          alt: 'info',
-        },
-      }),
-      new BaseComponent<'p'>({
-        tag: 'p',
-        text: 'Click on objects in the memory graph to mark them collected. Roots cannot be collected.',
-        className: ['memory-game__hint-text'],
-      })
-    );
+    const icon = new BaseComponent<'img'>({
+      tag: 'img',
+      className: ['memory-game__icon'],
+      attrs: { src: infoLogo, alt: 'info' },
+    });
 
+    const textContainer = new BaseComponent({
+      tag: 'div',
+      className: ['memory-game__hint-text-container'],
+    });
+
+    const p1 = new BaseComponent({
+      tag: 'p',
+      text: 'Below you see JavaScript code that has just been executed. The last executed line is highlighted.',
+      className: ['memory-game__hint-text'],
+    });
+    const p2 = new BaseComponent({
+      tag: 'p',
+      text: 'Your task is to analyze the code and click on objects in the memory graph that become unreachable (garbage) after this code runs.',
+      className: ['memory-game__hint-text'],
+    });
+    const p3 = new BaseComponent({
+      tag: 'p',
+      text: 'Click on objects to mark them as garbage. Note: root objects (like the global object) cannot be collected.',
+      className: ['memory-game__hint-text'],
+    });
+
+    textContainer.append(p1, p2, p3);
+    hintBlock.append(icon, textContainer);
     return hintBlock;
   }
 
