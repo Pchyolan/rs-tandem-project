@@ -46,9 +46,9 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__panels-container'],
     });
 
-    panelsContainer.append(this.renderLeftPanel(), this.renderRightPanel(onObjectClick, onReset));
+    panelsContainer.append(this.renderLeftPanel(), this.renderRightPanel(onObjectClick));
 
-    this.append(panelsContainer, this.renderBottomPanel(onCollect));
+    this.append(panelsContainer, this.renderBottomPanel(onReset, onCollect));
   }
 
   private renderLeftPanel(): BaseComponent {
@@ -122,7 +122,7 @@ export class MemoryGameRenderer extends BaseComponent {
     return hintBlock;
   }
 
-  private renderRightPanel(onObjectClick: (objectId: string) => void, onReset: () => void): BaseComponent {
+  private renderRightPanel(onObjectClick: (objectId: string) => void): BaseComponent {
     const rightPanel = new BaseComponent<'div'>({
       tag: 'div',
       className: ['memory-game__right-panel'],
@@ -133,40 +133,9 @@ export class MemoryGameRenderer extends BaseComponent {
       onObjectClick: onObjectClick,
     });
 
-    rightPanel.append(this.graphRenderer, this.renderControls(onReset));
+    rightPanel.append(this.graphRenderer);
 
     return rightPanel;
-  }
-
-  private renderControls(onReset: () => void): BaseComponent {
-    const controlsPanel = new BaseComponent({
-      tag: 'div',
-      className: ['memory-game__controls-container'],
-    });
-
-    this.markedCounter = new BaseComponent<'span'>({
-      tag: 'span',
-      text: '0',
-      className: ['memory-game__text', 'memory-game__text--green'],
-    });
-
-    const questionWrapper = this.renderIconWrapper(questionLogo, 'question');
-
-    const refreshWrapper = this.renderIconWrapper(refreshLogo, 'refresh');
-    refreshWrapper.addEventListener('click', onReset);
-
-    controlsPanel.append(
-      questionWrapper,
-      new BaseComponent<'span'>({
-        tag: 'span',
-        text: 'Marked items:',
-        className: ['memory-game__text'],
-      }),
-      this.markedCounter,
-      refreshWrapper
-    );
-
-    return controlsPanel;
   }
 
   private renderIconWrapper(iconLogo: string, iconAltText: string): BaseComponent {
@@ -189,11 +158,22 @@ export class MemoryGameRenderer extends BaseComponent {
     return iconWrapper;
   }
 
-  private renderBottomPanel(onCollect: () => void): BaseComponent {
+  private renderBottomPanel(onReset: () => void, onCollect: () => void): BaseComponent {
     const bottomPanel = new BaseComponent({
       tag: 'div',
       className: ['memory-game__bottom-panel'],
     });
+
+    this.markedCounter = new BaseComponent<'span'>({
+      tag: 'span',
+      text: '0',
+      className: ['memory-game__text', 'memory-game__text--green'],
+    });
+
+    const questionWrapper = this.renderIconWrapper(questionLogo, 'question');
+
+    const refreshWrapper = this.renderIconWrapper(refreshLogo, 'refresh');
+    refreshWrapper.addEventListener('click', onReset);
 
     const collectButton = new BaseComponent<'button'>({
       tag: 'button',
@@ -202,7 +182,17 @@ export class MemoryGameRenderer extends BaseComponent {
     });
     collectButton.addEventListener('click', onCollect);
 
-    bottomPanel.append(collectButton);
+    bottomPanel.append(
+      questionWrapper,
+      new BaseComponent<'span'>({
+        tag: 'span',
+        text: 'Selected garbage:',
+        className: ['memory-game__text'],
+      }),
+      this.markedCounter,
+      refreshWrapper,
+      collectButton
+    );
 
     return bottomPanel;
   }
