@@ -1,36 +1,20 @@
-import { BaseComponent, type Page } from '@/core';
-import { language$ } from '../store/language-store.ts';
-import { translations, type TranslationKey } from '@/i18n';
+import { type Page } from '@/core';
+import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator.ts';
 
 export function memoryGamePage(): Page {
-  let container: BaseComponent<'div'>;
-  let textComponent: BaseComponent<'p'>;
-  let unsubscribe: () => void;
-
-  const updateTexts = () => {
-    const lang = language$.value;
-    const dictionary = (key: TranslationKey) => translations[lang][key];
-    textComponent.element.textContent = dictionary('myText');
-  };
+  let widget: MemoryGameWidgetCreator;
 
   return {
     render() {
-      container = new BaseComponent({ tag: 'div', className: ['memory-game-page'] });
-      textComponent = new BaseComponent({ tag: 'p', className: ['memory-game-text'] });
-
-      container.append(textComponent);
-
-      unsubscribe = language$.subscribe(updateTexts);
-      updateTexts();
-
-      return container;
+      widget = new MemoryGameWidgetCreator('gc-001');
+      return widget;
     },
     onMount() {
-      console.log('NOTE: Home page mounted');
+      console.log('NOTE: Memory Game page mounted');
     },
     onDestroy() {
-      if (unsubscribe) unsubscribe();
-      console.log('NOTE: Home page destroyed');
+      widget?.remove();
+      console.log('NOTE: Memory Game page destroyed');
     },
   };
 }
