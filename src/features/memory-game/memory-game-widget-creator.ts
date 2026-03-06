@@ -53,7 +53,6 @@ export class MemoryGameWidgetCreator extends BaseComponent {
         },
         onReset: this.handleReset,
         onCollect: this.handleCollect,
-        onSkip: this.handleSkip,
       });
 
       this.clear();
@@ -103,10 +102,6 @@ export class MemoryGameWidgetCreator extends BaseComponent {
   private showNotification(message: string, type: 'success' | 'error' = 'success') {
     alert(`[${type}] ${message}`);
   }
-
-  private handleSkip = () => {
-    console.log('Skip');
-  };
 
   public override remove(): void {
     this.unsubscribe?.();

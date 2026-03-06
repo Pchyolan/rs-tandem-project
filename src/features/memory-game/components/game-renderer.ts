@@ -19,7 +19,6 @@ type MemoryGameRendererProps = {
   onObjectClick: (objectId: string) => void;
   onReset: () => void;
   onCollect: () => void;
-  onSkip: () => void;
 };
 
 export class MemoryGameRenderer extends BaseComponent {
@@ -30,7 +29,7 @@ export class MemoryGameRenderer extends BaseComponent {
   private graphRenderer?: GraphRenderer;
   private markedCounter?: BaseComponent<'span'>;
 
-  constructor({ payload, onObjectClick, onReset, onCollect, onSkip }: MemoryGameRendererProps) {
+  constructor({ payload, onObjectClick, onReset, onCollect }: MemoryGameRendererProps) {
     super({
       tag: 'div',
       className: ['memory-game__container'],
@@ -38,15 +37,10 @@ export class MemoryGameRenderer extends BaseComponent {
 
     this.payload = payload;
 
-    this.createElements(onObjectClick, onReset, onCollect, onSkip);
+    this.createElements(onObjectClick, onReset, onCollect);
   }
 
-  private createElements(
-    onObjectClick: (objectId: string) => void,
-    onReset: () => void,
-    onCollect: () => void,
-    onSkip: () => void
-  ) {
+  private createElements(onObjectClick: (objectId: string) => void, onReset: () => void, onCollect: () => void) {
     const panelsContainer = new BaseComponent<'div'>({
       tag: 'div',
       className: ['memory-game__panels-container'],
@@ -54,7 +48,7 @@ export class MemoryGameRenderer extends BaseComponent {
 
     panelsContainer.append(this.renderLeftPanel(), this.renderRightPanel(onObjectClick, onReset));
 
-    this.append(panelsContainer, this.renderBottomPanel(onCollect, onSkip));
+    this.append(panelsContainer, this.renderBottomPanel(onCollect));
   }
 
   private renderLeftPanel(): BaseComponent {
@@ -195,7 +189,7 @@ export class MemoryGameRenderer extends BaseComponent {
     return iconWrapper;
   }
 
-  private renderBottomPanel(onCollect: () => void, onSkip: () => void): BaseComponent {
+  private renderBottomPanel(onCollect: () => void): BaseComponent {
     const bottomPanel = new BaseComponent({
       tag: 'div',
       className: ['memory-game__bottom-panel'],
@@ -208,22 +202,7 @@ export class MemoryGameRenderer extends BaseComponent {
     });
     collectButton.addEventListener('click', onCollect);
 
-    const skipButton = new BaseComponent<'button'>({
-      tag: 'button',
-      text: 'Skip Task',
-      className: ['memory-game__button'],
-    });
-    skipButton.addEventListener('click', onSkip);
-
-    bottomPanel.append(
-      new BaseComponent<'button'>({
-        tag: 'button',
-        text: 'Get answer',
-        className: ['memory-game__button'],
-      }),
-      collectButton,
-      skipButton
-    );
+    bottomPanel.append(collectButton);
 
     return bottomPanel;
   }
