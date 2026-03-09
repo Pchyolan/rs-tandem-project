@@ -1,5 +1,6 @@
 import { BaseComponent } from '@/core';
 import { widgetDataSource } from '@/api';
+import { SoundKey, SoundService } from '@/services/sound-service';
 
 import type { MemoryGameWidget } from './types';
 import { gameActions } from './constants';
@@ -17,8 +18,11 @@ type MemoryGameWidgetCreatorProps = {
 
 export class MemoryGameWidgetCreator extends BaseComponent {
   private readonly widgetId: string;
+
   private gameState: GameState | null = null;
   private gameMachine: GameMachine;
+
+  private soundService = SoundService.getInstance();
   private renderer: MemoryGameRenderer | null = null;
 
   private unsubscribe?: () => void;
@@ -94,6 +98,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
 
   private handleReset = () => {
     if (this.gameState) {
+      this.soundService.playSound(SoundKey.refresh);
       this.gameState.reset();
     }
   };

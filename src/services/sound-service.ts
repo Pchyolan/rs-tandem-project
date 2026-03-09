@@ -9,6 +9,7 @@ export enum SoundKey {
   mark = 'mark',
   error = 'error',
   next = 'next',
+  refresh = 'refresh',
 }
 
 export class SoundService {
@@ -42,6 +43,7 @@ export class SoundService {
       [SoundKey.mark]: '/sounds/mark.mp3',
       [SoundKey.error]: '/sounds/error.mp3',
       [SoundKey.next]: '/sounds/next.mp3',
+      [SoundKey.refresh]: '/sounds/refresh.mp3',
     };
     for (const [key, source] of Object.entries(soundFiles)) {
       const audio = new Audio(source);
