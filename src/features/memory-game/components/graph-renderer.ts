@@ -255,8 +255,6 @@ export class GraphRenderer extends BaseComponent {
       });
     });
 
-    await Promise.all(animations);
-
     markedElements.forEach((element) => this.objectElements.delete(element.id));
 
     // Удаляем линии, связанные с удалёнными объектами
@@ -269,5 +267,7 @@ export class GraphRenderer extends BaseComponent {
       }
       return true;
     });
+
+    await Promise.all(animations);
   }
 }

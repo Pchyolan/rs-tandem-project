@@ -265,9 +265,7 @@ export class MemoryGameRenderer extends BaseComponent {
           console.log('Cleaning up...');
           break;
         }
-        default: {
-          console.log('');
-        }
+        default:
       }
     });
   }

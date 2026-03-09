@@ -1,19 +1,18 @@
 import { type Page } from '@/core';
-import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator.ts';
+import { TicketPageController } from '@/pages/controllers';
 
 export function memoryGamePage(): Page {
-  let widget: MemoryGameWidgetCreator;
+  let controller: TicketPageController;
 
   return {
     render() {
-      widget = new MemoryGameWidgetCreator('gc-001');
-      return widget;
+      controller = new TicketPageController(['gc-001', 'gc-002', 'gc-003']);
+      return controller;
     },
     onMount() {
       console.log('NOTE: Memory Game page mounted');
     },
     onDestroy() {
-      widget?.remove();
       console.log('NOTE: Memory Game page destroyed');
     },
   };
