@@ -21,6 +21,16 @@
   &:hover .object-rect {
     filter: brightness(0.9);
   }
+
+  &.collecting {
+    opacity: 0;
+    transition:
+      transform 0.5s ease-out,
+      opacity 0.5s ease-out;
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    transform: scale(0);
+  }
 }
 
 .graph-object__label-root {

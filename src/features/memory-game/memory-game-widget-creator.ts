@@ -1,8 +1,11 @@
 import { BaseComponent } from '@/core';
 import { widgetDataSource } from '@/api';
 
-import type { MemoryGameWidget } from '@/features/memory-game/types';
+import type { MemoryGameWidget } from './types';
+import { gameActions } from './constants';
+
 import { GameState } from '@/features/memory-game/core/game-state';
+import { GameMachine } from '@/features/memory-game/core/game-machine';
 import { MemoryGameRenderer } from '@/features/memory-game/components/game-renderer';
 
 import './memory-game-widget-creator.scss';
@@ -10,12 +13,14 @@ import './memory-game-widget-creator.scss';
 export class MemoryGameWidgetCreator extends BaseComponent {
   private readonly widgetId: string;
   private gameState: GameState | null = null;
+  private gameMachine: GameMachine;
   private renderer: MemoryGameRenderer | null = null;
   private unsubscribe?: () => void;
 
   constructor(widgetId: string) {
     super({ tag: 'div', className: ['memory-game-widget'] });
     this.widgetId = widgetId;
+    this.gameMachine = new GameMachine();
 
     const spinnerContainer = new BaseComponent({ tag: 'div', className: ['spinner-container'] });
     const spinner = new BaseComponent({ tag: 'div', className: ['spinner'] });
@@ -46,6 +51,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
 
       this.renderer = new MemoryGameRenderer({
         payload: widget.payload,
+        gameState$: this.gameMachine.state$,
         onObjectClick: (objectId) => {
           if (this.gameState) {
             this.gameState.toggleMark(objectId);
@@ -59,9 +65,12 @@ export class MemoryGameWidgetCreator extends BaseComponent {
       this.append(this.renderer);
       this.renderer.highlightCode();
 
+      this.gameMachine.transition({ type: gameActions.loadSuccess });
+
       this.subscribeToMarkedGarbage();
     } catch (error) {
       console.log('Failed to load memory game widget', error);
+      this.gameMachine.transition({ type: gameActions.loadError, error: String(error) });
     }
   }
 
@@ -84,18 +93,28 @@ export class MemoryGameWidgetCreator extends BaseComponent {
   private handleCollect = async () => {
     if (!this.gameState) return;
 
+    this.gameMachine.transition({ type: gameActions.submit });
     const answer = { markedAsGarbage: this.gameState.getMarked() };
+
     try {
       const verdict = await widgetDataSource.submitAnswer('memory-game', this.widgetId, answer);
       if (verdict.isCorrect) {
+        this.gameMachine.transition({ type: gameActions.submitSuccess });
         this.showNotification('✅ Perfect! All garbage collected.', 'success');
+
+        await this.renderer?.playAnimation();
+        this.gameMachine.transition({ type: gameActions.animationEnd });
       } else {
+        this.gameMachine.transition({ type: gameActions.submitError });
         this.showNotification(
           verdict.explanation || '❌ Some objects are still reachable or incorrectly marked.',
           'error'
         );
+        await this.renderer?.playAnimation();
+        this.gameMachine.transition({ type: gameActions.animationEnd });
       }
     } catch {
+      this.gameMachine.transition({ type: gameActions.submitError });
       this.showNotification('Network error. Please try again.', 'error');
     }
   };

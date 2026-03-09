@@ -1,7 +1,8 @@
-import { BaseComponent } from '@/core';
+import { BaseComponent, Observable } from '@/core';
 
 import { GraphRenderer } from './graph-renderer';
-import type { MemoryGamePayload } from '../types';
+import type { GameState, MemoryGamePayload } from '../types';
+import { gameStates } from '../constants';
 
 import infoLogo from '@/assets/images/icons/info.png';
 import questionLogo from '@/assets/images/icons/question.png';
@@ -16,6 +17,7 @@ import './game-renderer.scss';
 
 type MemoryGameRendererProps = {
   payload: MemoryGamePayload;
+  gameState$: Observable<GameState>;
   onObjectClick: (objectId: string) => void;
   onReset: () => void;
   onCollect: () => void;
@@ -23,13 +25,16 @@ type MemoryGameRendererProps = {
 
 export class MemoryGameRenderer extends BaseComponent {
   private readonly payload: MemoryGamePayload;
+  private graphRenderer?: GraphRenderer;
 
   private unsubscribeMachine?: () => void;
 
-  private graphRenderer?: GraphRenderer;
   private markedCounter?: BaseComponent<'span'>;
+  private collectButton?: BaseComponent<'button'>;
+  private refreshWrapper?: BaseComponent;
+  private questionWrapper?: BaseComponent;
 
-  constructor({ payload, onObjectClick, onReset, onCollect }: MemoryGameRendererProps) {
+  constructor({ payload, gameState$, onObjectClick, onReset, onCollect }: MemoryGameRendererProps) {
     super({
       tag: 'div',
       className: ['memory-game__container'],
@@ -37,10 +42,12 @@ export class MemoryGameRenderer extends BaseComponent {
 
     this.payload = payload;
 
-    this.createElements(onObjectClick, onReset, onCollect);
+    this.createUI(onObjectClick, onReset, onCollect);
+
+    this.subscribeToMachine(gameState$);
   }
 
-  private createElements(onObjectClick: (objectId: string) => void, onReset: () => void, onCollect: () => void) {
+  private createUI(onObjectClick: (objectId: string) => void, onReset: () => void, onCollect: () => void) {
     const panelsContainer = new BaseComponent<'div'>({
       tag: 'div',
       className: ['memory-game__panels-container'],
@@ -136,12 +143,12 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__hint-container'],
     });
 
-    const questionWrapper = this.renderIconWrapper(questionLogo, 'Add me a clue');
+    this.questionWrapper = this.renderIconWrapper(questionLogo, 'Add me a clue');
 
-    const refreshWrapper = this.renderIconWrapper(refreshLogo, 'Refresh objects selection');
-    refreshWrapper.addEventListener('click', onReset);
+    this.refreshWrapper = this.renderIconWrapper(refreshLogo, 'Refresh objects selection');
+    this.refreshWrapper.addEventListener('click', onReset);
 
-    buttonsBlock.append(questionWrapper, refreshWrapper);
+    buttonsBlock.append(this.questionWrapper, this.refreshWrapper);
 
     return buttonsBlock;
   }
@@ -200,14 +207,14 @@ export class MemoryGameRenderer extends BaseComponent {
       this.markedCounter
     );
 
-    const collectButton = new BaseComponent<'button'>({
+    this.collectButton = new BaseComponent<'button'>({
       tag: 'button',
       text: 'Collect',
       className: ['memory-game__button'],
     });
-    collectButton.addEventListener('click', onCollect);
+    this.collectButton.addEventListener('click', onCollect);
 
-    bottomPanel.append(textWrapper, collectButton);
+    bottomPanel.append(textWrapper, this.collectButton);
 
     return bottomPanel;
   }
@@ -224,6 +231,68 @@ export class MemoryGameRenderer extends BaseComponent {
     const codeElement = this.element.querySelector('code.language-javascript');
     if (codeElement) {
       Prism.highlightElement(codeElement);
+    }
+  }
+
+  private subscribeToMachine(gameState$: Observable<GameState>) {
+    this.unsubscribeMachine = gameState$.subscribe((state) => {
+      const isActive = state === gameStates.idle;
+      this.setInteractive(isActive);
+
+      // Управление кнопкой Collect
+      if (this.collectButton) {
+        if (state === gameStates.submitting) {
+          this.collectButton.element.textContent = 'Submitting...';
+          this.collectButton.element.classList.add('loading');
+          this.collectButton.element.disabled = true;
+        } else {
+          this.collectButton.element.textContent = 'Collect';
+          this.collectButton.element.classList.remove('loading');
+          this.collectButton.element.disabled = !isActive;
+        }
+      }
+
+      switch (state) {
+        case gameStates.submitting: {
+          console.log('Submitting...');
+          break;
+        }
+        case gameStates.result: {
+          console.log('Result');
+          break;
+        }
+        case gameStates.animation: {
+          console.log('Cleaning up...');
+          break;
+        }
+        default: {
+          console.log('');
+        }
+      }
+    });
+  }
+
+  private setInteractive(isActive: boolean): void {
+    if (this.collectButton) {
+      this.collectButton.element.disabled = !isActive;
+    }
+
+    if (this.questionWrapper) {
+      this.questionWrapper.element.classList.toggle('is-disabled', !isActive);
+    }
+
+    if (this.refreshWrapper) {
+      this.refreshWrapper.element.classList.toggle('is-disabled', !isActive);
+    }
+
+    if (this.graphRenderer) {
+      this.graphRenderer.element.classList.toggle('is-disabled', !isActive);
+    }
+  }
+
+  public async playAnimation(): Promise<void> {
+    if (this.graphRenderer) {
+      await this.graphRenderer.animateGarbageCollection();
     }
   }
 

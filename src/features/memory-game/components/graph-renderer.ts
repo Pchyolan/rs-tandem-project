@@ -38,7 +38,10 @@ export class GraphRenderer extends BaseComponent {
 
   private payload: MemoryGamePayload;
   private readonly svg: SVGElement;
+
   private objectElements = new Map<string, SVGGElement>();
+  private linkElements: { path: SVGPathElement; from: string; to: string }[] = [];
+
   private readonly onObjectClick: (objectId: string) => void;
 
   constructor({ payload, onObjectClick }: GraphRendererProps) {
@@ -137,6 +140,9 @@ export class GraphRenderer extends BaseComponent {
       path.setAttribute('d', `M ${fromX} ${fromY} L ${midX} ${midY} L ${toX} ${toY}`);
       path.classList.add('graph-link', 'root-link');
       path.setAttribute('marker-end', `url(#${GraphRenderer.config.arrowMarkerId})`);
+
+      this.linkElements.push({ path, from: link.from, to: link.to });
+
       this.svg.append(path);
     });
   }
@@ -159,6 +165,8 @@ export class GraphRenderer extends BaseComponent {
       path.setAttribute('d', `M ${fromX} ${fromY} L ${midX} ${midY} L ${toX} ${toY}`);
       path.setAttribute('marker-end', `url(#${GraphRenderer.config.arrowMarkerId})`);
       path.classList.add('graph-link');
+
+      this.linkElements.push({ path, from: link.from, to: link.to });
 
       this.svg.append(path);
     });
@@ -221,5 +229,45 @@ export class GraphRenderer extends BaseComponent {
     for (const [id, element] of this.objectElements) {
       element.classList.toggle('marked', markedSet.has(id));
     }
+  }
+
+  public async animateGarbageCollection(): Promise<void> {
+    // Удаляем объекты
+    const markedElements: { el: SVGGElement; id: string }[] = [];
+    this.objectElements.forEach((element, id) => {
+      if (element.classList.contains('marked')) {
+        markedElements.push({ el: element, id });
+      }
+    });
+
+    if (markedElements.length === 0) return;
+
+    const animations = markedElements.map(({ el, id }) => {
+      return new Promise<void>((resolve) => {
+        const onTransitionEnd = () => {
+          el.removeEventListener('transitionend', onTransitionEnd);
+          el.remove();
+          this.objectElements.delete(id);
+          resolve();
+        };
+        el.addEventListener('transitionend', onTransitionEnd, { once: true });
+        el.classList.add('collecting');
+      });
+    });
+
+    await Promise.all(animations);
+
+    markedElements.forEach((element) => this.objectElements.delete(element.id));
+
+    // Удаляем линии, связанные с удалёнными объектами
+    const deletedIds = new Set(markedElements.map((item) => item.id));
+
+    this.linkElements = this.linkElements.filter((link) => {
+      if (deletedIds.has(link.from) || deletedIds.has(link.to)) {
+        link.path.remove();
+        return false;
+      }
+      return true;
+    });
   }
 }
