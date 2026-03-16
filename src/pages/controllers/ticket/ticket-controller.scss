@@ -73,15 +73,30 @@
     inset 0 0 20px rgb(255 255 255 / 10%);
 }
 
-.arrow-left,
-.arrow-right {
+.arrow-button {
+  padding: 0;
+  color: currentcolor;
+  background: none;
+  border: none;
+  transition:
+    opacity $transition-speed,
+    color $transition-speed;
   cursor: pointer;
-  fill: currentcolor;
-  width: 40px;
-  height: 40px;
-  transition: fill $transition-speed;
 
   &:hover {
-    fill: $color-secondary;
+    color: $color-secondary;
+    opacity: 0.7;
   }
+
+  &:disabled {
+    color: transparent;
+    cursor: default;
+  }
+}
+
+.arrow-left,
+.arrow-right {
+  width: 40px;
+  height: 40px;
+  fill: currentcolor;
 }

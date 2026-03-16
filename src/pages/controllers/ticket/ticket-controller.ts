@@ -6,12 +6,15 @@ import './ticket-controller.scss';
 
 export class TicketPageController extends BaseComponent {
   private currentIndex: number = 0;
-  private currentWidgetWrapper: BaseComponent;
+  private readonly currentWidgetWrapper: BaseComponent;
   private currentWidget: MemoryGameWidgetCreator | null = null;
 
   private readonly widgetsList: string[];
   private taskSegments: BaseComponent[] = [];
   private readonly counterElement: BaseComponent<'span'>;
+
+  private readonly leftButton: BaseComponent<'button'>;
+  private readonly rightButton: BaseComponent<'button'>;
 
   constructor(widgetsList: string[]) {
     super({ tag: 'div', className: ['ticket-page'] });
@@ -55,22 +58,28 @@ export class TicketPageController extends BaseComponent {
       className: ['current-wrapper'],
     });
 
-    const leftArrow = createLeftArrow('arrow-left');
-    const rightArrow = createRightArrow('arrow-right');
+    this.leftButton = new BaseComponent({ tag: 'button', className: ['arrow-button'] });
+    this.leftButton.element.append(createLeftArrow('arrow-left'));
+    this.leftButton.addEventListener('click', () => this.goToPrevious());
 
-    widgetWrapper.element.append(leftArrow, this.currentWidgetWrapper.element, rightArrow);
+    this.rightButton = new BaseComponent({ tag: 'button', className: ['arrow-button'] });
+    this.rightButton.element.append(createRightArrow('arrow-right'));
+    this.rightButton.addEventListener('click', () => this.goToNext());
+
+    widgetWrapper.append(this.leftButton, this.currentWidgetWrapper, this.rightButton);
 
     this.append(tasksWrapper, widgetWrapper);
 
-    this.updateTaskSegments();
     this.loadNext();
   }
 
   private loadNext(): void {
+    this.currentWidget?.remove();
     this.currentWidgetWrapper.clear();
 
     if (this.currentIndex >= this.widgetsList.length) {
       this.counterElement.element.textContent = '';
+      this.updateButtonsState();
       this.showCompletionMessage();
       return;
     }
@@ -90,6 +99,19 @@ export class TicketPageController extends BaseComponent {
       this.currentWidgetWrapper.append(this.currentWidget);
     }
     this.updateTaskSegments();
+    this.updateButtonsState();
+  }
+
+  private goToPrevious(): void {
+    if (this.currentIndex >= this.widgetsList.length || this.currentIndex <= 0) return;
+    this.currentIndex--;
+    this.loadNext();
+  }
+
+  private goToNext(): void {
+    if (this.currentIndex >= this.widgetsList.length - 1) return;
+    this.currentIndex++;
+    this.loadNext();
   }
 
   private updateTaskSegments(): void {
@@ -107,6 +129,18 @@ export class TicketPageController extends BaseComponent {
       className: ['ticket-complete'],
     });
     this.currentWidgetWrapper.append(message);
+
+    this.updateButtonsState();
+  }
+
+  private updateButtonsState(): void {
+    if (this.currentIndex >= this.widgetsList.length) {
+      this.leftButton.element.disabled = true;
+      this.rightButton.element.disabled = true;
+    } else {
+      this.leftButton.element.disabled = this.currentIndex === 0;
+      this.rightButton.element.disabled = this.currentIndex === this.widgetsList.length - 1;
+    }
   }
 
   public override remove(): void {
