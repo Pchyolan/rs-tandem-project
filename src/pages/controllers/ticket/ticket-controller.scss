@@ -19,12 +19,31 @@
   padding: $spacing-md;
 }
 
-.task-circle {
-  width: $spacing-md;
-  height: $spacing-md;
-  border-radius: 50%;
+.task-counter {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.segments-container {
+  display: flex;
+  height: $spacing-sm;
+  margin-left: $spacing-sm;
+  gap: $spacing-xs;
+}
+
+.task-segment {
+  width: 40px;
   background-color: $color-primary;
   transition: background-color $transition-speed;
+
+  &:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
 
   &.active {
     background-color: $color-secondary;
@@ -43,6 +62,7 @@
   @include flex-center;
 
   padding: 24px;
+  height: 100%;
   background: rgb(255 255 255 / 8%);
   border: 1px solid rgb(255 255 255 / 35%);
   flex: 1;

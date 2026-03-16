@@ -8,8 +8,10 @@ export class TicketPageController extends BaseComponent {
   private currentIndex: number = 0;
   private currentWidgetWrapper: BaseComponent;
   private currentWidget: MemoryGameWidgetCreator | null = null;
+
   private readonly widgetsList: string[];
-  private taskCircles: BaseComponent<'div'>[] = [];
+  private taskSegments: BaseComponent[] = [];
+  private readonly counterElement: BaseComponent<'span'>;
 
   constructor(widgetsList: string[]) {
     super({ tag: 'div', className: ['ticket-page'] });
@@ -21,14 +23,27 @@ export class TicketPageController extends BaseComponent {
       className: ['task-wrapper'],
     });
 
+    this.counterElement = new BaseComponent({
+      tag: 'span',
+      className: ['task-counter'],
+      text: `Task 1 / ${widgetsList.length}`,
+    });
+
+    const segmentsContainer = new BaseComponent({
+      tag: 'div',
+      className: ['segments-container'],
+    });
+
     for (let i = 0; i < widgetsList.length; i++) {
-      const circle = new BaseComponent({
+      const segment = new BaseComponent({
         tag: 'div',
-        className: ['task-circle'],
+        className: ['task-segment'],
       });
-      this.taskCircles.push(circle);
-      tasksWrapper.append(circle);
+      this.taskSegments.push(segment);
+      segmentsContainer.append(segment);
     }
+
+    tasksWrapper.append(this.counterElement, segmentsContainer);
 
     const widgetWrapper = new BaseComponent({
       tag: 'div',
@@ -47,7 +62,7 @@ export class TicketPageController extends BaseComponent {
 
     this.append(tasksWrapper, widgetWrapper);
 
-    this.updateTaskCircles();
+    this.updateTaskSegments();
     this.loadNext();
   }
 
@@ -55,6 +70,7 @@ export class TicketPageController extends BaseComponent {
     this.currentWidgetWrapper.clear();
 
     if (this.currentIndex >= this.widgetsList.length) {
+      this.counterElement.element.textContent = '';
       this.showCompletionMessage();
       return;
     }
@@ -66,19 +82,21 @@ export class TicketPageController extends BaseComponent {
         widgetId,
         onComplete: () => {
           this.currentIndex++;
-          this.updateTaskCircles();
+          this.updateTaskSegments();
           this.loadNext();
         },
       });
 
       this.currentWidgetWrapper.append(this.currentWidget);
     }
-    this.updateTaskCircles();
+    this.updateTaskSegments();
   }
 
-  private updateTaskCircles(): void {
-    this.taskCircles.forEach((circle, index) => {
-      circle.element.classList.toggle('active', index === this.currentIndex);
+  private updateTaskSegments(): void {
+    this.counterElement.element.textContent = `Task ${this.currentIndex + 1} / ${this.widgetsList.length}`;
+
+    this.taskSegments.forEach((segment, index) => {
+      segment.element.classList.toggle('active', index <= this.currentIndex);
     });
   }
 
