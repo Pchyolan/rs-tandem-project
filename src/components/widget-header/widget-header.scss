@@ -21,3 +21,37 @@
   font-size: 0.8rem;
   border-radius: $border-radius;
 }
+
+.widget-header__left {
+  @include flex-center;
+
+  gap: $spacing-md;
+}
+
+.widget-header__dots {
+  @include flex-center;
+
+  gap: $spacing-xs;
+}
+
+.widget-header__dot {
+  @include flex-center;
+
+  transition: transform $transition-speed;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.dot-blue {
+  fill: $dot-color-blue;
+}
+
+.dot-orange {
+  fill: $dot-color-orange;
+}
+
+.dot-green {
+  fill: $dot-color-green;
+}
