@@ -1,0 +1,23 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.widget-header__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  color: #e4e4e7;
+}
+
+.widget-header__difficulty {
+  padding: $spacing-xs;
+  color: #a0a0c0;
+  background: rgb(255 255 255 / 10%);
+  font-size: 0.8rem;
+  border-radius: $border-radius;
+}
