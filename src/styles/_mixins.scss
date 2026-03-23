@@ -1,4 +1,9 @@
+@use 'sass:color';
+@use './variables' as vars;
+
+// =====================
 // Flex container
+// =====================
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -14,6 +19,156 @@
 @mixin flex-column {
   display: flex;
   flex-direction: column;
+}
+
+// =====================
+// GLASS PANEL
+// =====================
+@mixin glass-panel {
+  background: vars.$color-glass;
+  backdrop-filter: blur(12px);
+  border: 1px solid vars.$color-glass-border;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: vars.$shadow-soft;
+}
+
+// =====================
+// PANEL (основные блоки UI)
+// =====================
+@mixin panel {
+  background: vars.$gradient-panel;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: vars.$shadow-soft, vars.$shadow-glow;
+  border: 1px solid vars.$border-color;
+}
+
+// =====================
+// GLOW EFFECT
+// =====================
+@mixin glow($color: vars.$color-primary-glow) {
+  box-shadow:
+    0 0 10px $color,
+    0 0 20px $color;
+}
+
+// =====================
+// BUTTON BASE
+// =====================
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: vars.$spacing-sm vars.$spacing-lg;
+  color: vars.$color-text-primary;
+  border: none;
+  transition: all vars.$transition-speed ease;
+  border-radius: vars.$border-radius;
+  font-family: vars.$font-family-base;
+  font-size: vars.$font-size-base;
+  cursor: pointer;
+}
+
+// =====================
+// PRIMARY BUTTON (синий)
+// =====================
+@mixin button-primary {
+  @include button-base;
+
+  background: vars.$gradient-primary;
+
+  &:hover {
+    filter: brightness(1.1);
+
+    @include glow;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+}
+
+// =====================
+// SUCCESS BUTTON (зелёный)
+// =====================
+@mixin button-success {
+  @include button-base;
+
+  background: linear-gradient(135deg, vars.$color-success, vars.$color-success-light);
+
+  &:hover {
+    filter: brightness(1.1);
+
+    @include glow(vars.$color-success-light);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+// =====================
+// DANGER BUTTON (красный)
+// =====================
+@mixin button-danger {
+  @include button-base;
+
+  background: linear-gradient(135deg, vars.$color-danger, vars.$color-danger-light);
+
+  &:hover {
+    filter: brightness(1.1);
+
+    @include glow(vars.$color-danger-light);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+// =====================
+// ICON BUTTON (круглые)
+// =====================
+@mixin button-icon {
+  @include button-base;
+
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  background: vars.$gradient-panel;
+  border-radius: 50%;
+
+  &:hover {
+    @include glow;
+  }
+}
+
+// =====================
+// SELECTABLE ELEMENT (как a/b блоки)
+// =====================
+@mixin selectable {
+  transition: all vars.$transition-speed ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+
+    @include glow;
+  }
+
+  &.is-selected {
+    @include glow(vars.$color-accent);
+
+    border: 1px solid vars.$color-accent;
+  }
+}
+
+// =====================
+// TEXT GLOW (для заголовков)
+// =====================
+@mixin text-glow {
+  color: vars.$color-text-primary;
+  text-shadow: 0 0 10px rgb(96 165 250 / 80%);
 }
 
 // Media query

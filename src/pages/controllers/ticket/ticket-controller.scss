@@ -2,21 +2,47 @@
 @use '@/styles/variables' as *;
 
 .ticket-page {
+  position: relative;
+
   @include flex-column;
 
   width: 100%;
-  background-color: #0b0f19;
+  background-color: $color-primary;
   background-image:
-    linear-gradient(rgb(148 163 184 / 8%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(148 163 184 / 8%) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(rgb(148 163 184 / 60%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 60%) 1px, transparent 1px);
+  background-size: 35px 35px;
+  overflow-x: hidden;
+
+  &::before,
+  &::after {
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 50px;
+    content: '';
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &::before {
+    top: 0;
+    background: linear-gradient(to bottom, $color-primary, transparent);
+  }
+
+  &::after {
+    bottom: 0;
+    background: linear-gradient(to top, $color-primary, transparent);
+  }
 }
 
 .task-wrapper {
   @include flex-center;
 
-  gap: $spacing-sm;
+  position: relative;
   padding: $spacing-md;
+  gap: $spacing-sm;
+  z-index: 2;
 }
 
 .task-counter {
@@ -34,7 +60,7 @@
 
 .task-segment {
   width: 40px;
-  background-color: $color-primary;
+  background-color: $color-primary-dark;
   transition: background-color $transition-speed;
 
   &:first-child {
@@ -53,9 +79,10 @@
 .widget-wrapper {
   @include flex-center;
 
-  gap: $spacing-md;
+  position: relative;
   padding: $spacing-sm;
-  flex: 1;
+  gap: $spacing-md;
+  z-index: 2;
 }
 
 .current-wrapper {
@@ -69,7 +96,7 @@
   backdrop-filter: blur(20px);
   border-radius: 22px;
   box-shadow:
-    0 10px 40px rgb(0 0 0 / 30%),
+    0 10px 10px rgb(0 0 0 / 30%),
     inset 0 0 20px rgb(255 255 255 / 10%);
 }
 
