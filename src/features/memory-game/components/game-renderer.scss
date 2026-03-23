@@ -44,7 +44,7 @@
 }
 
 .memory-game__panel-header {
-  padding: $spacing-sm $spacing-md;
+  padding: $spacing-xs $spacing-md;
   color: $color-text-primary;
   background: $color-background-header;
   font-size: 1rem;
@@ -63,7 +63,10 @@ pre.memory-game__code {
   padding: $spacing-md;
   width: 100%;
   height: auto;
-  background: $color-background;
+  background:
+    linear-gradient(rgb(148 163 184 / 10%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 10%) 1px, transparent 1px), $color-background;
+  background-size: 15px 15px;
   border-radius: $border-radius-lg;
   flex: 1;
   overflow: auto;
