@@ -77,13 +77,14 @@
   100% {
     transform: scale(1) translateY(0);
   }
+
   50% {
     transform: scale(1.03) translateY(-6px);
   }
 }
 
 .not-found-page__text {
-  color: $color-text-primary;
+  color: white /*$color-text-primary*/;
   font-weight: 700;
 }
 
