@@ -2,38 +2,10 @@
 @use '@/styles/variables' as *;
 
 .ticket-page {
-  position: relative;
-
   @include flex-column;
 
+  position: relative;
   width: 100%;
-  background-color: $color-primary;
-  background-image:
-    linear-gradient(rgb(148 163 184 / 60%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(148 163 184 / 60%) 1px, transparent 1px);
-  background-size: 35px 35px;
-  overflow-x: hidden;
-
-  &::before,
-  &::after {
-    position: absolute;
-    right: 0;
-    left: 0;
-    height: 50px;
-    content: '';
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  &::before {
-    top: 0;
-    background: linear-gradient(to bottom, $color-primary, transparent);
-  }
-
-  &::after {
-    bottom: 0;
-    background: linear-gradient(to top, $color-primary, transparent);
-  }
 }
 
 .task-wrapper {
@@ -42,7 +14,6 @@
   position: relative;
   padding: $spacing-md;
   gap: $spacing-sm;
-  z-index: 2;
 }
 
 .task-counter {
@@ -82,7 +53,6 @@
   position: relative;
   padding: $spacing-sm;
   gap: $spacing-md;
-  z-index: 2;
   flex: 1;
 }
 

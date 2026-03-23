@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
 
 .app-container {
   display: flex;
@@ -42,12 +43,43 @@
 }
 
 .app-main {
-  display: flex;
-  color: color.adjust($color-text, $lightness: 40%);
+  position: relative;
+  width: 100%;
   flex: 1;
-  background-color: $color-background;
+  background-color: $color-primary;
+  background-image:
+    linear-gradient(rgb(148 163 184 / 60%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 60%) 1px, transparent 1px);
+  background-size: 35px 35px;
   font-size: 2rem;
   overflow: hidden;
+
+  &::before,
+  &::after {
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 50px;
+    content: '';
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &::before {
+    top: 0;
+    background: linear-gradient(to bottom, $color-primary, transparent);
+  }
+
+  &::after {
+    bottom: 0;
+    background: linear-gradient(to top, $color-primary, transparent);
+  }
+
+  /* чтобы псевдоэлементы не перекрывали содержимое окна */
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 }
 
 .app-footer {
