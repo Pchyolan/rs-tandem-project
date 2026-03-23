@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: transparent;
 }
 
 .widget-header__title {
@@ -23,7 +24,7 @@
   border: 1px solid $difficulty-border;
   min-width: 70px;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 700;
   background-color: $difficulty-bg;
   border-radius: $border-radius;
   cursor: default;
@@ -59,7 +60,7 @@
   transition: transform $transition-speed;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.3);
   }
 }
 
