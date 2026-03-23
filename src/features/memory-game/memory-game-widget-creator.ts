@@ -1,4 +1,5 @@
 import { BaseComponent } from '@/core';
+import { WidgetHeader } from '@/components';
 import { widgetDataSource } from '@/api';
 import { SoundKey, SoundService } from '@/services/sound-service';
 
@@ -61,6 +62,8 @@ export class MemoryGameWidgetCreator extends BaseComponent {
 
       this.gameState = new GameState(widget.payload);
 
+      const header = new WidgetHeader({ widgetType: widget.type, difficulty: widget.difficulty });
+
       this.renderer = new MemoryGameRenderer({
         payload: widget.payload,
         gameState$: this.gameMachine.state$,
@@ -74,7 +77,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
       });
 
       this.clear();
-      this.append(this.renderer);
+      this.append(header, this.renderer);
       this.renderer.highlightCode();
 
       this.gameMachine.transition({ type: gameActions.loadSuccess });
