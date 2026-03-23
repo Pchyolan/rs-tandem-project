@@ -1,13 +1,22 @@
-import { BaseComponent } from '@/core';
-import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator.ts';
-import { createLeftArrow, createRightArrow } from '@/utils/svg-icon.ts';
+import { BaseComponent, Observable } from '@/core';
+import { widgetEvents } from '@/constants';
+import type { WidgetComponent } from '@/types';
+
+import konturImg from '@/assets/kontur.png';
+import raskrasImg from '@/assets/raskras.png';
+
+import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator';
+import { createLeftArrow, createRightArrow } from '@/utils/svg-icon';
 
 import './ticket-controller.scss';
 
 export class TicketPageController extends BaseComponent {
   private currentIndex: number = 0;
   private readonly currentWidgetWrapper: BaseComponent;
-  private currentWidget: MemoryGameWidgetCreator | null = null;
+  private currentWidget: WidgetComponent | null = null;
+
+  private isLoading$ = new Observable(false);
+  private readonly spinnerComponent: BaseComponent;
 
   private readonly widgetsList: string[];
   private taskSegments: BaseComponent[] = [];
@@ -70,12 +79,26 @@ export class TicketPageController extends BaseComponent {
 
     this.append(tasksWrapper, widgetWrapper);
 
+    this.spinnerComponent = new BaseComponent({ tag: 'div', className: ['brain-loader'] });
+
+    const contourLayer = new BaseComponent({ tag: 'div', className: ['brain-loader__contour'] });
+    const fillLayer = new BaseComponent({ tag: 'div', className: ['brain-loader__fill'] });
+
+    contourLayer.element.style.backgroundImage = `url(${konturImg})`;
+    fillLayer.element.style.backgroundImage = `url(${raskrasImg})`;
+
+    this.spinnerComponent.append(fillLayer, contourLayer);
+    this.isLoading$.subscribe((isLoading: boolean) => {
+      if (isLoading) this.currentWidgetWrapper.append(this.spinnerComponent);
+      else this.spinnerComponent.remove();
+    });
+
     this.loadNext();
   }
 
-  private loadNext(): void {
-    this.currentWidget?.remove();
+  private loadNext() {
     this.currentWidgetWrapper.clear();
+    this.isLoading$.set(true);
 
     if (this.currentIndex >= this.widgetsList.length) {
       this.counterElement.element.textContent = '';
@@ -87,16 +110,19 @@ export class TicketPageController extends BaseComponent {
     const widgetId = this.widgetsList[this.currentIndex];
 
     if (widgetId) {
-      this.currentWidget = new MemoryGameWidgetCreator({
-        widgetId,
-        onComplete: () => {
-          this.currentIndex++;
-          this.updateTaskSegments();
-          this.loadNext();
-        },
+      this.currentWidget = new MemoryGameWidgetCreator(widgetId);
+
+      this.currentWidget.on(widgetEvents.Ready, () => {
+        this.isLoading$.set(false);
       });
 
-      this.currentWidgetWrapper.append(this.currentWidget);
+      this.currentWidget.on(widgetEvents.Complete, () => {
+        this.currentIndex++;
+        this.updateTaskSegments();
+        this.loadNext();
+      });
+
+      this.currentWidgetWrapper.append(this.currentWidget.render());
     }
     this.updateTaskSegments();
     this.updateButtonsState();
@@ -144,7 +170,7 @@ export class TicketPageController extends BaseComponent {
   }
 
   public override remove(): void {
-    this.currentWidget?.remove();
+    this.currentWidget?.destroy();
     super.remove();
   }
 }
