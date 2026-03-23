@@ -21,8 +21,8 @@ $color-glass-border: rgb(255 255 255 / 20%);
 // =====================
 
 $gradient-primary: linear-gradient(135deg, #2563eb, #60a5fa);
-$gradient-panel: linear-gradient(145deg, #1e40af, #3b82f6);
-$gradient-glow: radial-gradient(circle, rgb(96 165 250 / 60%), transparent);
+$gradient-panel: linear-gradient(180deg, #207edf 70%, #4fa3f9 100%);
+$gradient-glow: radial-gradient(circle, rgb(96 165 250 / 90%), transparent);
 
 // =====================
 // ACCENTS (buttons & states)
@@ -58,8 +58,8 @@ $color-text-muted: #93c5fd;
 // =====================
 
 $border-color: rgb(255 255 255 / 15%);
-$shadow-soft: 0 10px 30px rgb(0 0 0 / 30%);
-$shadow-glow: 0 0 20px rgb(96 165 250 / 60%);
+$shadow-soft: 0 10px 10px rgb(0 0 0 / 30%);
+$shadow-glow: 0 0 10px rgb(96 165 250 / 60%);
 
 // =====================
 // TYPOGRAPHY
