@@ -13,7 +13,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $spacing-md $spacing-xl;
   color: $color-text-primary;
   background-color: $color-primary;
 
@@ -40,6 +39,16 @@
       background-color: color.adjust(white, $lightness: -20%);
     }
   }
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: $spacing-md $spacing-xl;
+  width: 100%;
+  max-width: $content-wrapper-width;
 }
 
 .app-main {
@@ -74,19 +83,29 @@
     bottom: 0;
     background: linear-gradient(to top, $color-primary, transparent);
   }
+}
 
+.app-content {
   /* чтобы псевдоэлементы не перекрывали содержимое окна */
-  > * {
-    position: relative;
-    z-index: 2;
-  }
+  position: relative;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  width: 100%;
+  max-width: $content-wrapper-width;
+  z-index: 2;
 }
 
 .app-footer {
-  padding: $spacing-md;
   color: $color-text-primary;
   background-color: $color-primary;
   text-align: center;
+}
+
+.footer-content {
+  margin: 0 auto;
+  padding: $spacing-md;
+  width: 100%;
+  max-width: $content-wrapper-width;
 }
 
 .lang-buttons {
