@@ -1,3 +1,3 @@
 export { routes } from './routes';
-export { widgetTypes } from './widget-types';
+export { widgetTypes, widgetEvents } from './widget-types';
 export { widgetTitles } from './widget-titles';

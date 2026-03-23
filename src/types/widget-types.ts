@@ -1,4 +1,5 @@
-import { widgetTypes } from '@/constants';
+import { BaseComponent } from '@/core';
+import { widgetEvents, widgetTypes } from '@/constants';
 import type { MemoryGamePayload } from '@/features/memory-game/types';
 
 export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
@@ -41,3 +42,24 @@ export type Widget =
   | (BaseWidget & { type: typeof widgetTypes.asyncSorter; payload: unknown })
   | (BaseWidget & { type: typeof widgetTypes.memoryGame; payload: MemoryGamePayload })
   | (BaseWidget & { type: typeof widgetTypes.stackBuilder; payload: unknown });
+
+export type WidgetEvent = (typeof widgetEvents)[keyof typeof widgetEvents];
+
+export type WidgetComponent = {
+  /**
+   * Возвращает корневой элемент компонента для встраивания в DOM
+   * После вызова этого метода компонент начинает загрузку данных и отрисовку
+   */
+  render(): BaseComponent;
+
+  /**
+   * Подписывается на событие завершения виджета
+   * Виджет вызывает это событие, когда пользователь успешно прошёл задание
+   */
+  on(event: WidgetEvent, handler: () => void): void;
+
+  /**
+   * Уничтожает компонент, очищает ресурсы
+   */
+  destroy(): void;
+};
