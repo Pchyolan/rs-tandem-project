@@ -53,13 +53,25 @@ export function notFoundPage(navigate: (path: string) => void): Page {
         curvedText.append(span);
       });
 
-      component.append(
+      const animationWrapper = new BaseComponent({
+        tag: 'div',
+        className: ['animation-wrapper'],
+      });
+
+      animationWrapper.append(
         curvedText,
         new BaseComponent<'img'>({
           tag: 'img',
           className: ['not-found-page__image'],
           attrs: { src: notFoundImageUrl, alt: 'Not found image' },
-        }),
+        })
+      );
+
+      const buttonWrapper = new BaseComponent({
+        tag: 'div',
+        className: ['button-wrapper'],
+      });
+      buttonWrapper.append(
         new BaseComponent({
           tag: 'p',
           text: 'Oh no! Page not found',
@@ -67,6 +79,8 @@ export function notFoundPage(navigate: (path: string) => void): Page {
         }),
         returnButton
       );
+
+      component.append(animationWrapper, buttonWrapper);
 
       return component;
     },
