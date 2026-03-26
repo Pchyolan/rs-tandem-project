@@ -6,6 +6,7 @@
   position: relative;
   height: 100px;
   margin: 0 auto;
+  cursor: default;
 
   // Позиции для левой цифры
   --pos-left-x: clamp(-120px, -12vw, -60px);
