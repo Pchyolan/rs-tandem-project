@@ -27,7 +27,7 @@
 .not-found-page__image {
   display: block;
   margin: 0 auto;
-  width: 280px;
+  width: clamp(180px, 30vw, 280px);
 
   /* стартовое состояние (для анимации появления) */
   opacity: 0;
