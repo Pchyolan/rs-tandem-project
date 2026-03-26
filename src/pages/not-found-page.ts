@@ -39,12 +39,23 @@ export function notFoundPage(navigate: (path: string) => void): Page {
       returnButton.append(buttonContent);
       returnButton.addEventListener('click', () => navigate('/'));
 
+      const curvedText = new BaseComponent({
+        tag: 'div',
+        className: ['curved-text'],
+      });
+
+      // Создаём три цифры
+      ['4', '0', '4'].forEach((digit, index) => {
+        const span = new BaseComponent({
+          tag: 'span',
+          text: digit,
+          className: ['curved-text__digit', `digit-${index}`],
+        });
+        curvedText.append(span);
+      });
+
       component.append(
-        new BaseComponent({
-          tag: 'p',
-          text: '404',
-          className: ['not-found-page__header'],
-        }),
+        curvedText,
         new BaseComponent<'img'>({
           tag: 'img',
           className: ['not-found-page__image'],

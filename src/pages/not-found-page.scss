@@ -11,40 +11,6 @@
   height: 100%;
 }
 
-.not-found-page__header {
-  font-size: 130px;
-  font-weight: bold;
-  letter-spacing: 6px;
-
-  /* градиент как у кнопок */
-  background: linear-gradient(180deg, #e1f5fe, #81d4fa);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  /* мягкий glow */
-  text-shadow:
-    0 2px 10px rgb(255 255 255 / 60%),
-    0 10px 30px rgb(79 195 247 / 50%),
-    0 0 60px rgb(66 165 245 / 30%);
-
-  /* лёгкая глубина */
-  filter: drop-shadow(0 10px 20px rgb(0 0 0 / 15%));
-
-  /* появление */
-  opacity: 0;
-  transform: translateY(-20px) scale(0.95);
-  animation:
-    fade404 0.8s ease-out forwards,
-    floating 4s ease-in-out infinite 0.8s;
-}
-
-@keyframes fade404 {
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 .not-found-page__image {
   display: block;
   margin: 0 auto;
@@ -77,11 +43,11 @@
 @keyframes floating {
   0%,
   100% {
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
 
   50% {
-    transform: scale(1.03) translateY(-6px);
+    transform: scale(1.1);
   }
 }
 
@@ -113,5 +79,110 @@
   svg {
     width: 20px;
     height: 20px;
+  }
+}
+
+.curved-text {
+  position: relative;
+  width: 300px;
+  height: 140px;
+  margin: 0 auto;
+}
+
+.curved-text__digit {
+  position: absolute;
+  left: 35%;
+  top: 20%;
+  transform: translate(-50%, -50%) scale(0.8);
+  transform-origin: center center;
+  font-size: 140px;
+  font-weight: 900;
+  background: linear-gradient(180deg, #e1f5fe, #81d4fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+          0 2px 10px rgb(255 255 255 / 60%),
+          0 10px 30px rgb(79 195 247 / 50%),
+          0 0 60px rgb(66 165 245 / 30%);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  opacity: 0;
+}
+
+// Анимация появления + расползания
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-85px, -15px) scale(1) rotate(-10deg);
+  }
+}
+
+@keyframes slideInCenter {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, -35px) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(85px, -15px) scale(1) rotate(10deg);
+  }
+}
+
+.curved-text__digit.digit-0 {
+  animation:
+          slideInLeft 0.6s ease-out forwards,
+          floating-left 4s ease-in-out infinite 0.6s;
+}
+
+.curved-text__digit.digit-1 {
+  animation:
+          slideInCenter 0.6s ease-out forwards,
+          floating-center 4s ease-in-out infinite 0.7s;
+}
+
+.curved-text__digit.digit-2 {
+  animation:
+          slideInRight 0.6s ease-out forwards,
+          floating-right 4s ease-in-out infinite 0.8s;
+}
+
+@keyframes floating-left {
+  0%, 100% {
+    transform: translate(-95px, -15px) rotate(-10deg);
+  }
+  50% {
+    transform: translate(-95px, -25px) rotate(-12deg) scale(1.05);
+  }
+}
+
+@keyframes floating-center {
+  0%, 100% {
+    transform: translate(0, -35px) rotate(0deg);
+  }
+  50% {
+    transform: translate(0, -45px) rotate(2deg) scale(1.05);
+  }
+}
+
+@keyframes floating-right {
+  0%, 100% {
+    transform: translate(95px, -15px) rotate(10deg);
+  }
+  50% {
+    transform: translate(95px, -25px) rotate(12deg) scale(1.05);
   }
 }
