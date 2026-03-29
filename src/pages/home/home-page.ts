@@ -2,6 +2,7 @@ import { BaseComponent } from '@/core';
 import type { Page } from '@/core';
 
 import welcomeImageUrl from '@/assets/images/brains/welcome.png';
+import welcomeAnimationUrl from '@/assets/video/welcome.webm';
 import { createClipboardIcon, createLockIcon } from '@/utils/svg-icon';
 
 import './home-page.scss';
@@ -10,7 +11,7 @@ export function homePage(): Page {
   let component: BaseComponent;
 
   /**
-   * Создаёт обёртку с текстом и изображением.
+   * Создаёт верхнюю часть страницы с текстом и изображением.
    */
   const createImageWrapper = (): BaseComponent<'div'> => {
     const wrapper = new BaseComponent({
@@ -24,14 +25,44 @@ export function homePage(): Page {
       className: ['welcome-page__header'],
     });
 
-    const image = new BaseComponent<'img'>({
-      tag: 'img',
-      className: ['welcome-page__image'],
-      attrs: { src: welcomeImageUrl, alt: 'Welcome' },
+    wrapper.append(message, renderWelcomeVideo());
+
+    return wrapper;
+  };
+
+  /**
+   * Видео с анимированным персонажем и изображением на замену видео
+   */
+  const renderWelcomeVideo = (): BaseComponent<'div'> => {
+    const container = new BaseComponent({
+      tag: 'div',
+      className: ['welcome-page__wrapper'],
     });
 
-    wrapper.append(message, image);
-    return wrapper;
+    const videoElement = new BaseComponent({
+      tag: 'video',
+      className: ['welcome-page__video'],
+      attrs: {
+        src: welcomeAnimationUrl,
+        autoplay: true,
+        loop: true,
+        muted: true, // обязательно для авто-воспроизведения
+        volume: '0',
+        playsinline: true, // для iOS, чтобы видео не открывалось на весь экран
+      },
+    });
+
+    videoElement.addEventListener('error', () => {
+      const fallbackImg = new BaseComponent<'img'>({
+        tag: 'img',
+        className: ['welcome-page__image'],
+        attrs: { src: welcomeImageUrl, alt: 'Brain welcome' },
+      });
+      container.clear();
+      container.append(fallbackImg);
+    });
+
+    return container.append(videoElement);
   };
 
   /**
