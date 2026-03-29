@@ -1,36 +1,82 @@
-import { BaseComponent, type Page } from '@/core';
-import { language$ } from '@/store/language-store.ts';
-import { translations, type TranslationKey } from '@/i18n';
+import { BaseComponent } from '@/core';
+import type { Page } from '@/core';
+
+import welcomeImageUrl from '@/assets/images/brains/welcome.png';
+import { createClipboardIcon, createLockIcon } from '@/utils/svg-icon';
+
+import './home-page.scss';
 
 export function homePage(): Page {
-  let container: BaseComponent<'div'>;
-  let textComponent: BaseComponent<'p'>;
-  let unsubscribe: () => void;
+  let component: BaseComponent;
 
-  const updateTexts = () => {
-    const lang = language$.value;
-    const dictionary = (key: TranslationKey) => translations[lang][key];
-    textComponent.element.textContent = dictionary('tempText');
+  /**
+   * Создаёт анимационную обёртку с текстом и изображением.
+   */
+  const createImageWrapper = (): BaseComponent<'div'> => {
+    const wrapper = new BaseComponent({
+      tag: 'div',
+      className: ['welcome-page__wrapper'],
+    });
+
+    const image = new BaseComponent<'img'>({
+      tag: 'img',
+      className: ['welcome-page__image'],
+      attrs: { src: welcomeImageUrl, alt: 'Welcome' },
+    });
+
+    wrapper.append(image);
+    return wrapper;
+  };
+
+  /**
+   * Создаёт кнопку возврата на главную.
+   */
+  const createButton = (buttonText: string): BaseComponent<'button'> => {
+    const button = new BaseComponent({
+      tag: 'button',
+      className: ['welcome_page__button'],
+    });
+
+    const buttonContent = new BaseComponent({
+      tag: 'span',
+      className: ['welcome-page__button-content'],
+    });
+
+    const arrowIcon = buttonText === 'Sign Up' ? createClipboardIcon() : createLockIcon();
+    const arrowWrapper = new BaseComponent({
+      tag: 'span',
+      className: ['welcome-page__button-image'],
+    });
+    arrowWrapper.element.append(arrowIcon);
+
+    const buttonSpan = new BaseComponent({
+      tag: 'span',
+      text: buttonText,
+    });
+
+    buttonContent.append(arrowWrapper, buttonSpan);
+    button.append(buttonContent);
+    // button.addEventListener('click', () => navigate('/'));
+
+    return button;
   };
 
   return {
     render() {
-      container = new BaseComponent({ tag: 'div', className: ['home-page'] });
-      textComponent = new BaseComponent({ tag: 'p', className: ['home-text'] });
+      component = new BaseComponent({
+        tag: 'div',
+        className: ['welcome-page'],
+      });
 
-      container.append(textComponent);
+      component.append(createImageWrapper(), createButton('Sign Up'), createButton('Log In'));
 
-      unsubscribe = language$.subscribe(updateTexts);
-      updateTexts();
-
-      return container;
+      return component;
     },
     onMount() {
-      console.log('NOTE: Home page mounted');
+      console.log('NOTE: Login page mounted');
     },
     onDestroy() {
-      if (unsubscribe) unsubscribe();
-      console.log('NOTE: Home page destroyed');
+      console.log('NOTE: Login page destroyed');
     },
   };
 }
