@@ -10,12 +10,18 @@ export function homePage(): Page {
   let component: BaseComponent;
 
   /**
-   * Создаёт анимационную обёртку с текстом и изображением.
+   * Создаёт обёртку с текстом и изображением.
    */
   const createImageWrapper = (): BaseComponent<'div'> => {
     const wrapper = new BaseComponent({
       tag: 'div',
       className: ['welcome-page__wrapper'],
+    });
+
+    const message = new BaseComponent({
+      tag: 'p',
+      text: 'Welcome stranger!',
+      className: ['welcome-page__header'],
     });
 
     const image = new BaseComponent<'img'>({
@@ -24,17 +30,30 @@ export function homePage(): Page {
       attrs: { src: welcomeImageUrl, alt: 'Welcome' },
     });
 
-    wrapper.append(image);
+    wrapper.append(message, image);
     return wrapper;
   };
 
   /**
-   * Создаёт кнопку возврата на главную.
+   * Создаёт нижнюю часть страницы с кнопками.
+   */
+  const createButtonWrapper = (): BaseComponent<'div'> => {
+    const wrapper = new BaseComponent({
+      tag: 'div',
+      className: ['welcome-page__wrapper'],
+    });
+
+    wrapper.append(createButton('Sign Up'), createButton('Log In'));
+    return wrapper;
+  };
+
+  /**
+   * Создаёт кнопку
    */
   const createButton = (buttonText: string): BaseComponent<'button'> => {
     const button = new BaseComponent({
       tag: 'button',
-      className: ['welcome_page__button'],
+      className: ['welcome-page__button'],
     });
 
     const buttonContent = new BaseComponent({
@@ -68,7 +87,7 @@ export function homePage(): Page {
         className: ['welcome-page'],
       });
 
-      component.append(createImageWrapper(), createButton('Sign Up'), createButton('Log In'));
+      component.append(createImageWrapper(), createButtonWrapper());
 
       return component;
     },
