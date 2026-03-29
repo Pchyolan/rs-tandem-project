@@ -1,5 +1,6 @@
 import { BaseComponent } from '@/core';
 import type { Page } from '@/core';
+import { getElementWithType } from '@/utils/selectors';
 
 import welcomeImageUrl from '@/assets/images/brains/welcome.png';
 import welcomeAnimationUrl from '@/assets/video/welcome.webm';
@@ -10,6 +11,12 @@ import './home-page.scss';
 type ButtonConfig = {
   text: string;
   icon: SVGElement;
+  onClick?: () => void;
+};
+
+const logInClick = (): void => {
+  const loginFieldsContainer = getElementWithType(HTMLDivElement, 'login-fields-container');
+  loginFieldsContainer.classList.toggle('show');
 };
 
 export function homePage(): Page {
@@ -81,7 +88,8 @@ export function homePage(): Page {
 
     wrapper.append(
       createButton({ text: 'Register', icon: createClipboardIcon() }),
-      createButton({ text: 'Log In', icon: createLockIcon() })
+      createLoginFields(),
+      createButton({ text: 'Log In', icon: createLockIcon(), onClick: logInClick })
     );
 
     return wrapper;
@@ -114,9 +122,38 @@ export function homePage(): Page {
 
     buttonContent.append(arrowWrapper, buttonSpan);
     button.append(buttonContent);
-    // button.addEventListener('click', () => navigate('/'));
+
+    if (config.onClick) {
+      button.addEventListener('click', config.onClick);
+    }
 
     return button;
+  };
+
+  /**
+   * Функция для логина и пароля (вход в приложение по "Log In")
+   */
+  const createLoginFields = (): BaseComponent<'div'> => {
+    const fieldsContainer = new BaseComponent({
+      tag: 'div',
+      className: ['login-fields-container'],
+    });
+
+    const emailInput = new BaseComponent({
+      tag: 'input',
+      attrs: { type: 'email', placeholder: 'Email' },
+      className: ['login-field'],
+    });
+
+    const passwordInput = new BaseComponent({
+      tag: 'input',
+      attrs: { type: 'password', placeholder: 'Password' },
+      className: ['login-field'],
+    });
+
+    fieldsContainer.append(emailInput, passwordInput);
+
+    return fieldsContainer;
   };
 
   return {
@@ -127,7 +164,6 @@ export function homePage(): Page {
       });
 
       component.append(createImageWrapper(), createButtonWrapper());
-
       return component;
     },
     onMount() {

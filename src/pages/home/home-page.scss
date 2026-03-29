@@ -69,3 +69,23 @@
   width: clamp(16px, 3vw, 24px);
   height: clamp(16px, 3vw, 24px);
 }
+
+.login-fields-container {
+  @include flex-column;
+  gap: $spacing-sm;
+  width: 100%;
+  opacity: 0;
+  display: none;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  &.show {
+    opacity: 1;
+    display: flex;
+    transform: translateY(0);
+  }
+}
+
+.login-field {
+  @include input-base;
+}
