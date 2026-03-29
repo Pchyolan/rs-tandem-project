@@ -7,6 +7,11 @@ import { createClipboardIcon, createLockIcon } from '@/utils/svg-icon';
 
 import './home-page.scss';
 
+type ButtonConfig = {
+  text: string;
+  icon: SVGElement;
+};
+
 export function homePage(): Page {
   let component: BaseComponent;
 
@@ -74,14 +79,18 @@ export function homePage(): Page {
       className: ['welcome-page__wrapper'],
     });
 
-    wrapper.append(createButton('Sign Up'), createButton('Log In'));
+    wrapper.append(
+      createButton({ text: 'Register', icon: createClipboardIcon() }),
+      createButton({ text: 'Log In', icon: createLockIcon() })
+    );
+
     return wrapper;
   };
 
   /**
    * Создаёт кнопку
    */
-  const createButton = (buttonText: string): BaseComponent<'button'> => {
+  const createButton = (config: ButtonConfig): BaseComponent<'button'> => {
     const button = new BaseComponent({
       tag: 'button',
       className: ['welcome-page__button'],
@@ -92,16 +101,15 @@ export function homePage(): Page {
       className: ['welcome-page__button-content'],
     });
 
-    const arrowIcon = buttonText === 'Sign Up' ? createClipboardIcon() : createLockIcon();
     const arrowWrapper = new BaseComponent({
       tag: 'span',
       className: ['welcome-page__button-image'],
     });
-    arrowWrapper.element.append(arrowIcon);
+    arrowWrapper.element.append(config.icon);
 
     const buttonSpan = new BaseComponent({
       tag: 'span',
-      text: buttonText,
+      text: config.text,
     });
 
     buttonContent.append(arrowWrapper, buttonSpan);
