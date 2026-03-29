@@ -36,7 +36,7 @@ export function homePage(): Page {
   const renderWelcomeVideo = (): BaseComponent<'div'> => {
     const container = new BaseComponent({
       tag: 'div',
-      className: ['welcome-page__wrapper'],
+      className: ['welcome-page__image-wrapper'],
     });
 
     const videoElement = new BaseComponent({

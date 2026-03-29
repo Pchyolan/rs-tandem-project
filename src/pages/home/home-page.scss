@@ -11,10 +11,16 @@
   height: 100%;
 }
 
-.welcome-page__wrapper {
+.welcome-page__wrapper,
+.welcome-page__image-wrapper {
   @include flex-center;
   flex-direction: column;
   gap: $spacing-md;
+}
+
+.welcome-page__image-wrapper {
+  background-image: url('./src/assets/images/brains/welcome_background.png');
+  background-size: cover;
 }
 
 .welcome-page__video,
