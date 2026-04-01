@@ -83,6 +83,7 @@ export class TrueFalseWidgetCreator extends BaseComponent {
     void this.renderWidget();
   }
 
+  // оп
   private async handleAnswer(value: boolean, widget: TrueFalseWidget): Promise<void> {
     if (this.isAnswered) return;
     this.isAnswered = true;
