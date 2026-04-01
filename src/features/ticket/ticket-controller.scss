@@ -1,0 +1,160 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.ticket-page {
+  @include flex-column;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.task-wrapper {
+  @include flex-center;
+
+  position: relative;
+  padding: $spacing-md;
+  gap: $spacing-sm;
+}
+
+.task-counter {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.segments-container {
+  display: flex;
+  height: $spacing-sm;
+  margin-left: $spacing-sm;
+  gap: $spacing-xs;
+}
+
+.task-segment {
+  width: 40px;
+  background-color: $color-primary-dark;
+  transition: background-color $transition-speed;
+
+  &:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
+
+  &.active {
+    background-color: $color-secondary;
+  }
+}
+
+.widget-wrapper {
+  @include flex-center;
+
+  position: relative;
+  padding: $spacing-sm;
+  gap: $spacing-md;
+  flex: 1;
+}
+
+.current-wrapper {
+  @include flex-center;
+  @include panel;
+
+  padding: $spacing-md;
+  height: 100%;
+  flex: 1;
+}
+
+.arrow-button {
+  padding: 0;
+  color: currentcolor;
+  background: none;
+  border: none;
+  transition:
+    opacity $transition-speed,
+    color $transition-speed;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-secondary;
+    opacity: 0.7;
+  }
+
+  &:disabled {
+    color: transparent;
+    cursor: default;
+  }
+}
+
+.arrow-left,
+.arrow-right {
+  width: 40px;
+  height: 40px;
+  fill: currentcolor;
+}
+
+/* Spinner */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgb(0 0 0 / 10%);
+  border-top-color: #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.brain-loader {
+  position: relative;
+  margin: 0 auto;
+  width: 220px;
+  height: 220px;
+}
+
+.brain-loader__contour,
+.brain-loader__fill {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.brain-loader__contour {
+  z-index: 2;
+}
+
+.brain-loader__fill {
+  z-index: 1;
+  overflow: hidden;
+  animation: brain-fill-up 2.2s ease-in-out infinite;
+  transform-origin: bottom center;
+  clip-path: inset(100% 0 0 0);
+}
+
+@keyframes brain-fill-up {
+  0% {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  50% {
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+.ticket-widget {
+  @include flex-column;
+
+  width: 100%;
+  height: 100%;
+}

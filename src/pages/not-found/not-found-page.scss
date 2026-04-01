@@ -1,0 +1,102 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.not-found-page {
+  @include flex-column;
+
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xxl;
+  width: 100%;
+  height: 100%;
+}
+
+.animation-wrapper,
+.button-wrapper {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.animation-wrapper {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.not-found-page__image {
+  display: block;
+  margin: 0 auto;
+  width: clamp(180px, 30vw, 280px);
+
+  /* стартовое состояние (для анимации появления) */
+  opacity: 0;
+  transform: scale(0.8) translateY(20px);
+
+  /* мягкое свечение */
+  filter: drop-shadow(0 0 10px rgb(79 195 247 / 60%)) drop-shadow(0 0 30px rgb(66 165 245 / 40%))
+    drop-shadow(0 0 60px rgb(126 87 194 / 30%));
+  animation:
+    fade-in-brain 0.8s ease-out forwards,
+    floating 4s ease-in-out infinite 0.8s;
+
+  &:hover {
+    transform: scale(1.08);
+    transition: transform 0.3s ease;
+  }
+}
+
+@keyframes fade-in-brain {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes floating {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.not-found-page__text {
+  color: $color-text-primary;
+  font-weight: 700;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  text-align: center;
+  cursor: default;
+}
+
+.not-found-page__button {
+  @include button-primary;
+
+  font-size: clamp(0.8rem, 4vw, 1.2rem);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+
+  .button-content {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  .button-arrow {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  svg {
+    width: clamp(16px, 3vw, 24px);
+    height: clamp(16px, 3vw, 24px);
+  }
+}
