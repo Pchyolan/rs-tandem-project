@@ -100,10 +100,8 @@ pre.memory-game__code {
 }
 
 .memory-game__hint-container {
-  display: flex;
-  align-items: start;
-  justify-content: center;
-  gap: 16px;
+  @include flex-center;
+  gap: $spacing-xs;
 }
 
 .memory-game__hint-text {
@@ -114,7 +112,7 @@ pre.memory-game__code {
 .memory-game__hint-text-container {
   @include flex-column;
 
-  gap: 8px;
+  gap: $spacing-sm;
 }
 
 .memory-game__icon {
@@ -133,8 +131,8 @@ pre.memory-game__code {
 
   padding: 0;
   border-radius: 50%;
-  border: 2px solid #005be0;
-  background: #4eddff;
+  border: 2px solid $color-surface;
+  background: $color-primary-glow;
 
   &.is-disabled {
     pointer-events: none;
