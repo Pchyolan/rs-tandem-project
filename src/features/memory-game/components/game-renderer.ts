@@ -8,6 +8,7 @@ import { gameStates } from '../constants';
 import infoLogo from '@/assets/images/icons/info.png';
 import questionLogo from '@/assets/images/icons/question.png';
 import refreshLogo from '@/assets/images/icons/refresh.png';
+import sparkleImage from '@/assets/images/icons/sparkle.png';
 
 import Prism from 'prismjs';
 import '@/styles/prism/prism-tailwind-moon-blue.css';
@@ -39,8 +40,10 @@ export class MemoryGameRenderer extends BaseComponent {
 
   private markedCounter?: BaseComponent<'span'>;
   private collectButton?: BaseComponent<'button'>;
+
   private refreshWrapper?: BaseComponent;
   private questionWrapper?: BaseComponent;
+  private infoWrapper?: BaseComponent;
 
   constructor({ payload, gameState$, onObjectClick, onReset, onCollect }: MemoryGameRendererProps) {
     super({
@@ -69,7 +72,7 @@ export class MemoryGameRenderer extends BaseComponent {
 
     panelsContainer.append(this.renderCodePanel(), this.renderGraphPanel());
 
-    this.append(this.renderTopPanel(onReset), panelsContainer, this.renderBottomPanel(onCollect));
+    this.append(this.renderTopPanel(), panelsContainer, this.renderBottomPanel(onCollect, onReset));
   }
 
   private renderCodePanel(): BaseComponent {
@@ -112,13 +115,13 @@ export class MemoryGameRenderer extends BaseComponent {
   /**
    * Верхний блок
    */
-  private renderTopPanel(onReset: () => void): BaseComponent {
+  private renderTopPanel(): BaseComponent {
     const topPanel = new BaseComponent({
       tag: 'div',
       className: ['memory_game__top-panel'],
     });
 
-    topPanel.append(this.renderHint(), this.renderAdditionButtons(onReset));
+    topPanel.append(this.renderHint());
 
     return topPanel;
   }
@@ -163,6 +166,11 @@ export class MemoryGameRenderer extends BaseComponent {
   }
 
   private renderIconWrapper(iconLogo: string, iconAltText: string): BaseComponent {
+    const wrapper = new BaseComponent({
+      tag: 'div',
+      className: ['memory-game__icon-container'],
+    });
+
     const iconWrapper = new BaseComponent({
       tag: 'div',
       className: ['memory-game__icon-wrapper'],
@@ -178,9 +186,19 @@ export class MemoryGameRenderer extends BaseComponent {
       },
     });
 
-    iconWrapper.append(iconImg);
+    const sparkleImg = new BaseComponent<'img'>({
+      tag: 'img',
+      className: ['memory-game__sparkle'],
+      attrs: {
+        src: sparkleImage,
+        alt: iconAltText,
+      },
+    });
 
-    return iconWrapper;
+    iconWrapper.append(iconImg);
+    wrapper.append(iconWrapper, sparkleImg);
+
+    return wrapper;
   }
 
   private renderAdditionButtons(onReset: () => void): BaseComponent {
@@ -189,12 +207,14 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__hint-container'],
     });
 
+    this.infoWrapper = this.renderIconWrapper(infoLogo, translations[language$.value].infoTooltip);
+
     this.questionWrapper = this.renderIconWrapper(questionLogo, translations[language$.value].clueTooltip);
 
     this.refreshWrapper = this.renderIconWrapper(refreshLogo, translations[language$.value].refreshTooltip);
     this.refreshWrapper.addEventListener('click', onReset);
 
-    buttonsBlock.append(this.questionWrapper, this.refreshWrapper);
+    buttonsBlock.append(this.infoWrapper, this.questionWrapper, this.refreshWrapper);
 
     return buttonsBlock;
   }
@@ -227,7 +247,7 @@ export class MemoryGameRenderer extends BaseComponent {
   /**
    * Блок снизу
    */
-  private renderBottomPanel(onCollect: () => void): BaseComponent {
+  private renderBottomPanel(onCollect: () => void, onReset: () => void): BaseComponent {
     const bottomPanel = new BaseComponent({
       tag: 'div',
       className: ['memory-game__bottom-panel'],
@@ -260,7 +280,7 @@ export class MemoryGameRenderer extends BaseComponent {
     });
     this.collectButton.addEventListener('click', onCollect);
 
-    bottomPanel.append(textWrapper, this.collectButton);
+    bottomPanel.append(textWrapper, this.collectButton, this.renderAdditionButtons(onReset));
 
     return bottomPanel;
   }

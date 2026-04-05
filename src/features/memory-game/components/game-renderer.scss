@@ -118,35 +118,43 @@ pre.memory-game__code {
 }
 
 .memory-game__icon {
-  width: 40px;
-  height: 40px;
+  width: 22px;
+  height: 22px;
+}
+
+.memory-game__icon-container {
+  position: relative;
+  width: 30px;
+  height: 30px;
 }
 
 .memory-game__icon-wrapper {
-  @include flex-center;
+  @include button-primary;
 
-  width: 48px;
-  height: 48px;
+  padding: 0;
   border-radius: 50%;
-  cursor: pointer;
-  transition:
-    box-shadow $transition-speed,
-    transform $transition-speed ease;
-
-  &:hover {
-    box-shadow: 0 0 12px rgb(0 150 255 / 80%);
-  }
-
-  &:active {
-    transform: scale(0.95);
-    box-shadow: 0 0 16px rgb(0 100 200 / 90%);
-  }
+  border: 2px solid #005be0;
+  background: #4eddff;
 
   &.is-disabled {
     pointer-events: none;
     cursor: not-allowed;
     opacity: 0.5;
   }
+}
+
+.memory-game__sparkle {
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  width: 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity $transition-long;
+}
+
+.memory-game__icon-container:hover .memory-game__sparkle {
+  opacity: 1;
 }
 
 .memory-game__button {

@@ -8,6 +8,7 @@ export type MemoryGameTranslationKey =
   | 'selectedLine'
   | 'collectButton'
   | 'submittingButton'
+  | 'infoTooltip'
   | 'clueTooltip'
   | 'refreshTooltip';
 
@@ -23,7 +24,8 @@ export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameT
     selectedLine: 'Selected garbage:',
     collectButton: 'Collect',
     submittingButton: 'Submitting...',
-    clueTooltip: 'Add me a clue',
+    infoTooltip: 'What is it?',
+    clueTooltip: 'Give me a clue',
     refreshTooltip: 'Refresh objects selection',
   },
   ru: {
@@ -37,6 +39,7 @@ export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameT
     selectedLine: 'Помечено как мусор:',
     collectButton: 'Собрать',
     submittingButton: 'Отправка...',
+    infoTooltip: 'В чём задача?',
     clueTooltip: 'Получить подсказку',
     refreshTooltip: 'Сбросить помеченные объекты',
   },
