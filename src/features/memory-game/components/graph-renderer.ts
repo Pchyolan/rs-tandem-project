@@ -66,6 +66,7 @@ export class GraphRenderer extends BaseComponent {
 
   private renderGraph() {
     this.addArrowMarker();
+    this.addGradients();
 
     this.renderRootLinks();
     this.renderLinks();
@@ -95,6 +96,71 @@ export class GraphRenderer extends BaseComponent {
     marker.append(polygon);
     defs.append(marker);
     this.svg.append(defs);
+  }
+
+  private addGradients(): void {
+    const defs = this.svg.querySelector('defs') || document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    if (!defs.parentNode) this.svg.prepend(defs);
+
+    // Градиент для обычного объекта (аналог button-primary)
+    const normalGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+
+    normalGradient.id = 'objectGradient';
+    normalGradient.setAttribute('x1', '0%');
+    normalGradient.setAttribute('y1', '0%');
+    normalGradient.setAttribute('x2', '0%');
+    normalGradient.setAttribute('y2', '100%');
+
+    const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    stop1.setAttribute('offset', '0%');
+    stop1.setAttribute('stop-color', '#2ea2ff'); // светлый верх
+
+    const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    stop2.setAttribute('offset', '100%');
+    stop2.setAttribute('stop-color', '#1976d2'); // тёмный низ
+
+    normalGradient.append(stop1, stop2);
+    defs.append(normalGradient);
+
+    // Градиент для root (фиолетовый)
+    const rootGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+    rootGradient.id = 'rootGradient';
+
+    rootGradient.setAttribute('x1', '0%');
+    rootGradient.setAttribute('y1', '0%');
+    rootGradient.setAttribute('x2', '0%');
+    rootGradient.setAttribute('y2', '100%');
+
+    const rootStop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    rootStop1.setAttribute('offset', '0%');
+    rootStop1.setAttribute('stop-color', '#a78bfa');
+
+    const rootStop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    rootStop2.setAttribute('offset', '100%');
+    rootStop2.setAttribute('stop-color', '#7c3aed');
+
+    rootGradient.append(rootStop1, rootStop2);
+    defs.append(rootGradient);
+
+    // Градиент для marked (оранжевый)
+    const markedGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+    markedGradient.id = 'markedGradient';
+
+    markedGradient.setAttribute('x1', '0%');
+    markedGradient.setAttribute('y1', '0%');
+    markedGradient.setAttribute('x2', '0%');
+    markedGradient.setAttribute('y2', '100%');
+
+    const markedStop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    markedStop1.setAttribute('offset', '0%');
+    markedStop1.setAttribute('stop-color', '#fbab73');
+
+    const markedStop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    markedStop2.setAttribute('offset', '100%');
+    markedStop2.setAttribute('stop-color', '#f97316');
+    markedGradient.append(markedStop1, markedStop2);
+
+    defs.append(markedGradient);
   }
 
   private renderRoot(): void {

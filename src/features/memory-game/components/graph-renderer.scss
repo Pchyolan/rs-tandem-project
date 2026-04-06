@@ -5,19 +5,19 @@
   transition: filter $transition-speed;
 
   .object-rect {
-    fill: #60a5fa;
-    stroke: #60a5fa;
+    fill: url(#objectGradient);
+    stroke: $button-success-border;
     stroke-width: 2;
   }
 
   &.root .object-rect {
-    fill: #a78bfa;
-    stroke: #a78bfa;
+    fill: url(#rootGradient);
+    stroke: #5b21b6;
   }
 
   &.marked .object-rect {
-    fill: #fbab73;
-    stroke: #fbab73;
+    fill: url(#markedGradient);
+    stroke: #c2410c;
   }
 
   &:hover .object-rect {
