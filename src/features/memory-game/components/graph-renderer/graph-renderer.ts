@@ -230,6 +230,41 @@ export class GraphRenderer extends BaseComponent {
     });
   }
 
+  private getTargetPoint(source: MemoryObject, target: MemoryObject): { x: number; y: number } {
+    const sourceCenterX = source.x + GraphRenderer.config.objectCenterX;
+    const sourceCenterY = source.y + GraphRenderer.config.objectCenterY;
+
+    const targetLeft = target.x;
+    const targetRight = target.x + GraphRenderer.config.objectWidth;
+
+    const targetTop = target.y;
+    const targetBottom = target.y + GraphRenderer.config.objectHeight;
+
+    const targetCenterX = target.x + GraphRenderer.config.objectCenterX;
+    const targetCenterY = target.y + GraphRenderer.config.objectCenterY;
+
+    // Горизонтальное направление
+    if (sourceCenterX < targetCenterX) {
+      // Источник слева, цель справа – стрелка в левый край цели
+      return { x: targetLeft, y: targetCenterY };
+    } else if (sourceCenterX > targetRight) {
+      // Источник справа, цель слева – стрелка в правый край цели
+      return { x: targetRight, y: targetCenterY };
+    } else {
+      // Вертикальное направление: источник выше или ниже
+      if (sourceCenterY < targetTop) {
+        // Источник выше – стрелка в верхний край
+        return { x: targetCenterX, y: targetTop };
+      } else if (sourceCenterY > targetBottom) {
+        // Источник ниже – стрелка в нижний край
+        return { x: targetCenterX, y: targetBottom };
+      } else {
+        // Если объекты перекрываются, используем левый край (условно - это запасной вариант)
+        return { x: targetLeft, y: targetCenterY };
+      }
+    }
+  }
+
   private renderLinks() {
     this.payload.links.forEach((link) => {
       const fromObject = this.payload.objects.find((item) => item.id === link.from);
@@ -238,19 +273,34 @@ export class GraphRenderer extends BaseComponent {
 
       const fromX = fromObject.x + GraphRenderer.config.objectCenterX;
       const fromY = fromObject.y + GraphRenderer.config.objectCenterY;
-      const toX = toObject.x;
-      const toY = toObject.y + GraphRenderer.config.objectCenterY;
+      const targetPoint = this.getTargetPoint(fromObject, toObject);
+      const toX = targetPoint.x;
+      const toY = targetPoint.y;
 
-      const midX = fromX;
-      const midY = toY;
+      // Разницы координат
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+
+      let pathD: string;
+      if (Math.abs(dx) < 30) {
+        // Вертикальная прямая
+        pathD = `M ${fromX} ${fromY} L ${toX} ${toY}`;
+      } else if (Math.abs(dy) < 30) {
+        // Горизонтальная прямая
+        pathD = `M ${fromX} ${fromY} L ${toX} ${toY}`;
+      } else {
+        // L-образный путь: сначала горизонталь от источника, затем вертикаль к цели
+        const midX = fromX;
+        const midY = toY;
+        pathD = `M ${fromX} ${fromY} L ${midX} ${midY} L ${toX} ${toY}`;
+      }
 
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', `M ${fromX} ${fromY} L ${midX} ${midY} L ${toX} ${toY}`);
+      path.setAttribute('d', pathD);
       path.setAttribute('marker-end', `url(#${GraphRenderer.config.arrowMarkerId})`);
       path.classList.add('graph-link');
 
       this.linkElements.push({ path, from: link.from, to: link.to });
-
       this.svg.append(path);
     });
   }
