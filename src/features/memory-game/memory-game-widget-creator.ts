@@ -70,12 +70,12 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
 
       this.clear();
       this.append(header, this.renderer);
-      this.renderer.highlightCode();
 
       this.gameMachine.transition({ type: gameActions.loadSuccess });
 
       this.subscribeToMarkedGarbage();
 
+      setTimeout(() => this.renderer?.highlightCode(), 0);
       this.readyHandler?.();
     } catch (error) {
       console.log('Failed to load memory game widget', error);

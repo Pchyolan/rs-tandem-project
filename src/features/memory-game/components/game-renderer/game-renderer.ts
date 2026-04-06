@@ -284,10 +284,10 @@ export class MemoryGameRenderer extends BaseComponent {
   }
 
   public highlightCode() {
-    const codeElement = this.element.querySelector('code.language-javascript');
-    if (codeElement) {
-      Prism.highlightElement(codeElement);
-    }
+    const codeElement = getElementWithType(HTMLElement, 'language-javascript', this.element);
+    if (!codeElement) return;
+
+    Prism.highlightElement(codeElement);
   }
 
   private subscribeToMachine(gameState$: Observable<GameState>) {
