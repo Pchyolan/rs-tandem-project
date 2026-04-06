@@ -116,7 +116,7 @@
 // =====================
 // BUTTON BASE
 // =====================
-@mixin button-base {
+@mixin glacier-base {
   @include element-base;
 
   color: white;
@@ -135,6 +135,10 @@
       inset 0 -3px 0 rgb(0 0 0 / 20%);
     pointer-events: none;
   }
+}
+
+@mixin button-base {
+  @include glacier-base;
 
   // Блик (блик-отражение)
   &::after {
