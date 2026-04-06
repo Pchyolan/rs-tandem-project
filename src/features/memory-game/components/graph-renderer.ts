@@ -1,6 +1,6 @@
 import { BaseComponent } from '@/core';
 import { SoundKey, SoundService } from '@/services/sound-service';
-import type { MemoryGamePayload, MemoryObject } from '@/features/memory-game/types';
+import type { GraphObject, MemoryGamePayload, MemoryObject } from '@/features/memory-game/types';
 
 import './graph-renderer.scss';
 
@@ -179,6 +179,10 @@ export class GraphRenderer extends BaseComponent {
     rect.setAttribute('rx', String(GraphRenderer.config.rootRadius));
     rect.classList.add('object-rect');
 
+    // Эллипс для блика
+    const rootObject: GraphObject = { x: GraphRenderer.config.rootX, y: GraphRenderer.config.rootY };
+    const highlight = this.createHighlight(rootObject, 26, 18);
+
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttribute('x', String(GraphRenderer.config.rootCenterX));
     text.setAttribute('y', String(GraphRenderer.config.rootCenterY + 10));
@@ -186,8 +190,7 @@ export class GraphRenderer extends BaseComponent {
     text.setAttribute('class', 'graph-object__label-root');
     text.textContent = rootId;
 
-    group.append(rect);
-    group.append(text);
+    group.append(rect, highlight, text);
 
     group.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -280,16 +283,7 @@ export class GraphRenderer extends BaseComponent {
       rect.classList.add('object-rect');
 
       // Эллипс для блика
-      const highlight = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-      const dx = 24;
-      const dy = 20;
-      highlight.setAttribute('cx', String(object.x + dx));
-      highlight.setAttribute('cy', String(object.y + dy));
-      highlight.setAttribute('rx', '12');
-      highlight.setAttribute('ry', '4');
-      highlight.setAttribute('transform', `rotate(-25, ${object.x + dx}, ${object.y + dy})`);
-      highlight.classList.add('object-highlight');
-      highlight.setAttribute('pointer-events', 'none');
+      const highlight = this.createHighlight(object);
 
       group.append(rect, highlight);
 
@@ -300,6 +294,20 @@ export class GraphRenderer extends BaseComponent {
       this.objectElements.set(object.id, group);
       this.svg.append(group);
     });
+  }
+
+  private createHighlight(object: GraphObject, dx: number = 26, dy: number = 16): SVGEllipseElement {
+    const highlight = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+
+    highlight.setAttribute('cx', String(object.x + dx));
+    highlight.setAttribute('cy', String(object.y + dy));
+    highlight.setAttribute('rx', '12');
+    highlight.setAttribute('ry', '4');
+    highlight.setAttribute('transform', `rotate(-25, ${object.x + dx}, ${object.y + dy})`);
+    highlight.classList.add('object-highlight');
+    highlight.setAttribute('pointer-events', 'none');
+
+    return highlight;
   }
 
   private createText(object: MemoryObject): SVGTextElement {
