@@ -1,7 +1,9 @@
 import { BaseComponent } from '@/core';
-import { widgetTitles } from '@/constants';
-import { type Difficulty, type WidgetType, difficultyMap } from '@/types';
+import { type Difficulty, difficultyMap, type WidgetType } from '@/types';
 import { createDot } from '@/utils/svg-icon';
+
+import { language$ } from '@/store/language-store';
+import { translations } from '@/i18n';
 
 import './widget-header.scss';
 
@@ -11,6 +13,9 @@ type WidgetHeaderProps = {
 };
 
 export class WidgetHeader extends BaseComponent {
+  private readonly titleElement: BaseComponent<'h2'>;
+  private readonly unsubscribe?: () => void;
+
   constructor({ widgetType, difficulty }: WidgetHeaderProps) {
     super({
       tag: 'div',
@@ -38,14 +43,13 @@ export class WidgetHeader extends BaseComponent {
       dotsContainer.append(dotWrapper);
     });
 
-    const title = widgetTitles[widgetType] || widgetType;
-    const titleElement = new BaseComponent({
+    this.titleElement = new BaseComponent({
       tag: 'h2',
-      text: title,
+      text: translations[language$.value][widgetType],
       className: ['widget-header__title'],
     });
 
-    leftGroup.append(dotsContainer, titleElement);
+    leftGroup.append(dotsContainer, this.titleElement);
 
     const difficultyText = difficultyMap[difficulty];
     const difficultyClass = `widget-header__difficulty-${difficultyText.toLowerCase()}`;
@@ -56,5 +60,14 @@ export class WidgetHeader extends BaseComponent {
     });
 
     this.append(leftGroup, difficultyElement);
+
+    this.unsubscribe = language$.subscribe(() => {
+      this.titleElement.element.textContent = translations[language$.value][widgetType];
+    });
+  }
+
+  public override remove(): void {
+    this.unsubscribe?.();
+    super.remove();
   }
 }

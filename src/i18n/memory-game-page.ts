@@ -1,7 +1,6 @@
 import type { LanguageType } from '@/types';
 
 export type MemoryGameTranslationKey =
-  | 'widgetText'
   | 'hintFirstLine'
   | 'hintSecondLine'
   | 'hintThirdLine'
@@ -14,7 +13,6 @@ export type MemoryGameTranslationKey =
 
 export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameTranslationKey, string>> = {
   en: {
-    widgetText: 'Memory Game',
     hintFirstLine:
       'Here you see JavaScript code that has just been executed. The last executed line is highlighted by color.',
     hintSecondLine:
@@ -29,7 +27,6 @@ export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameT
     refreshTooltip: 'Refresh objects selection',
   },
   ru: {
-    widgetText: 'Игра "Сборщик мусора"',
     hintFirstLine:
       'На экране вы видите JavaScript-код, который только что выполнился. Последняя выполненная строка выделена цветом',
     hintSecondLine:
