@@ -1,19 +1,4 @@
-import type { LanguageType } from '@/types';
-
-export type MemoryGameTranslationKey =
-  | 'hintFirstLine'
-  | 'hintSecondLine'
-  | 'hintThirdLine'
-  | 'selectedLine'
-  | 'collectButton'
-  | 'submittingButton'
-  | 'infoTooltip'
-  | 'clueTooltip'
-  | 'refreshTooltip'
-  | 'codePanelName'
-  | 'graphPanelName';
-
-export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameTranslationKey, string>> = {
+export const memoryGamePageTranslations = {
   en: {
     hintFirstLine:
       'Here you see JavaScript code that has just been executed. The last executed line is highlighted by color.',
@@ -46,4 +31,4 @@ export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameT
     codePanelName: 'Блок кода',
     graphPanelName: 'Граф памяти',
   },
-};
+} as const;

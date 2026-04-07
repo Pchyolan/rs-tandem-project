@@ -6,6 +6,7 @@ import { language$ } from '@/store/language-store';
 import { translations } from '@/i18n';
 
 import './widget-header.scss';
+import type { DifficultyKey } from '@/types/widget-types.ts';
 
 type WidgetHeaderProps = {
   widgetType: WidgetType;
@@ -51,8 +52,8 @@ export class WidgetHeader extends BaseComponent {
 
     leftGroup.append(dotsContainer, this.titleElement);
 
-    const difficultyKey = difficultyMap[difficulty];
-    const difficultyText = translations[language$.value][difficultyKey] ?? difficultyKey;
+    const difficultyKey: DifficultyKey = difficultyMap[difficulty];
+    const difficultyText = translations[language$.value][difficultyKey];
     const difficultyClass = `widget-header__difficulty-${difficultyKey}`;
 
     const difficultyElement = new BaseComponent({
@@ -64,8 +65,8 @@ export class WidgetHeader extends BaseComponent {
     this.append(leftGroup, difficultyElement);
 
     this.unsubscribe = language$.subscribe(() => {
-      this.titleElement.element.textContent = translations[language$.value][widgetType] ?? widgetType;
-      difficultyElement.element.textContent = translations[language$.value][difficultyKey] ?? difficultyKey;
+      this.titleElement.element.textContent = translations[language$.value][widgetType];
+      difficultyElement.element.textContent = translations[language$.value][difficultyKey];
     });
   }
 

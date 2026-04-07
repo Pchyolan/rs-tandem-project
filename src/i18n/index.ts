@@ -1,18 +1,10 @@
-import type { LanguageType, WidgetType } from '@/types';
-import { headerTranslations, type HeaderTranslationKey } from './header';
-import { homePageTranslations, type HomePageTranslationKey } from './home-page';
-import { memoryGamePageTranslations, type MemoryGameTranslationKey } from './memory-game-page';
-import { type DifficultyTranslationKey, difficultyTranslations } from './difficulty';
+import { headerTranslations } from './header';
+import { homePageTranslations } from './home-page';
+import { memoryGamePageTranslations } from './memory-game-page';
+import { difficultyTranslations } from './difficulty';
 import { widgetsTranslations } from './widgets';
 
-export type TranslationKey =
-  | HeaderTranslationKey
-  | HomePageTranslationKey
-  | MemoryGameTranslationKey
-  | WidgetType
-  | DifficultyTranslationKey;
-
-export const translations: Record<LanguageType, Record<TranslationKey, string>> = {
+export const translations = {
   en: {
     ...headerTranslations.en,
     ...homePageTranslations.en,
@@ -27,4 +19,6 @@ export const translations: Record<LanguageType, Record<TranslationKey, string>> 
     ...widgetsTranslations.ru,
     ...difficultyTranslations.ru,
   },
-};
+} as const;
+
+export type TranslationKey = keyof typeof translations.en;

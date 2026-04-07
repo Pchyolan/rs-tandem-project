@@ -407,7 +407,7 @@ export class MemoryGameRenderer extends BaseComponent {
   }
 
   private getButtonText(): string {
-    let buttonText = translations[language$.value].collectButton;
+    let buttonText: string = translations[language$.value].collectButton;
 
     if (this.currentState === gameStates.submitting) {
       buttonText = translations[language$.value].submittingButton;

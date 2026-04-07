@@ -7,8 +7,9 @@ export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
 
 // Уровень сложности
 export type Difficulty = 1 | 2 | 3;
+export type DifficultyKey = 'easy' | 'medium' | 'hard';
 
-export const difficultyMap = {
+export const difficultyMap: Record<Difficulty, DifficultyKey> = {
   1: 'easy',
   2: 'medium',
   3: 'hard',

@@ -1,7 +1,4 @@
-import type { LanguageType } from '@/types';
-import type { WidgetType } from '@/types';
-
-export const widgetsTranslations: Record<LanguageType, Record<WidgetType, string>> = {
+export const widgetsTranslations = {
   en: {
     quiz: 'Quiz',
     'true-false': 'True / False',
@@ -20,4 +17,4 @@ export const widgetsTranslations: Record<LanguageType, Record<WidgetType, string
     'memory-game': 'Сборщик мусора',
     'stack-builder': 'Построение стека',
   },
-};
+} as const;

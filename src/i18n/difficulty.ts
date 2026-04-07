@@ -1,8 +1,4 @@
-import { difficultyMap, type LanguageType } from '@/types';
-
-export type DifficultyTranslationKey = (typeof difficultyMap)[keyof typeof difficultyMap];
-
-export const difficultyTranslations: Record<LanguageType, Record<DifficultyTranslationKey, string>> = {
+export const difficultyTranslations = {
   en: {
     easy: 'Easy',
     medium: 'Medium',
@@ -13,4 +9,4 @@ export const difficultyTranslations: Record<LanguageType, Record<DifficultyTrans
     medium: 'Средний',
     hard: 'Сложный',
   },
-};
+} as const;
