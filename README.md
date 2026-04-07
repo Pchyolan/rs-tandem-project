@@ -21,9 +21,10 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 ## 🤹‍♀️ Kanban-доска разработки проекта
 Все задачи, связанные с разработкой и развитием проекта, занесены на Kanban-доску - [ссылка](https://github.com/users/Pchyolan/projects/1/views/1).
+![kanban-desc.png](docs/assets/kanban-desc.png)
 
 ## 📝 Записи встреч команды
-Иногда мы ведём дневниковые записи наших встреч, и они лежат [тут](./docs/meeting-notes/index.md)
+Иногда мы встречаемся командой для обсуждения нашего проекта и ведём дневниковые записи наших встреч. Всё, что есть, лежит [тут](./docs/meeting-notes/index.md)
 
 ## 🚀 Запуск проекта для разработчиков
 Для запуска проекта требуется Node миниум 20-ой версии.
