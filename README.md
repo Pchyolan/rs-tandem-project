@@ -9,7 +9,7 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 ## 🌟 Team
 - Pchyolan – [GitHub](https://github.com/pchyolan) - [Дневники](./development-notes/Pchyolan)
-- Anna Demyanovich – [GitHub](https://github.com/thefoxtale) - [Дневники](./development-notes/theFoxTale)
+- Anna Demyanovich – [GitHub](https://github.com/thefoxtale) - [Дневники](./development-notes/theFoxTale) - [Self-assessment](./development-notes/theFoxTale/self-assessment.md)
 
 ## ⚙️ Технологический стек
 - **Язык:** TypeScript
