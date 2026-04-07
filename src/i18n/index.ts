@@ -3,6 +3,7 @@ import { homePageTranslations } from './home-page';
 import { memoryGamePageTranslations } from './memory-game-page';
 import { difficultyTranslations } from './difficulty';
 import { widgetsTranslations } from './widgets';
+import { ticketPageTranslations } from '@/i18n/ticket-page.ts';
 
 export const translations = {
   en: {
@@ -11,6 +12,7 @@ export const translations = {
     ...memoryGamePageTranslations.en,
     ...widgetsTranslations.en,
     ...difficultyTranslations.en,
+    ...ticketPageTranslations.en,
   },
   ru: {
     ...headerTranslations.ru,
@@ -18,6 +20,7 @@ export const translations = {
     ...memoryGamePageTranslations.ru,
     ...widgetsTranslations.ru,
     ...difficultyTranslations.ru,
+    ...ticketPageTranslations.ru,
   },
 } as const;
 
