@@ -1,12 +1,12 @@
 {
-  "id": "tf-9",
+  "id": "tf-109",
   "type": "true-false",
   "version": 1,
   "difficulty": 2,
-  "tags": ["arrays", "typeof"],
+  "tags": ["js-basics"],
   "payload": {
-    "statement": "typeof [] возвращает 'object'",
-    "explanation": "Массив в JavaScript — это объект, поэтому typeof [] === 'object'."
+    "statement": "null === undefined возвращает true",
+    "explanation": "Нет, при строгом сравнении null и undefined не равны."
   },
-  "correctAnswer": true
+  "correctAnswer": false
 }

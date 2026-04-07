@@ -1,12 +1,12 @@
 {
-  "id": "tf-6",
+  "id": "tf-107",
   "type": "true-false",
   "version": 1,
   "difficulty": 2,
-  "tags": ["strict-equality", "comparison"],
+  "tags": ["objects-prototypes"],
   "payload": {
-    "statement": "Оператор === выполняет приведение типов перед сравнением",
-    "explanation": "=== сравнивает без приведения типов."
+    "statement": "У каждого объекта в JavaScript есть доступ к Object.prototype, если цепочка прототипов не была явно изменена",
+    "explanation": "Да, в обычной цепочке прототипов Object.prototype находится наверху."
   },
-  "correctAnswer": false
+  "correctAnswer": true
 }

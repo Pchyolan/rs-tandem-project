@@ -1,12 +1,12 @@
 {
-  "id": "tf-10",
+  "id": "tf-110",
   "type": "true-false",
   "version": 1,
   "difficulty": 2,
-  "tags": ["promises", "async-await"],
+  "tags": ["arrays-methods"],
   "payload": {
-    "statement": "async функция всегда возвращает Promise",
-    "explanation": "Любая async функция оборачивает возвращаемое значение в Promise."
+    "statement": "filter() возвращает массив той же длины, что и исходный",
+    "explanation": "Нет, filter() возвращает только элементы, прошедшие условие, поэтому длина может измениться."
   },
-  "correctAnswer": true
+  "correctAnswer": false
 }

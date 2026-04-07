@@ -10,9 +10,11 @@ export function widgetEnginePage(): Page {
       const items: TicketItem[] = [
         { type: 'quiz', id: 'quiz-1' },
         { type: 'true-false', id: 'tf-1' },
+        { type: 'code-completion', id: 'cc-1' },
         { type: 'quiz', id: 'quiz-2' },
         { type: 'true-false', id: 'tf-2' },
         { type: 'quiz', id: 'quiz-3' },
+        { type: 'code-completion', id: 'cc-2' },
         { type: 'true-false', id: 'tf-3' },
         { type: 'true-false', id: 'tf-4' },
         { type: 'quiz', id: 'quiz-4' },

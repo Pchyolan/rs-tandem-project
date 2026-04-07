@@ -1,12 +1,12 @@
 {
-  "id": "tf-5",
+  "id": "tf-105",
   "type": "true-false",
   "version": 1,
-  "difficulty": 1,
-  "tags": ["functions", "hoisting"],
+  "difficulty": 2,
+  "tags": ["closures"],
   "payload": {
-    "statement": "Function declaration можно вызвать до её объявления в коде",
-    "explanation": "Function declaration поднимается целиком во время hoisting."
+    "statement": "Замыкание позволяет функции использовать переменные из внешней функции даже после её завершения",
+    "explanation": "Да, именно это и делает замыкание."
   },
   "correctAnswer": true
 }

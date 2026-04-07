@@ -1,12 +1,12 @@
 {
-  "id": "tf-2",
+  "id": "tf-102",
   "type": "true-false",
   "version": 1,
   "difficulty": 1,
-  "tags": ["arrays", "methods"],
+  "tags": ["arrays-methods"],
   "payload": {
-    "statement": "Метод map() изменяет исходный массив",
-    "explanation": "map() возвращает новый массив и не мутирует исходный."
+    "statement": "Метод map() мутирует исходный массив",
+    "explanation": "Нет, map() возвращает новый массив и не изменяет исходный."
   },
   "correctAnswer": false
 }

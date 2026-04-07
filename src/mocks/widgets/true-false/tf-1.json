@@ -1,12 +1,12 @@
 {
-  "id": "tf-1",
+  "id": "tf-101",
   "type": "true-false",
   "version": 1,
   "difficulty": 1,
-  "tags": ["promises", "basics"],
+  "tags": ["js-basics"],
   "payload": {
-    "statement": "Promise.all() возвращает результаты в порядке завершения промисов",
-    "explanation": "Promise.all() сохраняет порядок элементов входного массива, а не порядок завершения."
+    "statement": "typeof undefined возвращает строку 'undefined'",
+    "explanation": "Да, оператор typeof для undefined возвращает строку 'undefined'."
   },
-  "correctAnswer": false
+  "correctAnswer": true
 }

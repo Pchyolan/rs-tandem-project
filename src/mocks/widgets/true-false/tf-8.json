@@ -1,12 +1,12 @@
 {
-  "id": "tf-8",
+  "id": "tf-108",
   "type": "true-false",
   "version": 1,
   "difficulty": 2,
-  "tags": ["objects", "references"],
+  "tags": ["memory-management"],
   "payload": {
-    "statement": "Два разных объекта с одинаковыми полями равны при сравнении через ===",
-    "explanation": "Объекты сравниваются по ссылке, а не по содержимому."
+    "statement": "Недостижимые объекты могут быть удалены сборщиком мусора",
+    "explanation": "Да, недостижимость из корней — основа для GC."
   },
-  "correctAnswer": false
+  "correctAnswer": true
 }

@@ -14,6 +14,7 @@
 .welcome-page__wrapper,
 .welcome-page__image-wrapper {
   @include flex-center;
+
   flex-direction: column;
   gap: $spacing-md;
 }
@@ -48,11 +49,10 @@
 .welcome-page__button {
   @include button-primary;
   @include flex-center;
-  gap: $spacing-sm;
 
+  gap: $spacing-sm;
   font-size: clamp(0.8rem, 4vw, 1.2rem);
   padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
-
   width: 100%;
 }
 
@@ -72,16 +72,19 @@
 
 .login-fields-container {
   @include flex-column;
-  gap: $spacing-sm;
+
+  display: none;
   width: 100%;
   opacity: 0;
-  display: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  gap: $spacing-sm;
   transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
 
   &.show {
-    opacity: 1;
     display: flex;
+    opacity: 1;
     transform: translateY(0);
   }
 }

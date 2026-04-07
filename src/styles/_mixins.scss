@@ -90,9 +90,9 @@
   padding: vars.$spacing-sm vars.$spacing-lg;
   width: auto;
   transition:
-          transform vars.$transition-speed ease,
-          filter vars.$transition-speed ease,
-          box-shadow vars.$transition-speed ease;
+    transform vars.$transition-speed ease,
+    filter vars.$transition-speed ease,
+    box-shadow vars.$transition-speed ease;
   border-radius: vars.$button-border-radius;
   font-size: 1.2rem;
   font-weight: 700;
