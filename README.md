@@ -26,6 +26,13 @@ We write code, occasionally debug, and mostly survive stage 2.
 ## 📝 Записи встреч команды
 Иногда мы встречаемся командой для обсуждения нашего проекта и ведём дневниковые записи наших встреч. Всё, что есть, лежит [тут](./docs/meeting-notes/index.md)
 
+## Интересные PR с Code Review
+На самом деле мы чаще всего обсуждали их на встречах голосом (так просто быстрее, а времени нам не хватало катастрофически), но кое-что есть в виде записей. Например:
+- [Пример №1](./development-notes/Pchyolan/Pchyolan-2026-03-17.md)
+- [Пример №2](./development-notes/Pchyolan/Pchyolan-2026-03-30.md)
+- [Пример №3](./development-notes/Pchyolan/Pchyolan-2026-03-31.md)
+- [Пример №4](https://github.com/Pchyolan/rs-tandem-project/pull/46)
+
 ## 🚀 Запуск проекта для разработчиков
 Для запуска проекта требуется Node миниум 20-ой версии.
 
