@@ -55,4 +55,16 @@ describe('MemoryGameAnswerValidator', () => {
       expect(result.errors.wronglyMarked).toEqual(['obj1', 'objX']);
     }
   });
+
+  it('Handles empty answer', () => {
+    const answer: MemoryGameAnswer = { markedAsGarbage: [] };
+    const correctAnswer = ['obj1'];
+    const result = validator.validate(answer, correctAnswer);
+    expect(result.isCorrect).toBe(false);
+
+    if (!result.isCorrect) {
+      expect(result.errors.missedGarbage).toEqual(['obj1']);
+      expect(result.errors.wronglyMarked).toEqual([]);
+    }
+  });
 });
