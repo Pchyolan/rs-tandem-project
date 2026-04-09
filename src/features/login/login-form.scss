@@ -93,6 +93,8 @@
 .login-submit-btn {
   @include button-success;
   width: 100%;
+  line-height: 24px;
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
 }
 
 .error-message {
@@ -117,11 +119,6 @@
     display: flex;
     transform: translateY(0);
   }
-}
-
-.login-cancel-btn {
-  @include button-primary;
-  width: 100%;
 }
 
 .login-buttons-container {

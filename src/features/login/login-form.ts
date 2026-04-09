@@ -3,7 +3,7 @@ import { BaseComponent, Router, SupabaseClient } from '@/core';
 
 import welcomeImageUrl from '@/assets/images/brains/welcome.png';
 import welcomeAnimationUrl from '@/assets/video/welcome.webm';
-import { createClipboardIcon, createLockIcon } from '@/utils/svg-icon';
+import { createClipboardIcon, createLockIcon, createBackArrow } from '@/utils/svg-icon';
 
 import './login-form.scss';
 
@@ -155,17 +155,16 @@ export class LoginForm implements Page {
     });
     this.loginSubmitButton.addEventListener('click', this.handleSignIn);
 
-    const cancelButton = new BaseComponent({
-      tag: 'button',
-      text: 'Cancel',
-      className: ['login-cancel-btn'],
-    });
-    cancelButton.addEventListener('click', () => {
-      this.hideAllForms();
-      this.showMainButtons();
+    const backButton = this.createButton({
+      text: 'Back',
+      icon: createBackArrow(),
+      onClick: () => {
+        this.hideAllForms();
+        this.showMainButtons();
+      },
     });
 
-    buttonsContainer.append(cancelButton, this.loginSubmitButton);
+    buttonsContainer.append(backButton, this.loginSubmitButton);
     container.append(this.loginEmailInput, this.loginPasswordInput, buttonsContainer, this.loginErrorMessage);
     return container;
   }
@@ -211,17 +210,16 @@ export class LoginForm implements Page {
       className: ['login-buttons-container'],
     });
 
-    const cancelButton = new BaseComponent({
-      tag: 'button',
-      text: 'Cancel',
-      className: ['login-cancel-btn'],
-    });
-    cancelButton.addEventListener('click', () => {
-      this.hideAllForms();
-      this.showMainButtons();
+    const backButton = this.createButton({
+      text: 'Back',
+      icon: createBackArrow(),
+      onClick: () => {
+        this.hideAllForms();
+        this.showMainButtons();
+      },
     });
 
-    buttonsContainer.append(cancelButton, this.regSubmitButton);
+    buttonsContainer.append(backButton, this.regSubmitButton);
     container.append(
       this.regEmailInput,
       this.regPasswordInput,

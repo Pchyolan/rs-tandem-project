@@ -176,6 +176,7 @@
 // =====================
 @mixin button-primary {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-primary, vars.$color-primary);
   border-color: color.adjust(vars.$color-primary, $lightness: -15%);
@@ -190,6 +191,7 @@
 // =====================
 @mixin button-success {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-success, vars.$color-success-light);
   border-color: color.adjust(vars.$color-success, $lightness: -15%);
@@ -204,6 +206,7 @@
 // =====================
 @mixin button-danger {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-danger, vars.$color-danger-light);
 }
