@@ -111,8 +111,7 @@
   &:active {
     transform: scale(0.98);
     filter: brightness(0.98);
-    border-color: color.adjust(vars.$button-success-border, $lightness: 5%);
-    border-color: color.adjust(vars.$button-border, $lightness: -10%);
+    border-color: color.adjust(vars.$button-border, $lightness: 5%);
   }
 
   &:focus {
