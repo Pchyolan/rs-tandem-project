@@ -26,7 +26,12 @@ $ease-out-back: cubic-bezier(0.34, 1.3, 0.55, 1);
 }
 
 .welcome-page__wrapper:last-child {
+  @include flex-column;
+  align-items: center;
+  justify-content: start;
+
   position: relative;
+  height: 230px;
 }
 
 .welcome-page__image-wrapper {
