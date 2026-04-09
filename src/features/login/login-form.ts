@@ -44,6 +44,8 @@ export class LoginForm implements Page {
   private regSubmitButton?: BaseComponent<'button'>;
   private regErrorMessage?: BaseComponent;
 
+  private readonly ANIMATION_DURATION = 150;
+
   constructor(router: Router) {
     this.router = router;
   }
@@ -158,10 +160,7 @@ export class LoginForm implements Page {
     const backButton = this.createButton({
       text: 'Back',
       icon: createBackArrow(),
-      onClick: () => {
-        this.hideAllForms();
-        this.showMainButtons();
-      },
+      onClick: () => this.backToMain(),
     });
 
     buttonsContainer.append(backButton, this.loginSubmitButton);
@@ -213,10 +212,7 @@ export class LoginForm implements Page {
     const backButton = this.createButton({
       text: 'Back',
       icon: createBackArrow(),
-      onClick: () => {
-        this.hideAllForms();
-        this.showMainButtons();
-      },
+      onClick: () => this.backToMain(),
     });
 
     buttonsContainer.append(backButton, this.regSubmitButton);
@@ -402,74 +398,55 @@ export class LoginForm implements Page {
     }
   }
 
-  private showLoginForm = (): void => {
+  private showLoginForm = async (): Promise<void> => {
     if (!this.loginContainer || !this.loginEmailInput) {
       console.error('Login container or email input not initialized');
       return;
     }
-    this.hideAllForms();
-    this.loginContainer.element.classList.add('show');
-    this.hideMainButtons();
+
+    await this.animateHideButtons();
+    if (this.registerContainer) {
+      await this.animateHideForm(this.registerContainer);
+    }
+    await this.animateShowForm(this.loginContainer);
+
     this.loginEmailInput.element.focus();
   };
 
-  private showRegisterForm = (): void => {
+  private showRegisterForm = async (): Promise<void> => {
     if (!this.registerContainer || !this.regEmailInput) {
       console.error('Register container or email input not initialized');
       return;
     }
-    this.hideAllForms();
-    this.registerContainer.element.classList.add('show');
-    this.hideMainButtons();
+
+    await this.animateHideButtons();
+    if (this.loginContainer) {
+      await this.animateHideForm(this.loginContainer);
+    }
+    await this.animateShowForm(this.registerContainer);
+
     this.regEmailInput.element.focus();
   };
 
-  private hideAllForms(): void {
-    if (this.loginContainer) {
-      this.loginContainer.element.classList.remove('show');
+  private backToMain = async (): Promise<void> => {
+    if (this.loginContainer?.element.classList.contains('show')) {
+      await this.animateHideForm(this.loginContainer);
+    } else if (this.registerContainer?.element.classList.contains('show')) {
+      await this.animateHideForm(this.registerContainer);
     }
-    if (this.registerContainer) {
-      this.registerContainer.element.classList.remove('show');
-    }
-    if (this.loginErrorMessage) {
-      this.loginErrorMessage.element.textContent = '';
-    }
-    if (this.regErrorMessage) {
-      this.regErrorMessage.element.textContent = '';
-    }
-    if (this.loginEmailInput) {
-      this.loginEmailInput.element.value = '';
-    }
-    if (this.loginPasswordInput) {
-      this.loginPasswordInput.element.value = '';
-    }
-    if (this.regEmailInput) {
-      this.regEmailInput.element.value = '';
-    }
-    if (this.regPasswordInput) {
-      this.regPasswordInput.element.value = '';
-    }
-    if (this.regConfirmPasswordInput) {
-      this.regConfirmPasswordInput.element.value = '';
-    }
-  }
 
-  private showMainButtons(): void {
-    if (this.loginButton) {
-      this.loginButton.element.style.display = 'flex';
-    }
-    if (this.registerButton) {
-      this.registerButton.element.style.display = 'flex';
-    }
-  }
+    await this.animateShowButtons();
+    this.clearFormsData();
+  };
 
-  private hideMainButtons(): void {
-    if (this.loginButton) {
-      this.loginButton.element.style.display = 'none';
-    }
-    if (this.registerButton) {
-      this.registerButton.element.style.display = 'none';
-    }
+  private clearFormsData(): void {
+    if (this.loginErrorMessage) this.loginErrorMessage.element.textContent = '';
+    if (this.regErrorMessage) this.regErrorMessage.element.textContent = '';
+    if (this.loginEmailInput) this.loginEmailInput.element.value = '';
+    if (this.loginPasswordInput) this.loginPasswordInput.element.value = '';
+    if (this.regEmailInput) this.regEmailInput.element.value = '';
+    if (this.regPasswordInput) this.regPasswordInput.element.value = '';
+    if (this.regConfirmPasswordInput) this.regConfirmPasswordInput.element.value = '';
   }
 
   private async checkAndRedirectIfLoggedIn(): Promise<void> {
@@ -477,5 +454,36 @@ export class LoginForm implements Page {
     if (data.session) {
       this.router.navigate('/dashboard');
     }
+  }
+
+  // ==========================================
+  // Анимации
+  // ==========================================
+  private async animateHideButtons(): Promise<void> {
+    if (!this.loginButton || !this.registerButton) return;
+
+    this.loginButton.element.classList.add('fade-out');
+    this.registerButton.element.classList.add('fade-out');
+
+    await new Promise((resolve) => setTimeout(resolve, this.ANIMATION_DURATION));
+  }
+
+  private animateShowButtons(): Promise<void> {
+    if (!this.loginButton || !this.registerButton) return Promise.resolve();
+
+    this.loginButton.element.classList.remove('fade-out');
+    this.registerButton.element.classList.remove('fade-out');
+
+    return Promise.resolve();
+  }
+
+  private async animateShowForm(formContainer: BaseComponent): Promise<void> {
+    formContainer.element.classList.add('show');
+    await new Promise((resolve) => setTimeout(resolve, this.ANIMATION_DURATION));
+  }
+
+  private async animateHideForm(formContainer: BaseComponent): Promise<void> {
+    formContainer.element.classList.remove('show');
+    await new Promise((resolve) => setTimeout(resolve, this.ANIMATION_DURATION));
   }
 }
