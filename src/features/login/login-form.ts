@@ -1,6 +1,8 @@
 import type { Page } from '@/core';
 import { BaseComponent, Router, SupabaseClient } from '@/core';
 
+import type { AuthError } from '@supabase/supabase-js';
+
 import welcomeImageUrl from '@/assets/images/brains/welcome.png';
 import welcomeAnimationUrl from '@/assets/video/welcome.webm';
 import { createClipboardIcon, createLockIcon, createBackArrow } from '@/utils/svg-icon';
@@ -133,12 +135,14 @@ export class LoginForm implements Page {
       attrs: { type: 'email', placeholder: 'Email', autocomplete: 'email' },
       className: ['login-field'],
     });
+    this.loginEmailInput.element.addEventListener('keypress', this.handleEnterInLogin);
 
     this.loginPasswordInput = new BaseComponent({
       tag: 'input',
       attrs: { type: 'password', placeholder: 'Password', autocomplete: 'current-password' },
       className: ['login-field'],
     });
+    this.loginPasswordInput.element.addEventListener('keypress', this.handleEnterInLogin);
 
     this.loginErrorMessage = new BaseComponent({
       tag: 'div',
@@ -179,6 +183,7 @@ export class LoginForm implements Page {
       attrs: { type: 'email', placeholder: 'Email', autocomplete: 'email' },
       className: ['login-field'],
     });
+    this.regEmailInput.element.addEventListener('keypress', this.handleEnterInRegister);
     this.regEmailInput.addEventListener('input', () => {
       if (!this.regEmailInput) return;
 
@@ -193,6 +198,7 @@ export class LoginForm implements Page {
       attrs: { type: 'password', placeholder: 'Password', autocomplete: 'new-password' },
       className: ['login-field'],
     });
+    this.regPasswordInput.element.addEventListener('keypress', this.handleEnterInRegister);
     this.regPasswordInput.addEventListener('input', () => {
       if (!this.regPasswordInput) return;
 
@@ -207,6 +213,7 @@ export class LoginForm implements Page {
       attrs: { type: 'password', placeholder: 'Confirm Password', autocomplete: 'new-password' },
       className: ['login-field'],
     });
+    this.regConfirmPasswordInput.element.addEventListener('keypress', this.handleEnterInRegister);
 
     this.regErrorMessage = new BaseComponent({
       tag: 'div',
@@ -334,7 +341,7 @@ export class LoginForm implements Page {
     const { error } = await SupabaseClient.auth.signInWithPassword({ email, password });
 
     if (error) {
-      this.showError(this.loginErrorMessage, error.message);
+      this.showError(this.loginErrorMessage, this.getFriendlyErrorMessage(error));
       this.setLoading(this.loginSubmitButton, false);
     } else {
       this.router.navigate('/dashboard');
@@ -395,6 +402,20 @@ export class LoginForm implements Page {
     }
   };
 
+  handleEnterInLogin = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.handleSignIn();
+    }
+  };
+
+  handleEnterInRegister = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.handleSignUp();
+    }
+  };
+
   // ==========================================
   // Вспомогательные методы UI
   // ==========================================
@@ -416,6 +437,26 @@ export class LoginForm implements Page {
         messageComponent.element.textContent = '';
       }
     }, 5000);
+  }
+
+  private getFriendlyErrorMessage(error: AuthError): string {
+    const { message } = error;
+
+    if (message.includes('Invalid login credentials')) {
+      return 'Incorrect email or password. Please try again.';
+    }
+    if (message.includes('User already registered')) {
+      return 'This email is already registered. Please sign in.';
+    }
+    // Можно добавить другие известные сообщения
+    if (message.includes('Email not confirmed')) {
+      return 'Please confirm your email address before signing in.';
+    }
+    if (message.includes('Password should be at least 6 characters')) {
+      return 'Password must be at least 6 characters.';
+    }
+    // Возвращаем оригинальное сообщение как запасной вариант
+    return message;
   }
 
   private setLoading(button: BaseComponent<'button'>, isLoading: boolean): void {
