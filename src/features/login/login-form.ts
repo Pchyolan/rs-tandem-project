@@ -1,7 +1,7 @@
 import type { Page } from '@/core';
 import { BaseComponent, Router, SupabaseClient } from '@/core';
 
-import type { AuthError } from '@supabase/supabase-js';
+import { login, registration } from '@/store/auth-store';
 
 import welcomeImageUrl from '@/assets/images/brains/welcome.png';
 import welcomeAnimationUrl from '@/assets/video/welcome.webm';
@@ -338,13 +338,13 @@ export class LoginForm implements Page {
 
     this.setLoading(this.loginSubmitButton, true);
 
-    const { error } = await SupabaseClient.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      this.showError(this.loginErrorMessage, this.getFriendlyErrorMessage(error));
-      this.setLoading(this.loginSubmitButton, false);
-    } else {
+    try {
+      await login(email, password);
       this.router.navigate('/dashboard');
+    } catch (error) {
+      this.showError(this.loginErrorMessage, this.getFriendlyErrorMessage(error));
+    } finally {
+      this.setLoading(this.loginSubmitButton, false);
     }
   };
 
@@ -385,20 +385,19 @@ export class LoginForm implements Page {
 
     this.setLoading(this.regSubmitButton, true);
 
-    const { error } = await SupabaseClient.auth.signUp({ email, password });
-
-    if (error) {
-      this.showError(this.regErrorMessage, error.message);
-      this.setLoading(this.regSubmitButton, false);
-    } else {
-      this.regErrorMessage.element.textContent = 'Registration successful! Please check your email to confirm.';
+    try {
+      await registration(email, password);
+      this.regErrorMessage.element.textContent = 'Registration successful! Please check your email.';
       this.regErrorMessage.element.style.color = '#4caf50';
-      this.setLoading(this.regSubmitButton, false);
 
       // Очистка полей
       this.regEmailInput.element.value = '';
       this.regPasswordInput.element.value = '';
       this.regConfirmPasswordInput.element.value = '';
+    } catch (error) {
+      this.showError(this.regErrorMessage, this.getFriendlyErrorMessage(error));
+    } finally {
+      this.setLoading(this.regSubmitButton, false);
     }
   };
 
@@ -439,24 +438,25 @@ export class LoginForm implements Page {
     }, 5000);
   }
 
-  private getFriendlyErrorMessage(error: AuthError): string {
-    const { message } = error;
+  private getFriendlyErrorMessage(error: unknown): string {
+    if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+      const message = error.message;
+      if (message.includes('Invalid login credentials')) {
+        return 'Incorrect email or password. Please try again.';
+      }
+      if (message.includes('User already registered')) {
+        return 'This email is already registered. Please sign in.';
+      }
+      if (message.includes('Email not confirmed')) {
+        return 'Please confirm your email address before signing in.';
+      }
+      if (message.includes('Password should be at least 6 characters')) {
+        return 'Password must be at least 6 characters.';
+      }
+      return message;
+    }
 
-    if (message.includes('Invalid login credentials')) {
-      return 'Incorrect email or password. Please try again.';
-    }
-    if (message.includes('User already registered')) {
-      return 'This email is already registered. Please sign in.';
-    }
-    // Можно добавить другие известные сообщения
-    if (message.includes('Email not confirmed')) {
-      return 'Please confirm your email address before signing in.';
-    }
-    if (message.includes('Password should be at least 6 characters')) {
-      return 'Password must be at least 6 characters.';
-    }
-    // Возвращаем оригинальное сообщение как запасной вариант
-    return message;
+    return 'An unknown error occurred. Please try again.';
   }
 
   private setLoading(button: BaseComponent<'button'>, isLoading: boolean): void {

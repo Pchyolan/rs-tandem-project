@@ -2,8 +2,9 @@ import { BaseComponent, Router } from '@/core';
 import { Header } from '../header.ts';
 import { Footer } from '../footer.ts';
 
-import { homePage, loginPage, apiTestPage, notFoundPage, widgetEnginePage, memoryGamePage } from '@/pages';
 import { routes } from '@/constants';
+import { initAuth, logout } from '@/store/auth-store';
+import { apiTestPage, homePage, loginPage, memoryGamePage, notFoundPage, widgetEnginePage } from '@/pages';
 
 import './app.scss';
 
@@ -23,6 +24,10 @@ export class App extends BaseComponent<'div'> {
       onTestApi: () => this.router.navigate(routes.api_test),
       onWidgetClick: () => this.router.navigate(routes.widget_engine),
       onMemoryClick: () => this.router.navigate(routes.memory_game),
+      onLogout: async () => {
+        await logout();
+        this.router.navigate(routes.login);
+      },
     });
 
     this.mainContainer = new BaseComponent({
@@ -43,6 +48,11 @@ export class App extends BaseComponent<'div'> {
 
     this.router = new Router(this.contentContainer);
     this.setupRoutes();
+  }
+
+  static async create(): Promise<App> {
+    await initAuth();
+    return new App();
   }
 
   private setupRoutes(): void {
