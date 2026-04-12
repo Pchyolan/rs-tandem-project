@@ -111,7 +111,13 @@
   &:active {
     transform: scale(0.98);
     filter: brightness(0.98);
-    border-color: color.adjust(vars.$button-success-border, $lightness: 5%);
+    border-color: color.adjust(vars.$button-border, $lightness: 5%);
+  }
+
+  &:focus {
+    outline: none; // убираем встроенный outline браузера
+    border-color: vars.$button-border;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 38%);
   }
 }
 
@@ -129,7 +135,7 @@
 
   color: white;
   background: vars.$color-primary;
-  border: 3px solid vars.$button-success-border;
+  border: 3px solid vars.$button-border;
 
   // Внутренняя тень (вогнутость)
   &::before {
@@ -170,6 +176,7 @@
 // =====================
 @mixin button-primary {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-primary, vars.$color-primary);
   border-color: color.adjust(vars.$color-primary, $lightness: -15%);
@@ -184,6 +191,7 @@
 // =====================
 @mixin button-success {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-success, vars.$color-success-light);
   border-color: color.adjust(vars.$color-success, $lightness: -15%);
@@ -198,6 +206,7 @@
 // =====================
 @mixin button-danger {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-danger, vars.$color-danger-light);
 }
@@ -256,7 +265,7 @@
 
   color: vars.$color-input-text;
   background: white;
-  border: 3px solid vars.$button-success-border;
+  border: 3px solid vars.$input-border;
 
   &::placeholder {
     color: vars.$color-input-placeholder;

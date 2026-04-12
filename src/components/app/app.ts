@@ -47,7 +47,7 @@ export class App extends BaseComponent<'div'> {
 
   private setupRoutes(): void {
     this.router.addRoute(routes.home, homePage);
-    this.router.addRoute(routes.login, loginPage);
+    this.router.addRoute(routes.login, () => loginPage(this.router));
     this.router.addRoute(routes.api_test, apiTestPage);
     this.router.addRoute(routes.widget_engine, widgetEnginePage);
     this.router.addRoute(routes.memory_game, memoryGamePage);
