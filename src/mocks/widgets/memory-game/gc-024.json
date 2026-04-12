@@ -1,0 +1,37 @@
+{
+  "id": "gc-024",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "codeSnippet": "let a = [1, 2];\nlet b = [1, 2];\nlet same = a == b;\na = null;\nb = null;",
+    "highlightedLine": 4,
+    "objects": [
+      { "id": "var-a", "label": "Variable a", "x": 50, "y": 120 },
+      { "id": "var-b", "label": "Variable b", "x": 550, "y": 120 },
+      { "id": "arr-a", "label": "Array [1,2]", "x": 50, "y": 250 },
+      { "id": "arr-b", "label": "Array [1,2]", "x": 550, "y": 250 },
+      { "id": "elem-a1", "label": "Number 1", "x": 50, "y": 370 },
+      { "id": "elem-a2", "label": "Number 2", "x": 300, "y": 370 },
+      { "id": "elem-b1", "label": "Number 1", "x": 300, "y": 250 },
+      { "id": "elem-b2", "label": "Number 2", "x": 550, "y": 370 },
+      { "id": "same-var", "label": "Variable same", "x": 300, "y": 120 }
+    ],
+    "links": [
+      { "from": "var-a", "to": "arr-a", "label": "ref" },
+      { "from": "var-b", "to": "arr-b", "label": "ref" },
+      { "from": "arr-a", "to": "elem-a1", "label": "0" },
+      { "from": "arr-a", "to": "elem-a2", "label": "1" },
+      { "from": "arr-b", "to": "elem-b1", "label": "0" },
+      { "from": "arr-b", "to": "elem-b2", "label": "1" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-a" },
+      { "from": "global", "to": "var-b" },
+      { "from": "global", "to": "same-var" }
+    ]
+  },
+  "correctAnswer": ["arr-a", "arr-b", "elem-a1", "elem-a2", "elem-b1", "elem-b2"]
+}
