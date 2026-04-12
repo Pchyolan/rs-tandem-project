@@ -99,7 +99,9 @@
   font-family: vars.$font-family-base;
   font-style: normal;
   overflow: hidden;
+}
 
+@mixin element-states {
   &:hover {
     transform: scale(1.02);
     filter: brightness(1.06);
@@ -109,20 +111,31 @@
   &:active {
     transform: scale(0.98);
     filter: brightness(0.98);
-    border-color: color.adjust(vars.$button-success-border, $lightness: -10%);
+    border-color: color.adjust(vars.$button-border, $lightness: 5%);
   }
+
+  &:focus {
+    outline: none; // убираем встроенный outline браузера
+    border-color: vars.$button-border;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 38%);
+  }
+}
+
+@mixin no-select {
+  -webkit-user-select: none;  /* Safari */
+  -ms-user-select: none;      /* IE 10+ и Edge */
+  user-select: none;          /* Современные браузеры */
 }
 
 // =====================
 // BUTTON BASE
 // =====================
-@mixin button-base {
+@mixin glacier-base {
   @include element-base;
 
   color: white;
   background: vars.$color-primary;
-  border: 3px solid vars.$button-success-border;
-  cursor: pointer;
+  border: 3px solid vars.$button-border;
 
   // Внутренняя тень (вогнутость)
   &::before {
@@ -135,13 +148,21 @@
       inset 0 -3px 0 rgb(0 0 0 / 20%);
     pointer-events: none;
   }
+}
+
+@mixin button-base {
+  @include glacier-base;
+
+  cursor: pointer;
+  font-size: clamp(0.8rem, 4vw, 1.2rem);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
 
   // Блик (блик-отражение)
   &::after {
     content: '';
     position: absolute;
     top: 5px;
-    left: 15px;
+    left: 12px;
     width: 12px;
     height: 5px;
     background: rgb(255 255 255 / 90%);
@@ -157,6 +178,7 @@
 // =====================
 @mixin button-primary {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-primary, vars.$color-primary);
   border-color: color.adjust(vars.$color-primary, $lightness: -15%);
@@ -171,6 +193,7 @@
 // =====================
 @mixin button-success {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-success, vars.$color-success-light);
   border-color: color.adjust(vars.$color-success, $lightness: -15%);
@@ -185,6 +208,7 @@
 // =====================
 @mixin button-danger {
   @include button-base;
+  @include element-states;
 
   background: linear-gradient(135deg, vars.$color-danger, vars.$color-danger-light);
 }
@@ -239,10 +263,11 @@
 // =====================
 @mixin input-base {
   @include element-base;
+  @include element-states;
 
   color: vars.$color-input-text;
   background: white;
-  border: 3px solid vars.$button-success-border;
+  border: 3px solid vars.$input-border;
 
   &::placeholder {
     color: vars.$color-input-placeholder;
@@ -263,5 +288,34 @@
     @media (width >= 901px) {
       @content;
     }
+  }
+}
+
+@mixin cloud-message {
+  @include flex-center;
+  flex-direction: column;
+  gap: vars.$spacing-sm;
+
+  position: relative;
+  width: 300px;
+  margin-top: vars.$spacing-md;
+  padding: vars.$spacing-md;
+  background-color: white;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: all 0.3s ease;
+
+  // Стрелочка вверх
+  &::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 70px;
+    width: 12px;
+    height: 20px;
+    background-color: white;
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
   }
 }

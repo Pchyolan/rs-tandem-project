@@ -16,15 +16,10 @@ $color-surface: #0f83f0; // карточки / панели
 $color-glass: rgb(255 255 255 / 8%);
 $color-glass-border: rgb(255 255 255 / 20%);
 
-// Dot colors
-$dot-color-blue: #15b8f1;
-$dot-color-orange: #f98401;
-$dot-color-green: #72f515;
-
 // Colors for difficulty badges
-$difficulty-easy: #5ae3e9;
+$difficulty-easy: #72f515;
 $difficulty-medium: #f1c40f;
-$difficulty-hard: #e9605a;
+$difficulty-hard: #5ae3e9;
 $difficulty-bg: #0775d7;
 $difficulty-border: #0066cd;
 
@@ -44,7 +39,8 @@ $gradient-glow: radial-gradient(circle, rgb(96 165 250 / 90%), transparent);
 // ACCENTS (buttons & states)
 // =====================
 
-$button-success-border: #0d5fb5;
+$input-border: #207edf;
+$button-border: #0d5fb5;
 $button-border-radius: 999px;
 
 // Success (green button)
@@ -66,7 +62,6 @@ $color-accent: #38bdf8;
 // =====================
 
 $color-text-primary: #fff;
-$color-text-secondary: #cbd5f5;
 $color-text-muted: #93c5fd;
 
 // =====================
@@ -105,6 +100,8 @@ $border-radius-lg: 20px;
 
 $transition-speed: 0.3s;
 $transition-glow: 0.5s ease-in-out;
+$transition-long: 0.8s ease-in-out;
+
 $content-wrapper-width: 1200px;
 
 // Legacy compatibility (для старого кода)
