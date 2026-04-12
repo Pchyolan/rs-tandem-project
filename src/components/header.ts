@@ -1,5 +1,6 @@
 import { BaseComponent } from '@/core';
-import { language$ } from '../store/language-store.ts';
+import { user$ } from '@/store/auth-store';
+import { language$ } from '../store/language-store';
 import { translations, type TranslationKey } from '@/i18n';
 
 type HeaderCallbacks = {
@@ -8,6 +9,7 @@ type HeaderCallbacks = {
   onTestApi: () => void;
   onWidgetClick: () => void;
   onMemoryClick: () => void;
+  onLogout: () => void;
 };
 
 export class Header extends BaseComponent<'header'> {
@@ -23,8 +25,11 @@ export class Header extends BaseComponent<'header'> {
   private readonly langRuBtn: BaseComponent<'button'>;
   private readonly langEnBtn: BaseComponent<'button'>;
 
+  private readonly logoutBtn: BaseComponent<'button'>;
+
   private callbacks: HeaderCallbacks;
-  private readonly unsubscribe: () => void;
+  private readonly unsubscribeLang: () => void;
+  private readonly unsubscribeUser: () => void;
 
   constructor(callbacks: HeaderCallbacks) {
     super({ tag: 'header', className: ['app-header'] });
@@ -63,25 +68,41 @@ export class Header extends BaseComponent<'header'> {
     });
 
     this.langRuBtn = new BaseComponent({ tag: 'button', text: 'RU' });
-    this.langEnBtn = new BaseComponent({ tag: 'button', text: 'EN' });
-
     this.langRuBtn.addEventListener('click', () => language$.set('ru'));
+
+    this.langEnBtn = new BaseComponent({ tag: 'button', text: 'EN' });
     this.langEnBtn.addEventListener('click', () => language$.set('en'));
 
     langButtons.append(this.langRuBtn, this.langEnBtn);
+
+    this.logoutBtn = new BaseComponent({ tag: 'button' });
+    this.logoutBtn.addEventListener('click', this.callbacks.onLogout);
+    this.logoutBtn.hide();
+
     navButtons.append(
       this.homeBtn,
       this.signInBtn,
       this.testApiBtn,
       this.widgetEngineBtn,
       this.memoryGameBtn,
-      langButtons
+      langButtons,
+      this.logoutBtn
     );
 
     contentContainer.append(this.logo, navButtons);
     this.append(contentContainer);
 
-    this.unsubscribe = language$.subscribe(() => this.updateHeader());
+    this.unsubscribeLang = language$.subscribe(() => this.updateHeader());
+    this.unsubscribeUser = user$.subscribe((user) => {
+      if (user) {
+        this.signInBtn.hide();
+        this.logoutBtn.show();
+      } else {
+        this.signInBtn.show();
+        this.logoutBtn.hide();
+      }
+      this.updateTexts();
+    });
 
     this.updateHeader();
   }
@@ -99,6 +120,7 @@ export class Header extends BaseComponent<'header'> {
     this.homeBtn.element.textContent = dictionary('home');
     this.signInBtn.element.textContent = dictionary('signIn');
     this.testApiBtn.element.textContent = dictionary('testApi');
+    this.logoutBtn.element.textContent = dictionary('logout');
   }
 
   private updateActiveLangButton(): void {
@@ -115,7 +137,8 @@ export class Header extends BaseComponent<'header'> {
   }
 
   public override remove(): void {
-    this.unsubscribe();
+    this.unsubscribeLang();
+    this.unsubscribeUser();
     super.remove();
   }
 }

@@ -1,16 +1,14 @@
 import type { Widget, WidgetType, Verdict } from '@/types';
 import type { WidgetDataSource } from './types';
 
+import { randomDelay } from '@/utils/delays';
+
 import type { AnswerValidator } from '@/api/validators/answer-validator';
 import { MemoryGameAnswerValidator } from '@/api/validators/memory-game-validator';
 import { QuizAnswerValidator } from '@/api/validators/quiz-validator';
 import { TrueFalseAnswerValidator } from '@/api/validators/true-false-validator';
 
-// Функции для случайной задержки при загрузке (для отладки loading)
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-const randomDelay = () => delay(300 + Math.random() * 700);
-
-const validators = new Map<WidgetType, AnswerValidator<unknown>>([
+const validators = new Map<WidgetType, AnswerValidator>([
   ['memory-game', new MemoryGameAnswerValidator()],
   ['quiz', new QuizAnswerValidator()],
   ['true-false', new TrueFalseAnswerValidator()],
