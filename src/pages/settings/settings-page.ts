@@ -274,7 +274,6 @@ export class SettingsPage implements Page {
 
   private updateLanguageButtonsUI(): void {
     const isRu = this.currentSettings?.language === 'ru';
-    console.log('isRU', isRu);
     this.langRuBtn?.element.classList.toggle('active', isRu);
     this.langEnBtn?.element.classList.toggle('active', !isRu);
   }

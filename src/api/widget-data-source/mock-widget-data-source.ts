@@ -18,7 +18,7 @@ export class MockWidgetDataSource implements WidgetDataSource {
   async getWidgetById<T extends Widget = Widget>(widgetType: WidgetType, widgetId: string): Promise<T> {
     await randomDelay();
     try {
-      const module = await import(`../mocks/widgets/${widgetType}/${widgetId}.json`);
+      const module = await import(`../../mocks/widgets/${widgetType}/${widgetId}.json`);
       return module.default;
     } catch {
       throw new Error(`Mock data for widget ${widgetId} not found`);
@@ -28,7 +28,7 @@ export class MockWidgetDataSource implements WidgetDataSource {
   async submitAnswer(widgetType: WidgetType, widgetId: string, answer: unknown): Promise<Verdict> {
     await randomDelay();
     try {
-      const module = await import(`../mocks/widgets/${widgetType}/${widgetId}.json`);
+      const module = await import(`../../mocks/widgets/${widgetType}/${widgetId}.json`);
       const widget = module.default;
 
       if (!widget.correctAnswer) {
