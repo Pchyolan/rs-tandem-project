@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { MemoryGameAnswerValidator } from '@/api/validators/memory-game-validator.ts';
-import type { MemoryGameAnswer } from '@/features/memory-game/types.ts';
+import { MemoryGameAnswerValidator } from '@/api/widget-data-source/validators/memory-game-validator';
+import type { MemoryGameAnswer } from '@/features/memory-game/types';
 
 describe('MemoryGameAnswerValidator', () => {
   const validator = new MemoryGameAnswerValidator();
