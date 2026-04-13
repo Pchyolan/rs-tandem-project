@@ -5,6 +5,7 @@ import { difficultyTranslations } from './difficulty';
 import { widgetsTranslations } from './widgets';
 import { ticketPageTranslations } from '@/i18n/ticket-page.ts';
 import { errorTranslations } from '@/i18n/supabase-errors.ts';
+import { loginPageTranslations } from '@/i18n/login-page.ts';
 
 export const translations = {
   en: {
@@ -15,6 +16,7 @@ export const translations = {
     ...difficultyTranslations.en,
     ...ticketPageTranslations.en,
     ...errorTranslations.en,
+    ...loginPageTranslations.en,
   },
   ru: {
     ...headerTranslations.ru,
@@ -24,6 +26,7 @@ export const translations = {
     ...difficultyTranslations.ru,
     ...ticketPageTranslations.ru,
     ...errorTranslations.ru,
+    ...loginPageTranslations.ru,
   },
 } as const;
 
