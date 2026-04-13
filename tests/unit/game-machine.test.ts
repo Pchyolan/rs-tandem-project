@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { GameMachine } from '@/features/memory-game/core/game-machine.ts';
-import { gameActions, gameStates } from '@/features/memory-game/constants.ts';
+import { GameMachine } from '@/features/memory-game/core/game-machine';
+import { gameActions, gameStates } from '@/features/memory-game/constants';
 
 describe('GameMachine', () => {
   let machine: GameMachine;

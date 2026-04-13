@@ -18,7 +18,6 @@
 
   .logo {
     @include no-select;
-
     font-weight: 700;
     font-size: 1.5rem;
   }
@@ -30,7 +29,8 @@
 
   button {
     padding: $spacing-xs $spacing-md;
-    background: white;
+    color: var(--button-header-color);
+    background: var(--button-header-bg);
     border: none;
     transition: background-color $transition-speed;
     border-radius: $border-radius;
@@ -38,7 +38,7 @@
     font-weight: 500;
 
     &:hover {
-      background-color: color.adjust(white, $lightness: -20%);
+      background-color: var(--button-header-hover-bg);
     }
   }
 }
@@ -59,8 +59,8 @@
   flex: 1;
   background-color: $color-primary;
   background-image:
-    linear-gradient(rgb(148 163 184 / 60%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(148 163 184 / 60%) 1px, transparent 1px);
+    linear-gradient(var(--grid-line-color, rgba(148, 163, 184, 0.6)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-color, rgba(148, 163, 184, 0.6)) 1px, transparent 1px);
   background-size: 35px 35px;
   font-size: 2rem;
   overflow: hidden;
@@ -88,7 +88,6 @@
 }
 
 .app-content {
-  /* чтобы псевдоэлементы не перекрывали содержимое окна */
   position: relative;
   margin: 0 auto;
   padding: 0 $spacing-md;
@@ -100,7 +99,6 @@
 
 .app-footer {
   @include no-select;
-
   color: $color-text-primary;
   background-color: $color-primary;
   text-align: center;
@@ -111,31 +109,4 @@
   padding: $spacing-md;
   width: 100%;
   max-width: $content-wrapper-width;
-}
-
-.lang-buttons {
-  display: flex;
-  gap: $spacing-xs;
-  margin-left: $spacing-md;
-
-  button {
-    padding: $spacing-xs $spacing-sm;
-    color: $color-text-primary;
-    background: transparent;
-    border: 1px solid $color-text-primary;
-    transition: background-color $transition-speed;
-    border-radius: $border-radius;
-    cursor: pointer;
-    font-weight: 500;
-
-    &:hover {
-      background-color: rgb(255 255 255 / 20%);
-    }
-
-    &.active {
-      background-color: white;
-      color: $color-primary;
-      border-color: white;
-    }
-  }
 }
