@@ -1,4 +1,3 @@
-@use 'sass:color';
 @use './variables' as vars;
 
 // =====================
@@ -25,36 +24,34 @@
 // GLASS PANEL
 // =====================
 @mixin glass-panel {
-  background: vars.$color-glass;
+  background: var(--color-glass);
   backdrop-filter: blur(12px);
-  border: 1px solid vars.$color-glass-border;
-  border-radius: vars.$border-radius-lg;
-  box-shadow: vars.$shadow-soft;
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-soft);
 }
 
 // =====================
-// PANEL (основные блоки UI)
+// PANEL
 // =====================
 @mixin panel {
   position: relative;
-  background: vars.$gradient-panel;
-  border-radius: vars.$border-radius-lg;
-  box-shadow: vars.$shadow-soft, vars.$shadow-glow;
-  border: 1px solid vars.$border-color;
+  background: var(--gradient-panel);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-soft), var(--shadow-glow);
+  border: 1px solid var(--border-color);
 
-  // Внутренняя тень (вогнутость)
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: vars.$border-radius-lg;
+    border-radius: var(--border-radius-lg);
     box-shadow:
-      inset 0 3px 0 rgb(255 255 255 / 60%),
-      inset 0 -3px 0 rgb(0 0 0 / 20%);
+      inset 0 3px 0 rgba(255, 255, 255, 0.6),
+      inset 0 -3px 0 rgba(0, 0, 0, 0.2);
     pointer-events: none;
   }
 
-  // Блик (блик-отражение)
   &::after {
     content: '';
     position: absolute;
@@ -62,10 +59,10 @@
     left: 8px;
     width: 12px;
     height: 5px;
-    background: rgb(255 255 255 / 60%);
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 50%;
     transform: rotate(-20deg);
-    transition: all 0.25s ease;
+    transition: all var(--transition-speed) ease;
     pointer-events: none;
   }
 }
@@ -73,30 +70,30 @@
 // =====================
 // GLOW EFFECT
 // =====================
-@mixin glow($color: vars.$color-primary-glow) {
+@mixin glow($color: var(--color-primary-glow)) {
   box-shadow:
     0 0 10px $color,
     0 0 20px $color;
 }
 
 // =====================
-// ELEMENT BASE STYLES
+// ELEMENT BASE
 // =====================
 @mixin element-base {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: vars.$spacing-sm vars.$spacing-lg;
+  padding: var(--spacing-sm) var(--spacing-lg);
   width: auto;
   transition:
-    transform vars.$transition-speed ease,
-    filter vars.$transition-speed ease,
-    box-shadow vars.$transition-speed ease;
-  border-radius: vars.$button-border-radius;
+    transform var(--transition-speed) ease,
+    filter var(--transition-speed) ease,
+    box-shadow var(--transition-speed) ease;
+  border-radius: var(--button-border-radius);
   font-size: 1.2rem;
   font-weight: 700;
-  font-family: vars.$font-family-base;
+  font-family: var(--font-family-base, vars.$font-family-base);
   font-style: normal;
   overflow: hidden;
 }
@@ -105,26 +102,25 @@
   &:hover {
     transform: scale(1.02);
     filter: brightness(1.06);
-    box-shadow: 0 4px 4px rgb(0 0 0 / 18%);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.18);
   }
 
   &:active {
     transform: scale(0.98);
-    filter: brightness(0.98);
-    border-color: color.adjust(vars.$button-border, $lightness: 5%);
+    filter: brightness(0.96);
   }
 
   &:focus {
-    outline: none; // убираем встроенный outline браузера
-    border-color: vars.$button-border;
-    box-shadow: 0 4px 4px rgb(0 0 0 / 38%);
+    outline: none;
+    border-color: var(--button-border);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.38);
   }
 }
 
 @mixin no-select {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10+ и Edge */
-  user-select: none; /* Современные браузеры */
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 // =====================
@@ -134,18 +130,17 @@
   @include element-base;
 
   color: white;
-  background: vars.$color-primary;
-  border: 3px solid vars.$button-border;
+  background: var(--color-primary);
+  border: 3px solid var(--button-border);
 
-  // Внутренняя тень (вогнутость)
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: vars.$button-border-radius;
+    border-radius: var(--button-border-radius);
     box-shadow:
-      inset 0 3px 0 rgb(255 255 255 / 60%),
-      inset 0 -3px 0 rgb(0 0 0 / 20%);
+      inset 0 3px 0 rgba(255, 255, 255, 0.6),
+      inset 0 -3px 0 rgba(0, 0, 0, 0.2);
     pointer-events: none;
   }
 }
@@ -157,7 +152,6 @@
   font-size: clamp(0.8rem, 4vw, 1.2rem);
   padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
 
-  // Блик (блик-отражение)
   &::after {
     content: '';
     position: absolute;
@@ -165,76 +159,81 @@
     left: 12px;
     width: 12px;
     height: 5px;
-    background: rgb(255 255 255 / 90%);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     transform: rotate(-18deg);
-    transition: all vars.$transition-speed ease;
+    transition: all var(--transition-speed) ease;
     pointer-events: none;
   }
 }
 
 // =====================
-// PRIMARY BUTTON (синий)
+// PRIMARY BUTTON
 // =====================
 @mixin button-primary {
   @include button-base;
   @include element-states;
 
-  background: linear-gradient(135deg, vars.$color-primary, vars.$color-primary);
-  border-color: color.adjust(vars.$color-primary, $lightness: -15%);
+  background: var(--gradient-primary);
+  border-color: var(--button-border);
 
   &:active {
-    border-color: color.adjust(vars.$color-primary, $lightness: -20%);
+    filter: brightness(0.94);
   }
 }
 
 // =====================
-// SUCCESS BUTTON (зелёный)
+// SUCCESS BUTTON
 // =====================
 @mixin button-success {
   @include button-base;
   @include element-states;
 
-  background: linear-gradient(135deg, vars.$color-success, vars.$color-success-light);
-  border-color: color.adjust(vars.$color-success, $lightness: -15%);
+  background: linear-gradient(135deg, var(--color-success), var(--color-success-light));
+  border-color: var(--button-border);
 
   &:active {
-    border-color: color.adjust(vars.$color-success, $lightness: -20%);
+    filter: brightness(0.94);
   }
 }
 
 // =====================
-// DANGER BUTTON (красный)
+// DANGER BUTTON
 // =====================
 @mixin button-danger {
   @include button-base;
   @include element-states;
 
-  background: linear-gradient(135deg, vars.$color-danger, vars.$color-danger-light);
+  background: linear-gradient(135deg, var(--color-danger), var(--color-danger-light));
+  border-color: var(--button-border);
+
+  &:active {
+    filter: brightness(0.94);
+  }
 }
 
 // =====================
-// WARNING BUTTON (оранжевый)
+// WARNING BUTTON
 // =====================
 @mixin button-warning {
   @include button-base;
 
-  background: linear-gradient(135deg, vars.$color-warning, color.adjust(vars.$color-warning, $lightness: -10%));
-  border-color: color.adjust(vars.$color-warning, $lightness: -15%);
+  background: linear-gradient(135deg, var(--color-warning), var(--color-warning-dark));
+  border-color: var(--button-border);
 
   &:hover {
     transform: scale(1.02);
     filter: brightness(1.06);
-    box-shadow: 0 4px 4px rgb(0 0 0 / 18%);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.18);
   }
 
   &:active {
-    border-color: color.adjust(vars.$color-warning, $lightness: -20%);
+    filter: brightness(0.94);
   }
 }
 
 // =====================
-// ICON BUTTON (круглые)
+// ICON BUTTON
 // =====================
 @mixin button-icon {
   @include button-base;
@@ -242,7 +241,7 @@
   padding: 0;
   width: 40px;
   height: 40px;
-  background: vars.$gradient-panel;
+  background: var(--gradient-panel);
   border-radius: 50%;
 
   &:hover {
@@ -251,31 +250,29 @@
 }
 
 // =====================
-// SELECTABLE ELEMENT (как a/b блоки)
+// SELECTABLE ELEMENT
 // =====================
 @mixin selectable {
-  transition: all vars.$transition-speed ease;
+  transition: all var(--transition-speed) ease;
   cursor: pointer;
 
   &:hover {
     transform: scale(1.05);
-
     @include glow;
   }
 
   &.is-selected {
-    @include glow(vars.$color-accent);
-
-    border: 1px solid vars.$color-accent;
+    @include glow(var(--color-accent));
+    border: 1px solid var(--color-accent);
   }
 }
 
 // =====================
-// TEXT GLOW (для заголовков)
+// TEXT GLOW
 // =====================
 @mixin text-glow {
-  color: vars.$color-text-primary;
-  text-shadow: 0 0 10px rgb(96 165 250 / 80%);
+  color: var(--color-text-primary);
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
 }
 
 // =====================
@@ -285,16 +282,18 @@
   @include element-base;
   @include element-states;
 
-  color: vars.$color-input-text;
-  background: white;
-  border: 3px solid vars.$input-border;
+  color: var(--color-input-text);
+  background: var(--color-input-background);
+  border: 3px solid var(--input-border);
 
   &::placeholder {
-    color: vars.$color-input-placeholder;
+    color: var(--color-input-placeholder);
   }
 }
 
-// Media query
+// =====================
+// MEDIA QUERIES
+// =====================
 @mixin respond-to($breakpoint) {
   @if $breakpoint == mobile {
     @media (width <= 600px) {
@@ -311,22 +310,24 @@
   }
 }
 
+// =====================
+// CLOUD MESSAGE
+// =====================
 @mixin cloud-message {
   @include flex-center;
   flex-direction: column;
-  gap: vars.$spacing-sm;
+  gap: var(--spacing-sm);
 
   position: relative;
   width: 300px;
-  margin-top: vars.$spacing-md;
-  padding: vars.$spacing-md;
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
   background-color: white;
-  border-radius: vars.$border-radius-lg;
+  border-radius: var(--border-radius-lg);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   text-align: center;
   transition: all 0.3s ease;
 
-  // Стрелочка вверх
   &::before {
     content: '';
     position: absolute;
