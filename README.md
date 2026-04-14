@@ -1,5 +1,5 @@
 # RS Tandem Project
-## Приложение "Байты памяти" (Memory Bytes)
+## Приложение "Brainiac"
 
 ## 📖 Описание
 ```

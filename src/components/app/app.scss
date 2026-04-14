@@ -18,8 +18,10 @@
 
   .logo {
     @include no-select;
+
     font-weight: 700;
     font-size: 1.5rem;
+    color: $color-primary-dark;
   }
 
   .nav-buttons {
@@ -59,8 +61,8 @@
   flex: 1;
   background-color: $color-primary;
   background-image:
-    linear-gradient(var(--grid-line-color, rgba(148, 163, 184, 0.6)) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line-color, rgba(148, 163, 184, 0.6)) 1px, transparent 1px);
+    linear-gradient(var(--grid-line-color, rgb(148 163 184 / 60%)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-color, rgb(148 163 184 / 60%)) 1px, transparent 1px);
   background-size: 35px 35px;
   font-size: 2rem;
   overflow: hidden;
@@ -99,6 +101,7 @@
 
 .app-footer {
   @include no-select;
+
   color: $color-text-primary;
   background-color: $color-primary;
   text-align: center;
