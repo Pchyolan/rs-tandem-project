@@ -118,9 +118,8 @@
 }
 
 @mixin no-select {
-  /* Safari */
-
-  /* IE 10+ и Edge */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10+ и Edge */
   user-select: none; /* Современные браузеры */
 }
 
