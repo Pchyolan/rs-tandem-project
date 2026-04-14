@@ -1,0 +1,107 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.icon-button__container {
+  position: relative;
+  width: 28px;
+  height: 28px;
+
+  &:hover {
+    .icon-button__sparkle {
+      opacity: 1;
+    }
+
+    .icon-button__tooltip {
+      opacity: 1;
+    }
+  }
+}
+
+.icon-button__wrapper {
+  @include glacier-base;
+  @include element-states;
+
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-primary-glow);
+  border: 2px solid var(--color-surface);
+  opacity: 0.85;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &.is-disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.icon-button__icon {
+  width: 100%;
+  height: 100%;
+}
+
+.icon-button__sparkle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity $transition-long;
+}
+
+.icon-button__tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  padding: $spacing-sm 12px;
+  color: white;
+  background: var(--color-primary-dark);
+  border: 1px solid var(--border-color);
+  opacity: 0;
+  transition: opacity $transition-long;
+  transform: translateX(-50%);
+  border-radius: $spacing-sm;
+  font-size: 12px;
+  font-weight: normal;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 4px 12px var(--shadow-soft);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: $spacing-sm;
+    border-style: solid;
+    border-color: var(--color-primary-dark) transparent transparent transparent;
+  }
+
+  // Для placement="bottom"
+  &.icon-button__tooltip--bottom {
+    top: 120%;
+    bottom: auto;
+
+    &::after {
+      top: auto;
+      bottom: 100%;
+      border-color: transparent transparent var(--color-primary-dark);
+    }
+  }
+
+  .complex-tooltip {
+    white-space: normal;
+    width: 400px;
+    text-align: left;
+
+    p {
+      margin: $spacing-sm 0;
+      line-height: 1.4;
+    }
+  }
+}

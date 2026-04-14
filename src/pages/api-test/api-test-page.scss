@@ -17,27 +17,27 @@
       margin: 0 0 $spacing-sm;
       font-size: 1.2rem;
       font-weight: 600;
-      color: $color-secondary;
-      border-bottom: 2px solid $color-primary;
+      color: var(--color-warning);
+      border-bottom: 2px solid var(--color-primary);
       padding-bottom: $spacing-xs;
     }
 
     input {
       padding: $spacing-sm;
       width: 100%;
+      color: var(--color-text-primary, #333);
+      background: var(--color-surface, white);
       border: 1px solid var(--border-color, #ccc);
       margin-bottom: $spacing-sm;
       border-radius: $border-radius;
       font-size: 1rem;
       box-sizing: border-box;
-      background: var(--color-surface, white);
-      color: var(--color-text-primary, #333);
     }
 
     button {
       padding: $spacing-sm;
       color: white;
-      background: $color-primary;
+      background: var(--color-primary);
       border: none;
       transition:
         filter $transition-speed,
@@ -63,14 +63,14 @@
       align-items: center;
       justify-content: space-between;
       padding: $spacing-xs $spacing-sm;
-      border: 1px solid var(--border-color, #ccc);
       background: var(--color-surface, #f0f0f0);
+      border: 1px solid var(--border-color, #ccc);
       border-radius: $border-radius $border-radius 0 0;
 
       a {
         display: inline-flex;
         align-items: center;
-        color: $color-primary;
+        color: var(--color-primary);
         text-decoration: none;
         font-size: 0.9rem;
         gap: 4px;
@@ -83,7 +83,7 @@
       .copy-btn {
         padding: 4px 12px;
         color: white;
-        background: $color-secondary;
+        background: var(--color-warning);
         border: none;
         transition: filter $transition-speed;
         border-radius: $border-radius;

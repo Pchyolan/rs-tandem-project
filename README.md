@@ -1,5 +1,5 @@
 # RS Tandem Project
-## Приложение "Байты памяти" (Memory Bytes)
+## Приложение "Brainiac"
 
 ## 📖 Описание
 ```
@@ -27,11 +27,12 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 ## ⚙️ Технологический стек
 - **Язык:** TypeScript
-- **Сборщик:** Vite
+- **Сборщик:** Vite, хуки Husky на push и commit
 - **Стили:** SCSS
-- **Тестирование:** Vitest + jsdom
-- **Линтер/форматтер:** ESLint, Prettier, Stylelint
+- **Тестирование:** Vitest + Playwright
+- **Линтер/форматтер:** ESLint с Unicorn, Prettier, Stylelint
 - **База данных/аутентификация:** Supabase
+- **CI / CD:** Git Actions + Netlify
 
 ## 🤹‍♀️ Kanban-доска разработки проекта
 Все задачи, связанные с разработкой и развитием проекта, занесены на Kanban-доску - [ссылка](https://github.com/users/Pchyolan/projects/1/views/1).
@@ -52,32 +53,33 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 1. Клонирование репозитория
 ```bash
-
 git clone https://github.com/Pchyolan/rs-tandem-project.git
 cd rs-tandem-project
 ```
 
 2. Установка зависимостей
 ```bash
-
 npm install
 ```
 
 3. Настройка переменных окружения
 
-Создайте файл .env в корне проекта со следующим содержимым (замените значения на свои из Supabase):
+Создайте файл .env в корне. Примерное содержание приведено ниже, точное содержание файла смотрите в примере ```./env.example```. Замените значения ключей базы данных на свои из Supabase. Пример файла:
 ```env
-
 VITE_DEFAULT_LANGUAGE=en   # или ru
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_USE_MOCK=true
 ```
 
 4. Запуск в режиме разработки
 ```bash
-
 npm run dev
 ```
 
-После запуска приложение будет доступно по адресу http://localhost:3000 (порт может измениться, если 3000 занят).
+После запуска приложение будет доступно по адресу http://localhost:3000 (порт может измениться, если 3000 занят). Тестовый пользователь для запуска в режиме моков: 
+- логин test@test.com
+- пароль: 123456
 
 ## 🛠️ Хуки Husky
 Проект использует Husky и lint-staged:
@@ -86,22 +88,57 @@ npm run dev
 
 ## 💻 Команды для разработки
 
-| Команда                   | Описание                                                   |
-|---------------------------|------------------------------------------------------------|
-| `npm run dev`             | **Запуск дев-сервера Vite с горячей заменой модулей**      |
-| `npm run build`           | Сборка проекта                                             |
-| `npm run preview`         | Локальный просмотр собранной версии (из папки dist)        |
-| `npm run type-check`      | **Проверка типов TypeScript без сборки**                   |
-| `npm run lint`            | **Проверка ESLint с автоматическим исправлением ошибок**   |
-| `npm run lint:check`      | Только проверка ESLint (без исправлений)                   |
-| `npm run format`          | **Форматирование кода через Prettier**                     |
-| `npm run format:check`    | Проверка форматирования (без записи)                       |
-| `npm run lint:styles`     | 	Проверка SCSS/CSS с помощью Stylelint                     |
-| `npm run lint:styles:fix` | 	**Проверка и автоматическое исправление стилей SCSS/CSS** |
-| `npm run test`            | Запуск тестов Vitest                                       |
-| `npm run test:ui`         | Запуск тестов с UI-интерфейсом                             |
-| `npm run test:coverage`   | Запуск тестов с отчётом о покрытии                         |
-| `npm run check-all`       | Полная проверка: типы, линтер, формат, тесты (для CI)      |
+### 🚀 Базовые команды
+
+| Команда | Описание |
+|---------|----------|
+| `npm run dev` | Запуск дев‑сервера Vite с горячей заменой модулей |
+| `npm run build` | Сборка проекта |
+| `npm run preview` | Локальный просмотр собранной версии (из папки `dist`) |
+
+### 🔍 Проверка качества кода
+
+| Команда | Описание |
+|---------|----------|
+| `npm run type-check` | Проверка типов TypeScript без сборки |
+| `npm run lint` | Проверка ESLint с автоматическим исправлением ошибок |
+| `npm run lint:check` | Только проверка ESLint (без исправлений) |
+| `npm run format` | Форматирование кода через Prettier |
+| `npm run format:check` | Проверка форматирования (без записи) |
+| `npm run lint:styles` | Проверка SCSS/CSS с помощью Stylelint |
+| `npm run lint:styles:fix` | Проверка и автоматическое исправление стилей SCSS/CSS |
+
+### 🧪 Unit‑тесты (Vitest)
+
+| Команда | Описание |
+|---------|----------|
+| `npm run test` | Запуск unit‑тестов (Vitest) |
+| `npm run test:ui` | Запуск unit‑тестов с UI‑интерфейсом |
+| `npm run test:coverage` | Запуск unit‑тестов с отчётом о покрытии |
+
+### 🔗 Интеграционные тесты (Vitest)
+
+| Команда | Описание |
+|---------|----------|
+| `npm run test:integration` | Запуск интеграционных тестов |
+| `npm run test:integration:ui` | Запуск интеграционных тестов с UI‑интерфейсом |
+| `npm run test:integration:coverage` | Запуск интеграционных тестов с отчётом о покрытии |
+
+### 🌐 End‑to‑end тесты (Playwright)
+
+| Команда | Описание                                                   |
+|---------|------------------------------------------------------------|
+| `npm run test:e2e` | Запуск end‑to‑end тестов (Playwright)                      |
+| `npm run test:e2e:debug` | Запуск e2e тестов в режиме отладки                         |
+| `npm run test:all` | Последовательный запуск тестов: unit, интеграционные и E2E |
+
+### ✅ Комплексная проверка (для CI)
+
+| Команда | Описание |
+|---------|----------|
+| `npm run check-all` | Полная проверка: типы → линтер → формат → тесты |
+
+
 
 # 🤿 Правила работы с ветками
 Ветки разработки в проекте сгруппированы по папкам:

@@ -13,34 +13,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: $color-text-primary;
-  background-color: $color-primary;
+  color: var(--color-text-primary);
+  background-color: var(--color-primary);
+}
 
-  .logo {
-    @include no-select;
-    font-weight: 700;
-    font-size: 1.5rem;
-  }
+.header-app-name {
+  @include no-select;
 
-  .nav-buttons {
-    display: flex;
-    gap: $spacing-md;
-  }
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--color-primary-dark);
+}
 
-  button {
-    padding: $spacing-xs $spacing-md;
-    color: var(--button-header-color);
-    background: var(--button-header-bg);
-    border: none;
-    transition: background-color $transition-speed;
-    border-radius: $border-radius;
-    cursor: pointer;
-    font-weight: 500;
-
-    &:hover {
-      background-color: var(--button-header-hover-bg);
-    }
-  }
+.header-buttons-container {
+  display: flex;
+  gap: $spacing-md;
 }
 
 .header-content {
@@ -57,10 +44,10 @@
   position: relative;
   width: 100%;
   flex: 1;
-  background-color: $color-primary;
+  background-color: var(--color-primary);
   background-image:
-    linear-gradient(var(--grid-line-color, rgba(148, 163, 184, 0.6)) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line-color, rgba(148, 163, 184, 0.6)) 1px, transparent 1px);
+    linear-gradient(var(--grid-line-color, rgb(148 163 184 / 60%)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-color, rgb(148 163 184 / 60%)) 1px, transparent 1px);
   background-size: 35px 35px;
   font-size: 2rem;
   overflow: hidden;
@@ -78,12 +65,12 @@
 
   &::before {
     top: 0;
-    background: linear-gradient(to bottom, $color-primary, transparent);
+    background: linear-gradient(to bottom, var(--color-primary), transparent);
   }
 
   &::after {
     bottom: 0;
-    background: linear-gradient(to top, $color-primary, transparent);
+    background: linear-gradient(to top, var(--color-primary), transparent);
   }
 }
 
@@ -99,8 +86,9 @@
 
 .app-footer {
   @include no-select;
-  color: $color-text-primary;
-  background-color: $color-primary;
+
+  color: var(--color-text-primary);
+  background-color: var(--color-primary);
   text-align: center;
 }
 
