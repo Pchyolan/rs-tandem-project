@@ -118,8 +118,7 @@
 }
 
 @mixin no-select {
-  user-select: none; /* Safari */
-  user-select: none; /* IE 10+ и Edge */
+  /* Safari */ /* IE 10+ и Edge */
   user-select: none; /* Современные браузеры */
 }
 
@@ -192,7 +191,7 @@
   @include element-states;
 
   background: linear-gradient(135deg, var(--color-success), var(--color-success-light));
-  border-color: var(--button-border);
+  border-color: var(--color-success-dark);
 
   &:active {
     filter: brightness(0.94);
@@ -207,7 +206,7 @@
   @include element-states;
 
   background: linear-gradient(135deg, var(--color-danger), var(--color-danger-light));
-  border-color: var(--button-border);
+  border-color: var(--color-danger-dark);
 
   &:active {
     filter: brightness(0.94);
@@ -220,8 +219,8 @@
 @mixin button-warning {
   @include button-base;
 
-  background: linear-gradient(135deg, var(--color-warning), var(--color-warning-dark));
-  border-color: var(--button-border);
+  background: linear-gradient(135deg, var(--color-warning), var(--color-warning-medium));
+  border-color: var(--color-warning-dark);
 
   &:hover {
     transform: scale(1.02);
