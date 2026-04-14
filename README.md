@@ -53,32 +53,33 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 1. Клонирование репозитория
 ```bash
-
 git clone https://github.com/Pchyolan/rs-tandem-project.git
 cd rs-tandem-project
 ```
 
 2. Установка зависимостей
 ```bash
-
 npm install
 ```
 
 3. Настройка переменных окружения
 
-Создайте файл .env в корне проекта со следующим содержимым (замените значения на свои из Supabase):
+Создайте файл .env в корне. Примерное содержание приведено ниже, точное содержание файла смотрите в примере ```./env.example```. Замените значения ключей базы данных на свои из Supabase. Пример файла:
 ```env
-
 VITE_DEFAULT_LANGUAGE=en   # или ru
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_USE_MOCK=true
 ```
 
 4. Запуск в режиме разработки
 ```bash
-
 npm run dev
 ```
 
-После запуска приложение будет доступно по адресу http://localhost:3000 (порт может измениться, если 3000 занят).
+После запуска приложение будет доступно по адресу http://localhost:3000 (порт может измениться, если 3000 занят). Тестовый пользователь для запуска в режиме моков: 
+- логин test@test.com
+- пароль: 123456
 
 ## 🛠️ Хуки Husky
 Проект использует Husky и lint-staged:
