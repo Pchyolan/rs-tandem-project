@@ -1,4 +1,4 @@
-import { BaseComponent } from '@/core';
+import { BaseComponent, Router } from '@/core';
 import { RoundButton } from '@/components';
 import { user$ } from '@/store/auth-store';
 import { getElementWithType } from '@/utils/selectors';
@@ -23,11 +23,15 @@ export class Header extends BaseComponent<'header'> {
   private readonly settingsButton: RoundButton;
   private readonly logoutButton: RoundButton;
 
+  private readonly router: Router;
+
   private readonly unsubscribeLang: () => void;
   private readonly unsubscribeUser: () => void;
+  private readonly unsubscribeRouter: (() => void) | null = null;
 
-  constructor(callbacks: HeaderCallbacks) {
+  constructor(router: Router, callbacks: HeaderCallbacks) {
     super({ tag: 'header', className: ['app-header'] });
+    this.router = router;
 
     const contentContainer = new BaseComponent({ tag: 'div', className: ['header-content'] });
 
@@ -82,23 +86,15 @@ export class Header extends BaseComponent<'header'> {
     this.append(contentContainer);
 
     this.unsubscribeLang = language$.subscribe(() => this.updateTexts());
-    this.unsubscribeUser = user$.subscribe((user) => {
-      if (user) {
-        this.signInButton.hide();
-
-        this.achievementsButton.show();
-        this.settingsButton.show();
-        this.logoutButton.show();
-      } else {
-        this.signInButton.show();
-
-        this.achievementsButton.hide();
-        this.settingsButton.hide();
-        this.logoutButton.hide();
-      }
+    this.unsubscribeUser = user$.subscribe(() => {
+      this.updateButtonsVisibility();
       this.updateTexts();
     });
 
+    // Подписка на изменение пути
+    this.unsubscribeRouter = router.currentPath$.subscribe(() => this.updateButtonsVisibility());
+
+    this.updateButtonsVisibility();
     this.updateTexts();
   }
 
@@ -128,7 +124,39 @@ export class Header extends BaseComponent<'header'> {
     }
   }
 
+  /**
+   * Обновляет видимость кнопок в зависимости от текущего пути и авторизации.
+   * Приоритет: страницы логина/сброса пароля → все кнопки скрыты.
+   * Иначе: показываем в зависимости от user$.
+   */
+  private updateButtonsVisibility(): void {
+    const currentPath = this.router.currentPath$.value;
+    const isAuthPage = currentPath === '/login' || currentPath === '/reset-password';
+
+    if (isAuthPage) {
+      this.signInButton.hide();
+      this.achievementsButton.hide();
+      this.settingsButton.hide();
+      this.logoutButton.hide();
+      return;
+    }
+
+    const user = user$.value;
+    if (user) {
+      this.signInButton.hide();
+      this.achievementsButton.show();
+      this.settingsButton.show();
+      this.logoutButton.show();
+    } else {
+      this.signInButton.show();
+      this.achievementsButton.hide();
+      this.settingsButton.hide();
+      this.logoutButton.hide();
+    }
+  }
+
   public override remove(): void {
+    this.unsubscribeRouter?.();
     this.unsubscribeLang();
     this.unsubscribeUser();
     super.remove();

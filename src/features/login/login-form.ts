@@ -492,7 +492,14 @@ export class LoginForm implements Page {
 
     try {
       await loginApi(email, password);
-      this.router.navigate('/settings');
+      const redirect = sessionStorage.getItem('redirectAfterLogin');
+
+      if (redirect) {
+        sessionStorage.removeItem('redirectAfterLogin');
+        this.router.navigate(redirect);
+      } else {
+        this.router.navigate('/settings');
+      }
     } catch (error) {
       showTemporaryError(this.loginErrorMessage, getFriendlyErrorMessage(error));
     } finally {
