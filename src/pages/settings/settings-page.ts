@@ -4,7 +4,7 @@ import type { UserSettings } from '@/types';
 import { language$ } from '@/store/language-store';
 import { translations } from '@/i18n';
 
-import { loadSettings, settings$, updateSettings } from '@/store/settings-store';
+import { settings$, updateSettings } from '@/store/settings-store';
 
 import './settings-page.scss';
 import { getElementWithType } from '@/utils/selectors.ts';
@@ -201,10 +201,6 @@ export class SettingsPage implements Page {
       }
     });
     this.unsubscribeLanguage = language$.subscribe(() => this.updateTexts());
-
-    void loadSettings().catch((error) => {
-      console.error('Failed to load settings:', error);
-    });
 
     return this.container;
   }
