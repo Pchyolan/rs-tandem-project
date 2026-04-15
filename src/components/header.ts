@@ -10,6 +10,7 @@ import loginIconUrl from '@/assets/images/icons/sign-in.png';
 import achievementsIconUrl from '@/assets/images/icons/user.png';
 import settingsIconUrl from '@/assets/images/icons/settings.png';
 import logoutIconUrl from '@/assets/images/icons/sign-out.png';
+import appImageUrl from '@/assets/images/app-header.png';
 
 type HeaderCallbacks = {
   onSignIn: () => void;
@@ -35,13 +36,28 @@ export class Header extends BaseComponent<'header'> {
 
     const contentContainer = new BaseComponent({ tag: 'div', className: ['header-content'] });
 
+    const appNameContainer = new BaseComponent({
+      tag: 'div',
+      className: ['header-name-container'],
+    });
+
+    const appImage = new BaseComponent<'img'>({
+      tag: 'img',
+      className: ['header-app-image'],
+      attrs: { src: appImageUrl, alt: 'App Image' },
+    });
     const appName = new BaseComponent({
       tag: 'span',
       text: translations[language$.value].appName,
       className: ['header-app-name'],
     });
 
-    const buttonsContainer = new BaseComponent({ tag: 'div', className: ['header-buttons-container'] });
+    appNameContainer.append(appImage, appName);
+
+    const buttonsContainer = new BaseComponent({
+      tag: 'div',
+      className: ['header-buttons-container'],
+    });
 
     this.signInButton = new RoundButton({
       iconSrc: loginIconUrl,
@@ -82,7 +98,7 @@ export class Header extends BaseComponent<'header'> {
 
     buttonsContainer.append(this.signInButton, this.achievementsButton, this.settingsButton, this.logoutButton);
 
-    contentContainer.append(appName, buttonsContainer);
+    contentContainer.append(appNameContainer, buttonsContainer);
     this.append(contentContainer);
 
     this.unsubscribeLang = language$.subscribe(() => this.updateTexts());
