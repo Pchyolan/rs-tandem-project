@@ -1,4 +1,4 @@
-import { BaseComponent } from '@/core';
+import { BaseComponent, Router } from '@/core';
 import { RoundButton } from '@/components';
 import { user$ } from '@/store/auth-store';
 import { getElementWithType } from '@/utils/selectors';
@@ -10,34 +10,66 @@ import loginIconUrl from '@/assets/images/icons/sign-in.png';
 import achievementsIconUrl from '@/assets/images/icons/user.png';
 import settingsIconUrl from '@/assets/images/icons/settings.png';
 import logoutIconUrl from '@/assets/images/icons/sign-out.png';
+import appImageUrl from '@/assets/images/app-header.png';
+import { createHouseIcon } from '@/utils/svg-icon.ts';
 
 type HeaderCallbacks = {
+  onHome: () => void;
   onSignIn: () => void;
   onLogout: () => void;
   onSettings: () => void;
 };
 
 export class Header extends BaseComponent<'header'> {
+  private readonly homeButton: RoundButton;
   private readonly signInButton: RoundButton;
   private readonly achievementsButton: RoundButton;
   private readonly settingsButton: RoundButton;
   private readonly logoutButton: RoundButton;
 
+  private readonly router: Router;
+
   private readonly unsubscribeLang: () => void;
   private readonly unsubscribeUser: () => void;
+  private readonly unsubscribeRouter: (() => void) | null = null;
 
-  constructor(callbacks: HeaderCallbacks) {
+  constructor(router: Router, callbacks: HeaderCallbacks) {
     super({ tag: 'header', className: ['app-header'] });
+    this.router = router;
 
     const contentContainer = new BaseComponent({ tag: 'div', className: ['header-content'] });
 
+    const appNameContainer = new BaseComponent({
+      tag: 'div',
+      className: ['header-name-container'],
+    });
+
+    const appImage = new BaseComponent<'img'>({
+      tag: 'img',
+      className: ['header-app-image'],
+      attrs: { src: appImageUrl, alt: 'App Image' },
+    });
     const appName = new BaseComponent({
       tag: 'span',
       text: translations[language$.value].appName,
       className: ['header-app-name'],
     });
 
-    const buttonsContainer = new BaseComponent({ tag: 'div', className: ['header-buttons-container'] });
+    appNameContainer.append(appImage, appName);
+
+    const buttonsContainer = new BaseComponent({
+      tag: 'div',
+      className: ['header-buttons-container'],
+    });
+
+    this.homeButton = new RoundButton({
+      iconSvg: createHouseIcon(),
+      alt: 'Home',
+      tooltip: translations[language$.value].home,
+      onClick: callbacks.onHome,
+      showSparkle: true,
+      tooltipPlacement: 'bottom',
+    });
 
     this.signInButton = new RoundButton({
       iconSrc: loginIconUrl,
@@ -76,33 +108,36 @@ export class Header extends BaseComponent<'header'> {
     });
     this.logoutButton.hide();
 
-    buttonsContainer.append(this.signInButton, this.achievementsButton, this.settingsButton, this.logoutButton);
+    buttonsContainer.append(
+      this.homeButton,
+      this.signInButton,
+      this.achievementsButton,
+      this.settingsButton,
+      this.logoutButton
+    );
 
-    contentContainer.append(appName, buttonsContainer);
+    contentContainer.append(appNameContainer, buttonsContainer);
     this.append(contentContainer);
 
     this.unsubscribeLang = language$.subscribe(() => this.updateTexts());
-    this.unsubscribeUser = user$.subscribe((user) => {
-      if (user) {
-        this.signInButton.hide();
-
-        this.achievementsButton.show();
-        this.settingsButton.show();
-        this.logoutButton.show();
-      } else {
-        this.signInButton.show();
-
-        this.achievementsButton.hide();
-        this.settingsButton.hide();
-        this.logoutButton.hide();
-      }
+    this.unsubscribeUser = user$.subscribe(() => {
+      this.updateButtonsVisibility();
       this.updateTexts();
     });
 
+    // Подписка на изменение пути
+    this.unsubscribeRouter = router.currentPath$.subscribe(() => this.updateButtonsVisibility());
+
+    this.updateButtonsVisibility();
     this.updateTexts();
   }
 
   private updateTexts(): void {
+    if (this.homeButton) {
+      const homeTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.homeButton.element);
+      homeTooltip.textContent = translations[language$.value].home;
+    }
+
     if (this.signInButton) {
       const signInTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.signInButton.element);
       signInTooltip.textContent = translations[language$.value].signIn;
@@ -128,7 +163,44 @@ export class Header extends BaseComponent<'header'> {
     }
   }
 
+  /**
+   * Обновляет видимость кнопок в зависимости от текущего пути и авторизации.
+   * Приоритет: страницы логина/сброса пароля → все кнопки скрыты.
+   * Иначе: показываем в зависимости от user$.
+   */
+  private updateButtonsVisibility(): void {
+    const currentPath = this.router.currentPath$.value;
+    const isAuthPage = currentPath === '/login' || currentPath === '/reset-password';
+
+    if (isAuthPage) {
+      this.homeButton.hide();
+      this.signInButton.hide();
+      this.achievementsButton.hide();
+      this.settingsButton.hide();
+      this.logoutButton.hide();
+      return;
+    }
+
+    const user = user$.value;
+    if (user) {
+      this.signInButton.hide();
+
+      this.homeButton.show();
+      this.achievementsButton.show();
+      this.settingsButton.show();
+      this.logoutButton.show();
+    } else {
+      this.signInButton.show();
+
+      this.homeButton.hide();
+      this.achievementsButton.hide();
+      this.settingsButton.hide();
+      this.logoutButton.hide();
+    }
+  }
+
   public override remove(): void {
+    this.unsubscribeRouter?.();
     this.unsubscribeLang();
     this.unsubscribeUser();
     super.remove();

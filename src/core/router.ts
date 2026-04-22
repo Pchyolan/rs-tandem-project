@@ -1,4 +1,5 @@
 import { BaseComponent } from './base-component';
+import { Observable } from './observable';
 
 export type Page = {
   render(): BaseComponent;
@@ -17,6 +18,8 @@ export class Router {
   private currentPage: Page | null = null;
   private notFoundPage: (() => Page) | null = null;
 
+  public currentPath$ = new Observable<string>(globalThis.location.pathname);
+
   constructor(root: BaseComponent) {
     this.root = root;
     globalThis.addEventListener('popstate', this.handlePopState.bind(this));
@@ -32,7 +35,7 @@ export class Router {
   }
 
   /**
-   * Устанавливает страницу для несуществующих маршрутов.
+   * Устанавливает страницу для несуществующих маршрутов (404).
    * @param page - функция, возвращающая экземпляр Page
    */
   public setNotFound(page: () => Page): void {
@@ -44,10 +47,14 @@ export class Router {
    * @param path - целевой путь
    * @param state - дополнительные данные состояния
    */
-  public navigate(path: string, state: object = {}) {
-    if (path === globalThis.location.pathname) return;
+  public navigate(path: string, replace: boolean = false, state: object = {}) {
+    if (path === globalThis.location.pathname && !replace) return;
 
-    globalThis.history.pushState(state, '', path);
+    if (replace) {
+      globalThis.history.replaceState(state, '', path);
+    } else {
+      globalThis.history.pushState(state, '', path);
+    }
     this.render(path);
   }
 
@@ -65,24 +72,28 @@ export class Router {
    * @param path - URL-путь для отображения (например, '/', '/login').
    */
   private render(path: string) {
+    const route = this.routes.find((r) => r.path === path);
+
     if (this.currentPage) {
       this.currentPage.onDestroy?.();
     }
 
-    const route = this.routes.find((r) => r.path === path);
-
+    let newPage: Page | null;
     if (route) {
-      this.currentPage = route.page();
+      newPage = route.page();
     } else if (this.notFoundPage) {
-      this.currentPage = this.notFoundPage();
+      newPage = this.notFoundPage();
     } else {
       console.error(`No route for path "${path}" and no not-found page set.`);
       return;
     }
 
+    this.currentPage = newPage;
     this.root.clear();
-    this.root.append(this.currentPage.render());
-    this.currentPage.onMount?.();
+    this.root.append(newPage.render());
+    newPage.onMount?.();
+
+    this.currentPath$.set(path);
   }
 
   /**

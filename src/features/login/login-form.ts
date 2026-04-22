@@ -492,7 +492,7 @@ export class LoginForm implements Page {
 
     try {
       await loginApi(email, password);
-      this.router.navigate('/settings');
+      this.router.navigate('/');
     } catch (error) {
       showTemporaryError(this.loginErrorMessage, getFriendlyErrorMessage(error));
     } finally {
@@ -720,9 +720,7 @@ export class LoginForm implements Page {
 
   private updateButtonText(translation: string, buttonComponent?: BaseComponent<'button'>): void {
     if (buttonComponent) {
-      console.log('translation', translation);
       const span = getElementWithType(HTMLSpanElement, 'button-with-image__span', buttonComponent.element);
-      console.log('span', span);
       span.textContent = translation;
     }
   }
